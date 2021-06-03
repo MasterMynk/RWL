@@ -12,9 +12,10 @@ set(RWL "${SRC}rwl/")
 set(CPP_FILES
   "core"
 )
-
+  
 set(HPP_FILES
   "rwl"
+  "Log"
 )
 set(ALL_FILES)
 
@@ -33,9 +34,9 @@ add_library(rwl
 if(WIN32)
 elseif(APPLE)
 else()
-target_compile_definitions(rwl PUBLIC
-  RWL_PLATFORM=LINUX
-)
+  target_compile_definitions(rwl PUBLIC
+    RWL_PLATFORM=LINUX
+  )
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -48,7 +49,13 @@ target_include_directories(rwl PUBLIC
   "${SRC}"
 )
 
+target_include_directories(rwl PRIVATE
+  "${RWL}"
+)
+
 target_precompile_headers(rwl PRIVATE
+  <string>
+  <stdio.h>
   <xcb/xcb.h>
   <functional>
 )
