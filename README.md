@@ -20,7 +20,7 @@ In your root CMakeLists.txt file, add the line `add_subdirectory(RWL)`. This doe
 Signature:
 
 ```C++
-void rwl::update();
+inline void rwl::update();
 ```
 
 `rwl::update()` updates the windows created by your program.
@@ -30,7 +30,7 @@ void rwl::update();
 Signature:
 
 ```C++
-void rwl::end();
+inline void rwl::end();
 ```
 
 `rwl::end()` does all the cleanup necessary after your program finishes.

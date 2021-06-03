@@ -16,16 +16,4 @@ namespace rwl {
 
     end();
   }
-
-  void update() {
-  #if RWL_PLATFORM == LINUX
-    xcb_flush(core::c);
-  #endif
-  }
-
-  void end() {
-  #if RWL_PLATFORM == LINUX
-    xcb_disconnect(core::c);
-  #endif
-  }
 }
