@@ -1,0 +1,8 @@
+Language: Cpp
+BasedOnStyle: LLVM
+IndentCaseLabels: true
+NamespaceIndentation: All
+AlwaysBreakTemplateDeclarations: Yes
+SpaceBeforeInheritanceColon: false
+BreakConstructorInitializers: BeforeColon
+ConstructorInitializerAllOnOneLineOrOnePerLine: false

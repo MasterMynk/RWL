@@ -9,12 +9,14 @@
 #define RESET SET_COLOR(0)
 
 #if RWL_DEBUG == 1
-  #define LOG(level, text) printf("%s: %s%s",\
-  level == LogLevel::Error ? RED "[ERROR]"\
-  : level ==  LogLevel::Status ? GREEN "[Status]"\
-  : YELLOW "[Warning]", RESET, (text))
+#define LOG(level, text)                                                       \
+  printf("%s: %s%s",                                                           \
+         level == LogLevel::Error    ? RED "[ERROR]"                           \
+         : level == LogLevel::Status ? GREEN "[Status]"                        \
+                                     : YELLOW "[Warning]",                     \
+         RESET, (text))
 #else
-  #define LOG(level, text)
+#define LOG(level, text)
 #endif
 
 namespace rwl {

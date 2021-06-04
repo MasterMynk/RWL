@@ -6,14 +6,14 @@ namespace rwl {
   xcb_screen_t *core::scr = xcb_setup_roots_iterator(xcb_get_setup(c)).data;
 #endif
 
-  void loop(std::function<void (bool &finished)> func) {
+  void loop(std::function<void(bool &finished)> func) {
     bool finished = false;
 
-    while(!finished) {
+    while (!finished) {
       func(finished);
       update();
     }
 
     end();
   }
-}
+} // namespace rwl

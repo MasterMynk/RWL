@@ -1,24 +1,24 @@
 #pragma once
-#include <xcb/xcb.h>
 #include <functional>
+#include <xcb/xcb.h>
 
 namespace rwl {
   struct core {
   private:
-  #if RWL_PLATFORM == LINUX
+#if RWL_PLATFORM == LINUX
     static xcb_connection_t *c;
     static xcb_screen_t *scr;
-  #endif
+#endif
 
     core() = delete;
 
     friend void end();
     friend void update();
 
-  #if RWL_PLATFORM == LINUX && RWL_DEBUG == 1
+#if RWL_PLATFORM == LINUX && RWL_DEBUG == 1
     friend xcb_connection_t *&getC();
     friend xcb_screen_t *&getS();
-  #endif
+#endif
   };
 
 #if RWL_PLATFORM == LINUX && RWL_DEBUG == 1
@@ -26,17 +26,17 @@ namespace rwl {
   inline xcb_connection_t *&getC() { return core::c; }
 #endif
 
-  void loop(std::function<void (bool &finished)> func);
+  void loop(std::function<void(bool &finished)> func);
 
   inline void update() {
-  #if RWL_PLATFORM == LINUX
+#if RWL_PLATFORM == LINUX
     xcb_flush(core::c);
-  #endif
+#endif
   }
 
   inline void end() {
-  #if RWL_PLATFORM == LINUX
+#if RWL_PLATFORM == LINUX
     xcb_disconnect(core::c);
-  #endif
+#endif
   }
-}
+} // namespace rwl

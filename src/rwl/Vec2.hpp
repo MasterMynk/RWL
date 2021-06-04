@@ -3,21 +3,24 @@
 #include <math.h>
 
 namespace rwl {
-  template<typename Any>
+  template <typename Any>
   struct Vec2 {
+  public:
     union {
-      struct { Any x, y; };
-      struct { Any width, height; };
+      struct {
+        Any x, y;
+      };
+      struct {
+        Any width, height;
+      };
     };
 
     /*********** Constructors ***********/
-    Vec2(const Any &p_x, const Any &p_y)
-      : x(p_x), y(p_y) {}
-    Vec2(const Any &xAndY = Any())
-      : x(xAndY), y(xAndY) {}
+    Vec2(const Any &p_x, const Any &p_y) : x(p_x), y(p_y) {}
+    Vec2(const Any &xAndY = Any()) : x(xAndY), y(xAndY) {}
 
-  /********************* Operator Overloads *********************/
-   Vec2<Any> &operator=(const Any &xAndY) {
+    /********************* Operator Overloads *********************/
+    Vec2<Any> &operator=(const Any &xAndY) {
       x = xAndY;
       y = xAndY;
 
@@ -53,21 +56,23 @@ namespace rwl {
     }
 
     Vec2<Any> operator%(const Vec2<Any> &other) {
-      if constexpr(std::is_floating_point_v<Any>)
+      if constexpr (std::is_floating_point_v<Any>)
         return Vec2<Any>(fmod(this->x, other.x), fmod(this->y, other.y));
       else
         return Vec2<Any>(this->x % other.x, this->y % other.y);
     }
     Vec2<Any> operator%(const Any &toMod) {
-      if constexpr(std::is_floating_point_v<Any>)
+      if constexpr (std::is_floating_point_v<Any>)
         return Vec2<Any>(fmod(this->x, toMod), fmod(this->y, toMod));
       else
         return Vec2<Any>(this->x % toMod, this->y % toMod);
     }
   };
 
-  template<typename Any>
-  std::ostream &operator<<(std::ostream& cout, Vec2<Any> toPrint) { return (cout << toPrint.x << ", " << toPrint.y); }
+  template <typename Any>
+  std::ostream &operator<<(std::ostream &cout, Vec2<Any> toPrint) {
+    return (cout << toPrint.x << ", " << toPrint.y);
+  }
 
   typedef Vec2<int16_t> Pos;
   typedef Vec2<uint16_t> Dim;
