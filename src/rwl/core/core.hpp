@@ -1,6 +1,6 @@
 #pragma once
-#include <functional>
 #include <xcb/xcb.h>
+#include <functional>
 
 namespace rwl {
   struct core {
