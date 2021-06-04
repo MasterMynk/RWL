@@ -16,6 +16,7 @@ set(CPP_FILES
 set(HPP_FILES
   "rwl"
   "Log"
+  "Vec2"
 )
 set(ALL_FILES)
 
@@ -56,6 +57,7 @@ target_include_directories(rwl PRIVATE
 target_precompile_headers(rwl PRIVATE
   <string>
   <stdio.h>
+  <iostream>
   <xcb/xcb.h>
   <functional>
 )
