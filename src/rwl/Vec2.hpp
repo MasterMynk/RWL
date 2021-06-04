@@ -1,6 +1,6 @@
 #pragma once
+#include <cmath>
 #include <iostream>
-#include <math.h>
 
 namespace rwl {
   template <typename Any>

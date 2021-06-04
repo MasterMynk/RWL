@@ -55,6 +55,7 @@ target_include_directories(rwl PRIVATE
 )
 
 target_precompile_headers(rwl PRIVATE
+  <cmath>
   <string>
   <stdio.h>
   <iostream>
