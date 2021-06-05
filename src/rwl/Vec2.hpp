@@ -84,6 +84,81 @@ namespace rwl {
       else
         return Vec2<Any>(this->x % other.x, this->y % other.y);
     }
+
+    template <Fundamental Any0>
+    Vec2 &operator+=(const Any0 &other) {
+      this->x += other;
+      this->y += other;
+
+      return *this;
+    }
+    template <typename Any0>
+    Vec2 &operator+=(const Vec2<Any0> &other) {
+      this->x += other.x;
+      this->y += other.y;
+
+      return *this;
+    }
+
+    template <Fundamental Any0>
+    Vec2 &operator-=(const Any0 &other) {
+      this->x -= other;
+      this->y -= other;
+
+      return *this;
+    }
+    template <typename Any0>
+    Vec2 &operator-=(const Vec2<Any0> &other) {
+      this->x -= other.x;
+      this->y -= other.y;
+
+      return *this;
+    }
+
+    template <Fundamental Any0>
+    Vec2 &operator*=(const Any0 &other) {
+      this->x *= other;
+      this->y *= other;
+
+      return *this;
+    }
+    template <typename Any0>
+    Vec2 &operator*=(const Vec2<Any0> &other) {
+      this->x *= other.x;
+      this->y *= other.y;
+
+      return *this;
+    }
+
+    template <Fundamental Any0>
+    Vec2 &operator/=(const Any0 &other) {
+      this->x /= other;
+      this->y /= other;
+
+      return *this;
+    }
+    template <typename Any0>
+    Vec2 &operator/=(const Vec2<Any0> &other) {
+      this->x /= other.x;
+      this->y /= other.y;
+
+      return *this;
+    }
+
+    template <Fundamental Any0>
+    Vec2 &operator%=(const Any0 &other) {
+      this->x %= other;
+      this->y %= other;
+
+      return *this;
+    }
+    template <typename Any0>
+    Vec2 &operator%=(const Vec2<Any0> &other) {
+      this->x %= other.x;
+      this->y %= other.y;
+
+      return *this;
+    }
   };
 
   template <typename Any>
