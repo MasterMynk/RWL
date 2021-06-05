@@ -11,6 +11,7 @@ set(RWL "${SRC}rwl/")
 
 set(CPP_FILES
   "core"
+  "Window"
 )
   
 set(HPP_FILES
@@ -50,9 +51,9 @@ target_include_directories(rwl PUBLIC
   "${SRC}"
 )
 
-target_include_directories(rwl PRIVATE
-  "${RWL}"
-)
+# target_include_directories(rwl PRIVATE
+#   "${RWL}"
+# )
 
 target_precompile_headers(rwl PRIVATE
   <cmath>
@@ -63,3 +64,8 @@ target_precompile_headers(rwl PRIVATE
 )
 
 target_compile_features(rwl PUBLIC cxx_std_20)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILE_ID STREQUAL "Clang")
+  target_compile_options(rwl PRIVATE -pipe -Wall -Werror)
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+  target_compile_options(rwl PRIVATE /W4 /WX)
+endif()
