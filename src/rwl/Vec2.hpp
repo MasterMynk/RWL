@@ -1,9 +1,12 @@
 #pragma once
 #include <cmath>
-#include <iostream>
 #include <functional>
+#include <iostream>
 
 namespace rwl {
+  template <typename T>
+  concept Fundamental = std::is_fundamental_v<T>;
+
   template <typename Any>
   struct Vec2 {
   public:
@@ -21,15 +24,15 @@ namespace rwl {
     Vec2(const Any &xAndY = Any()) : x(xAndY), y(xAndY) {}
 
     /********************* Operator Overloads *********************/
-    Vec2 &operator=(const Any &xAndY) {
-      x = xAndY;
-      y = xAndY;
+    template <Fundamental Any0>
+    Vec2 &operator=(const Any0 &other) {
+      x = other;
+      y = other;
 
       return *this;
     }
 
-    template <typename Any0,
-              typename = std::enable_if_t<std::is_fundamental_v<Any0>>>
+    template <Fundamental Any0>
     Vec2 operator+(const Any0 &other) {
       return Vec2<Any>(this->x + other, this->y + other);
     }
@@ -38,8 +41,7 @@ namespace rwl {
       return Vec2<Any>(this->x + other.x, this->y + other.y);
     }
 
-    template <typename Any0,
-              typename = std::enable_if_t<std::is_fundamental_v<Any0>>>
+    template <Fundamental Any0>
     Vec2 operator-(const Any0 &other) {
       return Vec2<Any>(this->x - other, this->y - other);
     }
@@ -48,8 +50,7 @@ namespace rwl {
       return Vec2<Any>(this->x - other.x, this->y - other.y);
     }
 
-    template <typename Any0,
-              typename = std::enable_if_t<std::is_fundamental_v<Any0>>>
+    template <Fundamental Any0>
     Vec2 operator*(const Any0 &other) {
       return Vec2<Any>(this->x * other, this->y * other);
     }
@@ -58,8 +59,7 @@ namespace rwl {
       return Vec2<Any>(this->x * other.x, this->y * other.y);
     }
 
-    template <typename Any0,
-              typename = std::enable_if_t<std::is_fundamental_v<Any0>>>
+    template <Fundamental Any0>
     Vec2 operator/(const Any0 &other) {
       return Vec2<Any>(this->x / other, this->y / other);
     }
@@ -68,6 +68,14 @@ namespace rwl {
       return Vec2<Any>(this->x / other.x, this->y / other.y);
     }
 
+    template <Fundamental Any0>
+    Vec2 operator%(const Any0 &other) {
+      if constexpr (std::is_floating_point_v<Any> ||
+                    std::is_floating_point_v<Any0>)
+        return Vec2<Any>(fmod(this->x, other), fmod(this->y, other));
+      else
+        return Vec2<Any>(this->x % other, this->y % other);
+    }
     template <typename Any0>
     Vec2 operator%(const Vec2<Any0> &other) {
       if constexpr (std::is_floating_point_v<Any> ||
@@ -75,14 +83,6 @@ namespace rwl {
         return Vec2<Any>(fmod(this->x, other.x), fmod(this->y, other.y));
       else
         return Vec2<Any>(this->x % other.x, this->y % other.y);
-    }
-    template <typename Any0>
-    Vec2 operator%(const Any &toMod) {
-      if constexpr (std::is_floating_point_v<Any> ||
-                    std::is_floating_point_v<Any0>)
-        return Vec2<Any>(fmod(this->x, toMod), fmod(this->y, toMod));
-      else
-        return Vec2<Any>(this->x % toMod, this->y % toMod);
     }
   };
 

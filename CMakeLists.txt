@@ -62,3 +62,5 @@ target_precompile_headers(rwl PRIVATE
   <xcb/xcb.h>
   <functional>
 )
+
+target_compile_features(rwl PUBLIC cxx_std_20)
