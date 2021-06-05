@@ -67,3 +67,53 @@ int main() {
   return EXIT_SUCCESS;
 }
 ```
+
+## What is Vec2?
+
+Vec2 is simply a union for holding 2 pieces of data. Usually some form of an Int or a float. It has a union of structs that contain 2 pieces of data called x and y or width and height.
+
+x = width
+
+y = height.
+
+Example of constructing a Vec2:
+
+```C++
+rwl::Vec2<float> vecf(2.f, 10.f);
+```
+
+It can also be created with argument for its constructor.
+
+```C++
+rwl::Vec2<int> veci(1);
+```
+
+In this case both x and y will be set as 1.
+
+To access its data you can simply:
+
+```C++
+std::cout << veci.x;
+std::cout << veci.height;
+```
+
+It also has an operator overload for printing to the console with std::cout and looks something like this:
+
+```C++
+std::cout << veci; // Output: 1, 1
+```
+
+You can perform all normal arithmetic operations on 2 Vec2s or a Vec2 and a primitive data type. If only a primitive is specified the operator will be done on both x and y with the same primitive.
+Example:
+
+```C++
+std::cout << veci + vecf << '\n' // Output: 3, 11
+          << veci + 2; // Output: 3, 3
+```
+
+Compound operator overloads are also implemented:
+
+```C++
+std::cout << veci += vecf // Output: 3, 11
+std::cout << veci // Output: 3, 11
+```
