@@ -2,8 +2,6 @@
 #include <functional>
 #include <xcb/xcb.h>
 
-// TODO: Add funcs to access details of the screen.
-
 namespace rwl {
   class Window;
   enum class Measurement { Pixels = 0, Mm };

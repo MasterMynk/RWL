@@ -68,6 +68,28 @@ int main() {
 }
 ```
 
+## General information about the screen
+
+There are functions for getting the width in pixels and millimeters, height in pixels and millimeters and the depth of the screen. Here are their signatures:
+
+```C++
+inline uint16_t rwl::width(const rwl::Measurement &m = rwl::Measurement::Pixels);
+inline uint16_t rwl::height(const rwl::Measurement &m = rwl::Measurement::Pixels);
+inline uint8_t rwl::depth();
+```
+
+The width and height functions take in a type of `rwl::Measurement` which is just an enum class containing 2 vairations and those are `Pixels` and `Mm`. So to get the width in Pixels you do:
+
+```C++
+rwl::width();
+```
+
+And to get it it millimeters you do:
+
+```C++
+rwl::width(rwl::Measurement::Mm);
+```
+
 ## What is Vec2?
 
 Vec2 is simply a union for holding 2 pieces of data. Usually some form of an Int or a float. It has a union of structs that contain 2 pieces of data called x and y or width and height.
