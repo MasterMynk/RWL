@@ -6,6 +6,7 @@
 
 namespace rwl {
   class Window;
+  enum class Measurement { Pixels = 0, Mm };
 
   struct core {
   private:
@@ -20,6 +21,9 @@ namespace rwl {
 
     friend void end();
     friend void update();
+    friend uint8_t depth();
+    friend uint16_t width(const Measurement &);
+    friend uint16_t height(const Measurement &);
 
 #if RWL_PLATFORM == LINUX && RWL_DEBUG == 1
     friend xcb_screen_t *&getS();
@@ -43,6 +47,28 @@ namespace rwl {
   inline void end() {
 #if RWL_PLATFORM == LINUX
     xcb_disconnect(core::conn);
+#endif
+  }
+
+  inline uint8_t depth() {
+#if RWL_PLATFORM == LINUX
+    return core::scr->root_depth;
+#endif
+  }
+
+  inline uint16_t width(const Measurement &m = Measurement::Pixels) {
+    if (m == Measurement::Pixels)
+#if RWL_PLATFORM == LINUX
+      return core::scr->width_in_pixels;
+    return core::scr->width_in_millimeters;
+#endif
+  }
+
+  inline uint16_t height(const Measurement &m = Measurement::Pixels) {
+    if (m == Measurement::Pixels)
+#if RWL_PLATFORM == LINUX
+      return core::scr->height_in_pixels;
+    return core::scr->height_in_millimeters;
 #endif
   }
 } // namespace rwl
