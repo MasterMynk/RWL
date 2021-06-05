@@ -91,6 +91,6 @@ namespace rwl {
     return (cout << toPrint.x << ", " << toPrint.y);
   }
 
-  typedef Vec2<int16_t> Pos;
-  typedef Vec2<uint16_t> Dim;
+  using Pos = Vec2<int16_t>;
+  using Dim = Vec2<uint16_t>;
 } // namespace rwl
