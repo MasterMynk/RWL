@@ -1,18 +1,21 @@
 #include "Window.hpp"
+#include "rwl/core/core.hpp"
 
 namespace rwl {
   void Window::createWin() const {
+#if RWL_PLATFORM == LINUX
     uint32_t winProps = core::scr->white_pixel;
 
     xcb_create_window(core::conn, core::scr->root_depth, m_win, core::scr->root,
                       this->m_pos.x, this->m_pos.y, this->m_dim.width,
                       this->m_dim.height, 0, XCB_WINDOW_CLASS_INPUT_OUTPUT,
                       core::scr->root_visual, XCB_CW_BACK_PIXEL, &winProps);
+#endif
   }
 
-  Window::Window(const Dim &dim, const Pos &pos)
-      : m_win(xcb_generate_id(core::conn)), m_dim(dim), m_pos(pos) {
-    createWin();
+  Window::Window(Window &&other)
+      : m_win(other.m_win), m_dim(other.m_dim), m_pos(other.m_pos) {
+    other.m_win = 0;
   }
 
   Window::Window(const Window &other)
@@ -21,9 +24,9 @@ namespace rwl {
     createWin();
   }
 
-  Window::Window(Window &&other)
-      : m_win(other.m_win), m_dim(other.m_dim), m_pos(other.m_pos) {
-    other.m_win = 0;
+  Window::Window(const Dim &dim, const Pos &pos)
+      : m_win(xcb_generate_id(core::conn)), m_dim(dim), m_pos(pos) {
+    createWin();
   }
 
   Window &Window::operator=(const Window &other) {
