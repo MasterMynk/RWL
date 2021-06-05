@@ -8,6 +8,7 @@
 // TODO: setDim and setPos should actually change the window's pos and dim
 // TODO: fix hide() and hideNoUpdate()
 // TODO: Create Something like a root window
+// TODO: bgcolor of the window should be changeable.
 
 namespace rwl {
   class Window {
@@ -22,8 +23,8 @@ namespace rwl {
     void createWin() const;
 
   public:
-    Window(Window &&other);
-    Window(const Window &other);
+    explicit Window(Window &&other);
+    explicit Window(const Window &other);
     Window(const Dim &dim = {640, 480}, const Pos &pos = {0, 0});
 
     Window &operator=(const Window &other);

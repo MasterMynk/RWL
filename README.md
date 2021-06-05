@@ -15,6 +15,8 @@ In your root CMakeLists.txt file, add the line `add_subdirectory(RWL)`. This doe
 
 ## Documentation
 
+NOTE: All examples given here are tested on g++ version 11.1.0 with xcb version 1.41-1 on Arch Linux.
+
 ### rwl::update()
 
 Signature:
@@ -50,8 +52,6 @@ On every iteration it updates the windows by calling `rwl::update()` so you dont
 When `finished` is set to true, it exits the loop and runs `rwl::end()` before giving control back to the caller.
 
 Example:
-
-NOTE: This example was tested with g++ version 11.1.0
 
 ```C++
 #include <rwl/rwl.hpp>
@@ -116,4 +116,74 @@ Compound operator overloads are also implemented:
 ```C++
 std::cout << veci += vecf // Output: 3, 11
 std::cout << veci // Output: 3, 11
+```
+
+There are also 2 aliases for Vec2 for supplying the Position and Dimensions and they look like this:
+
+```C++
+using Pos = Vec2<int16_t>;
+using Dim = Vec2<uint16_t>;
+```
+
+## Creating a window
+
+RWL provides the Window class for creating windows. You have to initialize it with a dimension and a position. Here's the constructor signature:
+
+```C++
+rwl::Window::Window(const rwl::Dim &dim = {640, 480}, const rwl::Pos &pos = {0, 0});
+```
+
+As you can see the args do have default params so its not really necessary to specify the dimension or position.
+
+Example Use:
+
+```C++
+rwl::Window win(rwl::Dim(1920, 1080));
+```
+
+To make the window visible you execute the `show` method on your instance of `rwl::Window` like so:
+
+```C++
+win.show();
+```
+
+There is also another option which is the `showNoUpdate()` method which doesn't update your changes by running `rwl::update()` so this is useful when you have a call to `rwl::update()` somewhere nearby as it will be more efficient.
+
+Example to show a windo using `showNoUpdate()` method
+
+```C++
+win.showNoUpdate();
+rwl::update();
+```
+
+So here's a complete program that will create a window on your screen with what we've learnt so far:
+
+```C++
+#include <rwl/rwl.hpp>
+
+int main() {
+  rwl::Window win(rwl::Dim(426, 240));
+
+  win.showNoUpdate();
+
+  rwl::loop([&](bool &finished) {});
+}
+```
+
+I've used the `showNoUpdate()` method here because if you remember `rwl::loop()` runs `rwl::update()` on every iteration of itself.
+
+There are also `hide()` and `hideNoUpdate()` methods which do as they name say: They hide the windows.
+
+There are also getters and setters for the Dimensions and Position of the window called `getDim()`, `setDim()`, `getPos()` and `setPos()` respectively.
+
+Here are their signatures:
+
+```C++
+inline const rwl::Dim &rwl::Window::getDim() const;
+
+inline rwl::Window &rwl::Window::setDim(const Dim &other);
+
+inline const rwl::Pos &rwl::Window::getPos() const;
+
+inline rwl::Window &rwl::Window::setPos(const Pos &other);
 ```
