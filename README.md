@@ -147,6 +147,17 @@ using Pos = Vec2<int16_t>;
 using Dim = Vec2<uint16_t>;
 ```
 
+## Color
+
+There is a class called `Color` which is used (as the name suggests) to specify a color. To instantiate it you use a enum present within it called ColorEnum which contains the names of colors you may want to use. Right now the only 2 options are White and Black.
+
+Example of creating a Color object with Black and White colors:
+
+```C++
+rwl::Color color(rwl::Color::Black);
+rwl::Color color(rwl::Color::White);
+```
+
 ## Creating a window
 
 RWL provides the Window class for creating windows. You have to initialize it with a dimension and a position. Here's the constructor signature:
