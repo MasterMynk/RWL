@@ -1,6 +1,6 @@
 #include "core.hpp"
+#include "rwl/Log.hpp"
 #include <cstdlib>
-#include <stdio.h>
 
 namespace rwl {
   namespace impl {
@@ -9,9 +9,11 @@ namespace rwl {
       xcb_connection_t *conn = xcb_connect(nullptr, nullptr);
 
       if (int err = xcb_connection_has_error(conn)) {
-        printf("Couldn't create connection to X Server. Error Code: %d", err);
+        fprintf(stderr, "Failed to connect to X Server. Error code %d", err);
         exit(EXIT_FAILURE);
       }
+
+      impl::log("Connected to X Server.");
 
       return conn;
     })();
@@ -23,6 +25,7 @@ namespace rwl {
   void end() {
 #if RWL_PLATFORM == LINUX
     xcb_disconnect(impl::core::conn);
+    impl::log("Disconnected from X server.");
 #endif
   }
 
@@ -34,22 +37,33 @@ namespace rwl {
 
   inline uint8_t depth() {
 #if RWL_PLATFORM == LINUX
+    impl::log("Returning screen depth as ", impl::core::scr->root_depth);
     return impl::core::scr->root_depth;
 #endif
   }
 
   uint16_t width(const Measurement &m) {
-    if (m == Measurement::Pixels)
+    if (m == Measurement::Pixels) {
 #if RWL_PLATFORM == LINUX
+      impl::log("Returning screen width in pixels as ",
+                impl::core::scr->width_in_pixels);
       return impl::core::scr->width_in_pixels;
+    }
+    impl::log("Returning screen width in mm as ",
+              impl::core::scr->width_in_millimeters);
     return impl::core::scr->width_in_millimeters;
 #endif
   }
 
   uint16_t height(const Measurement &m) {
-    if (m == Measurement::Pixels)
+    if (m == Measurement::Pixels) {
 #if RWL_PLATFORM == LINUX
+      impl::log("Returning screen height in pixels as ",
+                impl::core::scr->height_in_pixels);
       return impl::core::scr->height_in_pixels;
+    }
+    impl::log("Returning screen height in mm as ",
+              impl::core::scr->height_in_millimeters);
     return impl::core::scr->height_in_millimeters;
 #endif
   }
@@ -57,10 +71,14 @@ namespace rwl {
   void loop(std::function<void(bool &finished)> func) {
     bool finished = false;
 
+    impl::log("Entered loop.");
+
     while (!finished) {
       func(finished);
       update();
     }
+
+    impl::log("Exiting loop.");
 
     end();
   }

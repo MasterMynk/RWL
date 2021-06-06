@@ -1,5 +1,6 @@
 #pragma once
 #include "rwl/Color/Color.hpp"
+#include "rwl/Log.hpp"
 #include "rwl/Vec2.hpp"
 #include <xcb/xcb.h>
 
@@ -38,15 +39,23 @@ namespace rwl {
     Window &hide();
     Window &hideNoUpdate();
 
-    inline const Dim &getDim() const { return m_dim; }
-    inline const Pos &getPos() const { return m_pos; }
+    inline const Dim &getDim() const {
+      impl::log("Returning Window Dimensions as ", m_dim);
+      return m_dim;
+    }
+    inline const Pos &getPos() const {
+      impl::log("Returning Window Position as ", m_pos);
+      return m_pos;
+    }
 
     inline Window &setDim(const Dim &other) {
       this->m_dim = other;
+      impl::log("Set Window Dimensions to ", this->m_dim);
       return *this;
     }
     inline Window &setPos(const Pos &other) {
       this->m_pos = other;
+      impl::log("Set Window Position to ", this->m_pos);
       return *this;
     }
 
