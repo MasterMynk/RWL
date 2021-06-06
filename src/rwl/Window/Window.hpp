@@ -7,10 +7,10 @@
 // TODO: Pos arg of constructor should actually change the pos of the window.
 /* TODO: getDim and getPos should return the actual window dims and pos rather
          than pre-defined ones. */
-// TODO: setDim and setPos should actually change the window's pos and dim
+/* TODO: setDim, setPos and setBgColor should actually change the window's pos,
+         dim and bgColor */
 // TODO: fix hide() and hideNoUpdate()
 // TODO: Create Something like a root window
-// TODO: bgcolor of the window should be changeable.
 
 namespace rwl {
   class Window {
@@ -47,6 +47,10 @@ namespace rwl {
       impl::log("Returning Window Position as ", m_pos);
       return m_pos;
     }
+    inline const Color &getBgColor() const {
+      impl::log("Returning Bg Color as ", this->m_bgColor.colorToStr());
+      return this->m_bgColor;
+    }
 
     inline Window &setDim(const Dim &other) {
       this->m_dim = other;
@@ -56,6 +60,11 @@ namespace rwl {
     inline Window &setPos(const Pos &other) {
       this->m_pos = other;
       impl::log("Set Window Position to ", this->m_pos);
+      return *this;
+    }
+    inline const Window &setBgColor(const Color &bgColor) {
+      this->m_bgColor = bgColor;
+      impl::log("Set Bg Color to ", this->m_bgColor.colorToStr());
       return *this;
     }
 

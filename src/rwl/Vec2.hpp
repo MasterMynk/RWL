@@ -180,7 +180,7 @@ namespace rwl {
   };
 
   template <typename Any>
-  std::ostream &operator<<(std::ostream &cout, Vec2<Any> toPrint) {
+  std::ostream &operator<<(std::ostream &cout, const Vec2<Any> &toPrint) {
     return (cout << toPrint.x << ", " << toPrint.y);
   }
 

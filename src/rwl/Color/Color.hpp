@@ -10,6 +10,11 @@ namespace rwl {
   private:
     uint32_t m_color;
 
+  private:
+    inline const char *const colorToStr() const {
+      return this->m_color == Black ? "Black" : "White";
+    }
+
   public:
     enum ColorEnum { Black = 0, White };
 
