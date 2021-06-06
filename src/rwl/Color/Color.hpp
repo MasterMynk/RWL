@@ -4,6 +4,8 @@
 // TODO: Add support for other colors.
 
 namespace rwl {
+  class Window;
+
   class Color {
   private:
     uint32_t m_color;
@@ -13,5 +15,7 @@ namespace rwl {
 
   public:
     Color(const ColorEnum &color);
+
+    friend Window;
   };
 } // namespace rwl

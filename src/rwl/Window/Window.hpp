@@ -1,4 +1,5 @@
 #pragma once
+#include "rwl/Color/Color.hpp"
 #include "rwl/Vec2.hpp"
 #include <xcb/xcb.h>
 
@@ -17,6 +18,7 @@ namespace rwl {
     xcb_window_t m_win;
     Dim m_dim;
     Pos m_pos;
+    Color m_bgColor;
 #endif
 
   private:
@@ -25,7 +27,8 @@ namespace rwl {
   public:
     explicit Window(Window &&other);
     explicit Window(const Window &other);
-    Window(const Dim &dim = {640, 480}, const Pos &pos = {0, 0});
+    Window(const Dim &dim = {640, 480}, const Pos &pos = {0, 0},
+           const Color &bgColor = Color::White);
 
     Window &operator=(const Window &other);
 
