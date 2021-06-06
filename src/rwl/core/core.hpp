@@ -7,68 +7,45 @@ namespace rwl {
   class Window;
   enum class Measurement { Pixels = 0, Mm };
 
-  struct core {
-  private:
-#if RWL_PLATFORM == LINUX
-    static xcb_connection_t *conn; // This is the connection to the X Server.
-    static xcb_screen_t *scr;
-#endif
+  namespace impl {
+    struct core;
+  }
 
-    core() = delete;
-
-    friend Color;
-    friend Window;
-
-    friend void end();
-    friend void update();
-    friend uint8_t depth();
-    friend uint16_t width(const Measurement &);
-    friend uint16_t height(const Measurement &);
-
-#if RWL_PLATFORM == LINUX && RWL_DEBUG == 1
-    friend xcb_screen_t *&getS();
-    friend xcb_connection_t *&getC();
-#endif
-  };
-
-#if RWL_PLATFORM == LINUX && RWL_DEBUG == 1
-  inline xcb_screen_t *&getS() { return core::scr; }
-  inline xcb_connection_t *&getC() { return core::conn; }
-#endif
-
+  void end();
+  void update();
+  uint8_t depth();
   void loop(std::function<void(bool &finished)> func);
+  uint16_t width(const Measurement &m = Measurement::Pixels);
+  uint16_t height(const Measurement &m = Measurement::Pixels);
 
-  inline void update() {
+  namespace impl {
+    struct core {
+    private:
 #if RWL_PLATFORM == LINUX
-    xcb_flush(core::conn);
+      static xcb_connection_t *conn; // This is the connection to the X Server.
+      static xcb_screen_t *scr;
 #endif
-  }
 
-  inline void end() {
-#if RWL_PLATFORM == LINUX
-    xcb_disconnect(core::conn);
-#endif
-  }
+      core() = delete;
 
-  inline uint8_t depth() {
-#if RWL_PLATFORM == LINUX
-    return core::scr->root_depth;
-#endif
-  }
+      friend Color;
+      friend Window;
 
-  inline uint16_t width(const Measurement &m = Measurement::Pixels) {
-    if (m == Measurement::Pixels)
-#if RWL_PLATFORM == LINUX
-      return core::scr->width_in_pixels;
-    return core::scr->width_in_millimeters;
-#endif
-  }
+      friend void ::rwl::end();
+      friend void ::rwl::update();
+      friend uint8_t ::rwl::depth();
+      friend uint16_t ::rwl::width(const Measurement &);
+      friend uint16_t ::rwl::height(const Measurement &);
 
-  inline uint16_t height(const Measurement &m = Measurement::Pixels) {
-    if (m == Measurement::Pixels)
-#if RWL_PLATFORM == LINUX
-      return core::scr->height_in_pixels;
-    return core::scr->height_in_millimeters;
+#if RWL_PLATFORM == LINUX && RWL_DEBUG == 1
+      friend xcb_screen_t *&getS();
+      friend xcb_connection_t *&getC();
 #endif
-  }
+    };
+
+#if RWL_PLATFORM == LINUX && RWL_DEBUG == 1
+    inline xcb_screen_t *&getS() { return core::scr; }
+    inline xcb_connection_t *&getC() { return core::conn; }
+#endif
+  } // namespace impl
 } // namespace rwl

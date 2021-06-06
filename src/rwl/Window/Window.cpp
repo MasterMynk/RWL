@@ -6,10 +6,11 @@ namespace rwl {
 #if RWL_PLATFORM == LINUX
     uint32_t props = this->m_bgColor.m_color;
 
-    xcb_create_window(core::conn, core::scr->root_depth, m_win, core::scr->root,
-                      this->m_pos.x, this->m_pos.y, this->m_dim.width,
-                      this->m_dim.height, 0, XCB_WINDOW_CLASS_INPUT_OUTPUT,
-                      core::scr->root_visual, XCB_CW_BACK_PIXEL, &props);
+    xcb_create_window(impl::core::conn, impl::core::scr->root_depth, m_win,
+                      impl::core::scr->root, this->m_pos.x, this->m_pos.y,
+                      this->m_dim.width, this->m_dim.height, 0,
+                      XCB_WINDOW_CLASS_INPUT_OUTPUT,
+                      impl::core::scr->root_visual, XCB_CW_BACK_PIXEL, &props);
 #endif
   }
 
@@ -20,13 +21,13 @@ namespace rwl {
   }
 
   Window::Window(const Window &other)
-      : m_win(xcb_generate_id(core::conn)), m_dim(other.m_dim),
+      : m_win(xcb_generate_id(impl::core::conn)), m_dim(other.m_dim),
         m_pos(other.m_pos), m_bgColor(other.m_bgColor) {
     createWin();
   }
 
   Window::Window(const Dim &dim, const Pos &pos, const Color &bgColor)
-      : m_win(xcb_generate_id(core::conn)), m_dim(dim), m_pos(pos),
+      : m_win(xcb_generate_id(impl::core::conn)), m_dim(dim), m_pos(pos),
         m_bgColor(bgColor) {
     createWin();
   }
@@ -46,7 +47,7 @@ namespace rwl {
   }
 
   Window &Window::showNoUpdate() {
-    xcb_map_window(core::conn, m_win);
+    xcb_map_window(impl::core::conn, m_win);
 
     return *this;
   }
@@ -59,10 +60,10 @@ namespace rwl {
   }
 
   Window &Window::hideNoUpdate() {
-    xcb_unmap_window(core::conn, m_win);
+    xcb_unmap_window(impl::core::conn, m_win);
 
     return *this;
   }
 
-  Window::~Window() { xcb_destroy_window(core::conn, m_win); }
+  Window::~Window() { xcb_destroy_window(impl::core::conn, m_win); }
 } // namespace rwl

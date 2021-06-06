@@ -19,10 +19,10 @@
 #define LOG(level, text)
 #endif
 
-namespace rwl {
+namespace rwl::impl {
   enum class LogLevel {
     Error = 1,
     Status,
     Warning,
   };
-} // namespace rwl
+} // namespace rwl::impl
