@@ -160,18 +160,18 @@ rwl::Color color(rwl::Color::White);
 
 ## Creating a window
 
-RWL provides the Window class for creating windows. You have to initialize it with a dimension and a position. Here's the constructor signature:
+RWL provides the Window class for creating windows. You have to initialize it with a dimension, position and Background Color. Here's the constructor signature:
 
 ```C++
-rwl::Window::Window(const rwl::Dim &dim = {640, 480}, const rwl::Pos &pos = {0, 0});
+rwl::Window::Window(const rwl::Dim &dim = {640, 480}, const rwl::Pos &pos = {0, 0}, const Color &bgColor = Color::White);
 ```
 
-As you can see the args do have default params so its not really necessary to specify the dimension or position.
+As you can see the args do have default params so its not really necessary to specify anything.
 
 Example Use:
 
 ```C++
-rwl::Window win(rwl::Dim(1920, 1080));
+rwl::Window win(rwl::Dim(1920, 1080), rwl::Pos(0, 0), rwl::Color::Black);
 ```
 
 To make the window visible you execute the `show` method on your instance of `rwl::Window` like so:
@@ -207,7 +207,7 @@ I've used the `showNoUpdate()` method here because if you remember `rwl::loop()`
 
 There are also `hide()` and `hideNoUpdate()` methods which do as they name say: They hide the windows.
 
-There are also getters and setters for the Dimensions and Position of the window called `getDim()`, `setDim()`, `getPos()` and `setPos()` respectively.
+There are also getters and setters for the Dimensions, Position and Background Color of the window of the window called `getDim()`, `setDim()`, `getPos()`, `setPos()`, `getBgColor()` and `setBgColor()` respectively.
 
 Here are their signatures:
 
@@ -219,4 +219,8 @@ inline rwl::Window &rwl::Window::setDim(const Dim &other);
 inline const rwl::Pos &rwl::Window::getPos() const;
 
 inline rwl::Window &rwl::Window::setPos(const Pos &other);
+
+inline const rwl::Color &rwl::Window::getBgColor() const;
+
+inline const rwl::Window &rwl::Window::setBgColor(const Color &bgColor);
 ```
