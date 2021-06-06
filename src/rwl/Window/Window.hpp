@@ -68,6 +68,13 @@ namespace rwl {
       return *this;
     }
 
+#if RWL_DEBUG == 1
+    inline const xcb_window_t &getW() const {
+      impl::log("Returning Window id.");
+      return m_win;
+    }
+#endif
+
     ~Window();
   };
 } // namespace rwl

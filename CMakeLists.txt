@@ -10,6 +10,7 @@ set(SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/")
 set(RWL "${SRC}rwl/")
 
 set(CPP_FILES
+  "Pen"
   "core"
   "Color"
   "Window"

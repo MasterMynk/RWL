@@ -4,13 +4,14 @@
 namespace rwl {
   void Window::createWin() const {
 #if RWL_PLATFORM == LINUX
-    uint32_t props = this->m_bgColor.m_color;
+    uint32_t props[2] = {this->m_bgColor.m_color, XCB_EVENT_MASK_EXPOSURE};
 
     xcb_create_window(impl::core::conn, impl::core::scr->root_depth, m_win,
                       impl::core::scr->root, this->m_pos.x, this->m_pos.y,
                       this->m_dim.width, this->m_dim.height, 0,
                       XCB_WINDOW_CLASS_INPUT_OUTPUT,
-                      impl::core::scr->root_visual, XCB_CW_BACK_PIXEL, &props);
+                      impl::core::scr->root_visual,
+                      XCB_CW_BACK_PIXEL | XCB_CW_EVENT_MASK, &props);
     impl::log("Created a window with window Id: ", m_win);
 #endif
   }

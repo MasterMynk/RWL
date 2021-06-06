@@ -1,8 +1,10 @@
 #pragma once
+#include "rwl/Log.hpp"
 #include <functional>
 #include <xcb/xcb.h>
 
 namespace rwl {
+  class Pen;
   class Color;
   class Window;
   enum class Measurement { Pixels = 0, Mm };
@@ -28,6 +30,7 @@ namespace rwl {
 
       core() = delete;
 
+      friend Pen;
       friend Color;
       friend Window;
 
@@ -44,8 +47,14 @@ namespace rwl {
     };
 
 #if RWL_PLATFORM == LINUX && RWL_DEBUG == 1
-    inline xcb_screen_t *&getS() { return core::scr; }
-    inline xcb_connection_t *&getC() { return core::conn; }
+    inline xcb_screen_t *&getS() {
+      impl::log("Returning scr.");
+      return core::scr;
+    }
+    inline xcb_connection_t *&getC() {
+      impl::log("Returning the connection.");
+      return core::conn;
+    }
 #endif
   } // namespace impl
 } // namespace rwl

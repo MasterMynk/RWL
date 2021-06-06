@@ -1,5 +1,4 @@
 #include "core.hpp"
-#include "rwl/Log.hpp"
 #include <cstdlib>
 
 namespace rwl {
