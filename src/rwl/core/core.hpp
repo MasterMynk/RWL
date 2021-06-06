@@ -3,6 +3,7 @@
 #include <xcb/xcb.h>
 
 namespace rwl {
+  class Color;
   class Window;
   enum class Measurement { Pixels = 0, Mm };
 
@@ -15,6 +16,7 @@ namespace rwl {
 
     core() = delete;
 
+    friend Color;
     friend Window;
 
     friend void end();
