@@ -1,61 +1,73 @@
 #include "Pen.hpp"
 #include "rwl/core/core.hpp"
 
+#define CREATE_PEN_MASK                                                        \
+  uint32_t penMask[] = {this->m_fgColor.m_color, this->m_bgColor.m_color, 0}
+#define LOGGING_HELPER(x)                                                      \
+  impl::log("Pen ", (x), ": fg color --> ", this->m_fgColor.colorToStr(),      \
+            " and bg color --> ", this->m_bgColor.colorToStr())
+
 namespace rwl {
-  uint32_t Pen::s_valueMask = XCB_GC_FOREGROUND | XCB_GC_GRAPHICS_EXPOSURES;
+  uint32_t Pen::s_valueMask =
+      XCB_GC_FOREGROUND | XCB_GC_BACKGROUND | XCB_GC_GRAPHICS_EXPOSURES;
 
   void Pen::create() {
 #if RWL_PLATFORM == LINUX
-    uint32_t penMask[] = {this->m_fgColor.m_color, 0};
+    CREATE_PEN_MASK;
 
     xcb_create_gc(rwl::impl::core::conn, this->m_pen, impl::core::scr->root,
                   this->s_valueMask, penMask);
 
-    impl::log("Created a Pen with id: ", this->m_pen);
+    LOGGING_HELPER("Created");
 #endif
   }
 
   void Pen::change() {
 #if RWL_PLATFORM == LINUX
-    uint32_t penMask[] = {m_fgColor.m_color, 0};
+    CREATE_PEN_MASK;
 
     xcb_change_gc(impl::core::conn, this->m_pen, this->s_valueMask, penMask);
 
-    impl::log("Changed the pen to an fg color of ", m_fgColor.colorToStr());
+    LOGGING_HELPER("Changed");
 #endif
   }
 
-  Pen::Pen(Pen &&other) : m_pen(other.m_pen), m_fgColor(other.m_fgColor) {
+  Pen::Pen(Pen &&other)
+      : m_pen(other.m_pen), m_fgColor(other.m_fgColor),
+        m_bgColor(other.m_bgColor) {
     other.m_pen = 0;
-    impl::log("Moved a pen with id: ", this->m_pen);
+    LOGGING_HELPER("Moved");
   }
 
   Pen::Pen(const Pen &other)
-      : m_pen(xcb_generate_id(impl::core::conn)), m_fgColor(other.m_fgColor) {
-    create();
-    impl::log("Copy Constructed a Pen.");
+      : m_pen(xcb_generate_id(impl::core::conn)), m_fgColor(other.m_fgColor),
+        m_bgColor(other.m_bgColor) {
+    this->create();
   }
 
-  Pen::Pen(const Color &fgColor)
-      : m_pen(xcb_generate_id(impl::core::conn)), m_fgColor(fgColor) {
-    create();
-    impl::log("Constructed a Pen.");
+  Pen::Pen(const Color &fgColor, const Color &bgColor)
+      : m_pen(xcb_generate_id(impl::core::conn)), m_fgColor(fgColor),
+        m_bgColor(bgColor) {
+    this->create();
   }
 
   Pen &Pen::operator=(const Pen &other) {
-    impl::log("Changing fg color from", this->m_fgColor.colorToStr(), " --> ",
-              other.m_fgColor.colorToStr());
-    this->m_fgColor = other.m_fgColor;
-    change();
+    this->setColors(other.m_fgColor, other.m_bgColor);
 
     return *this;
   }
 
   Pen &Pen::setFgColor(const Color &fgColor) {
-    impl::log("Changing fg color from ", this->m_fgColor.colorToStr(), " --> ",
-              fgColor.colorToStr());
     this->m_fgColor = fgColor;
-    change();
+    this->change();
+
+    return *this;
+  }
+
+  Pen &Pen::setColors(const Color &fgColor, const Color &bgColor) {
+    this->m_fgColor = fgColor;
+    this->m_bgColor = bgColor;
+    this->change();
 
     return *this;
   }
