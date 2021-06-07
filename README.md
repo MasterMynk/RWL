@@ -224,3 +224,86 @@ inline const rwl::Color &rwl::Window::getBgColor() const;
 
 inline const rwl::Window &rwl::Window::setBgColor(const Color &bgColor);
 ```
+
+## The Pen
+
+If you want to draw anything on a paper you need a pen (or a pencil or whatever). Similarly if you want to draw in a window you also need a pen. An `rwl::Pen` to be more specific. A pen contains stuff like foreground color, backgroud color, line width and a line style. Now all may not be used when drawing something so its not necessary to set all. Here is the default constructor for an `rwl::Pen`.
+
+```C++
+rwl::Pen(const rwl::Color &fgColor = rwl::Color::Black,
+         const rwl::Color &bgColor = rwl::Color::Black,
+         const uint32_t &lineWidth = 1,
+         const rwl::Pen::LineStyle &lineStyle = rwl::Pen::LineStyle::Solid);
+```
+
+As you can see everything has a default value. Over here line refers to either a normal line which you draw or the border of the shape. The line style can be set with an `enum class` defined inside `rwl::Pen` called `LineStyle`. The only 2 values are `Solid` and `Dashed` and they do exactly as they say: when set to `Solid` the lines will be continuous and when set to `Dashed` the lines small gaps between them. Here is an example of instantiating a Pen:
+
+```C++
+rwl::Pen pen(rwl::Color::Black, rwl::Color::White, 3, rwl::Pen::LineStyle::Dashed);
+```
+
+If you assign an `rwl::Color` to you pen by doing:
+
+```C++
+pen = rwl::Color::White;
+```
+
+This will work but the thing to remember is that you actually changing both the foreground and the background to the `rwl::Color` specified.
+
+```C++
+pen = 1;
+```
+
+The above statement will also work and the thing you're chaging will the line width.
+
+```C++
+pen = rwl::Pen::LineStyle::Solid;
+```
+
+will also work and the thing you're changing will be the Line Style.
+
+There are also getters for all the properties and here are their signatures:
+
+```C++
+inline const rwl::Color &rwl::Pen::getFgColor() const;
+inline const rwl::Color &rwl::Pen::getBgColor() const;
+inline const uint32_t &rwl::Pen::getLineWidth() const;
+inline const rwl::Pen::LineStyle &rwl::Pen::getLineStyle() const;
+```
+
+Setters are also present to set all properties all individually. Signatures:
+
+```C++
+rwl::Pen &rwl::setFgColor(const rwl::Color &fgColor);
+rwl::Pen &rwl::setBgColor(const rwl::Color &bgColor);
+rwl::Pen &rwl::setLineWidth(const uint32_t &lineWidth);
+rwl::Pen &rwl::setLineStyle(const rwl::Pen::LineStyle &lineStyle);
+```
+
+There are a few more setters to make lives easier
+
+```C++
+inline rwl::Pen &setColors(const rwl::Color &colors);
+rwl::Pen &setColors(const rwl::Color &fgColor, const rwl::Color &bgColor);
+rwl::Pen &setLineProps(const uint32_t &lineWidth, const rwl::LineStyle &lineStyle);
+inline rwl::Pen &rwl::Pen::setAllProps(const rwl::Color &colors, const uint32_t &lineWidth,
+                            const rwl::LineStyle &lineStyle);
+rwl::Pen &setAllProps(const rwl::Color &fgColor, const rwl::Color &bgColor, 
+                 const uint32_t &lineWidth, const rwl::Pen::LineStyle &lineStyle);
+```
+
+Its recommended that if you have to set all or even more than half the properties that you use the `rwl::Pen::setAllProps()` method rather than using some others more than once as this reduces the times the internal updates have to be done.
+Example:
+
+Instead of doing:
+
+```C++
+pen.setColors(rwl::Color::Black);
+pen.setLineProps(2, rwl::Pen::LineStyle::Dashed);
+```
+
+Do:
+
+```C++
+pen.setAllProps(rwl::Color::Black, 2, rwl::Pen::LineStyle::Dashed);
+```
