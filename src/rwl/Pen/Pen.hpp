@@ -47,20 +47,23 @@ namespace rwl {
 
     /******************************** Getters *********************************/
     inline const Color &getFgColor() const {
-      impl::log("Returning fg color as ", this->m_fgColor.colorToStr());
+      impl::log<impl::LogLevel::NoImp>("Returning fg color as ",
+                                       this->m_fgColor.colorToStr());
       return this->m_fgColor;
     }
     inline const Color &getBgColor() const {
-      impl::log("Returning bg color as ", this->m_bgColor.colorToStr());
+      impl::log<impl::LogLevel::NoImp>("Returning bg color as ",
+                                       this->m_bgColor.colorToStr());
       return this->m_bgColor;
     }
     inline const uint32_t &getLineWidth() const {
-      impl::log("Returning line width as ", this->m_lineWidth);
+      impl::log<impl::LogLevel::NoImp>("Returning line width as ",
+                                       this->m_lineWidth);
       return this->m_lineWidth;
     }
     inline const LineStyle &getLineStyle() const {
-      impl::log("Returning line style as ",
-                static_cast<uint32_t>(this->m_lineStyle));
+      impl::log<impl::LogLevel::NoImp>(
+          "Returning line style as ", static_cast<uint32_t>(this->m_lineStyle));
       return this->m_lineStyle;
     }
 
@@ -75,7 +78,7 @@ namespace rwl {
 
 #if RWL_PLATFORM == LINUX && RWL_DEBUG == 1
     inline const xcb_gcontext_t getP() const {
-      impl::log("Returning pen with id: ", m_pen);
+      impl::log<impl::LogLevel::NoImp>("Returning pen with id: ", m_pen);
       return this->m_pen;
     }
 #endif

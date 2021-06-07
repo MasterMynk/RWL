@@ -48,11 +48,11 @@ namespace rwl {
 
 #if RWL_PLATFORM == LINUX && RWL_DEBUG == 1
     inline xcb_screen_t *&getS() {
-      impl::log("Returning scr.");
+      impl::log<impl::LogLevel::NoImp>("Returning scr.");
       return core::scr;
     }
     inline xcb_connection_t *&getC() {
-      impl::log("Returning the connection.");
+      impl::log<impl::LogLevel::NoImp>("Returning the connection.");
       return core::conn;
     }
 #endif

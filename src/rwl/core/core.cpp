@@ -8,7 +8,8 @@ namespace rwl {
       xcb_connection_t *conn = xcb_connect(nullptr, nullptr);
 
       if (int err = xcb_connection_has_error(conn)) {
-        fprintf(stderr, "Failed to connect to X Server. Error code %d", err);
+        impl::log<impl::LogLevel::Error>(
+            "Failed to connect to X Server. Error code ", err);
         exit(EXIT_FAILURE);
       }
 
@@ -36,7 +37,8 @@ namespace rwl {
 
   inline uint8_t depth() {
 #if RWL_PLATFORM == LINUX
-    impl::log("Returning screen depth as ", impl::core::scr->root_depth);
+    impl::log<impl::LogLevel::NoImp>("Returning screen depth as ",
+                                     impl::core::scr->root_depth);
     return impl::core::scr->root_depth;
 #endif
   }
@@ -44,12 +46,12 @@ namespace rwl {
   uint16_t width(const Measurement &m) {
     if (m == Measurement::Pixels) {
 #if RWL_PLATFORM == LINUX
-      impl::log("Returning screen width in pixels as ",
-                impl::core::scr->width_in_pixels);
+      impl::log<impl::LogLevel::NoImp>("Returning screen width in pixels as ",
+                                       impl::core::scr->width_in_pixels);
       return impl::core::scr->width_in_pixels;
     }
-    impl::log("Returning screen width in mm as ",
-              impl::core::scr->width_in_millimeters);
+    impl::log<impl::LogLevel::NoImp>("Returning screen width in mm as ",
+                                     impl::core::scr->width_in_millimeters);
     return impl::core::scr->width_in_millimeters;
 #endif
   }
@@ -57,12 +59,12 @@ namespace rwl {
   uint16_t height(const Measurement &m) {
     if (m == Measurement::Pixels) {
 #if RWL_PLATFORM == LINUX
-      impl::log("Returning screen height in pixels as ",
-                impl::core::scr->height_in_pixels);
+      impl::log<impl::LogLevel::NoImp>("Returning screen height in pixels as ",
+                                       impl::core::scr->height_in_pixels);
       return impl::core::scr->height_in_pixels;
     }
-    impl::log("Returning screen height in mm as ",
-              impl::core::scr->height_in_millimeters);
+    impl::log<impl::LogLevel::NoImp>("Returning screen height in mm as ",
+                                     impl::core::scr->height_in_millimeters);
     return impl::core::scr->height_in_millimeters;
 #endif
   }
