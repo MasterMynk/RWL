@@ -13,12 +13,7 @@
 #define YELLOW SET_COLOR(33)
 
 namespace rwl::impl {
-  enum class LogLevel {
-    Error = 1,
-    Warning,
-    Status,
-    NoImp
-  };
+  enum class LogLevel { Error = 1, Warning, Status, NoImp };
 
   template <LogLevel Level = LogLevel::Status, typename... Printables>
   void log(const Printables &...printables) {
@@ -28,8 +23,8 @@ namespace rwl::impl {
     } else {
 #if RWL_DEBUG == 1
       std::cout << (Level == LogLevel::Warning  ? YELLOW "[WARNING]: "
-           : Level == LogLevel::Status ? GREEN "[STATUS]: "
-                                       : FAINT "[NOT IMP]: ");
+                    : Level == LogLevel::Status ? GREEN "[STATUS]: "
+                                                : FAINT "[NOT IMP]: ");
       std::cout << RESET;
       (std::cout << ... << printables) << std::endl;
 #endif

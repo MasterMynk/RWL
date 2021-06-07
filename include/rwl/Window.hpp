@@ -1,5 +1,5 @@
 #pragma once
-#include "rwl/Color/Color.hpp"
+#include "rwl/Color.hpp"
 #include "rwl/Log.hpp"
 #include "rwl/Vec2.hpp"
 #include <xcb/xcb.h>

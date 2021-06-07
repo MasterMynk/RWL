@@ -1,5 +1,5 @@
-#include "Pen.hpp"
-#include "rwl/core/core.hpp"
+#include "rwl/Pen.hpp"
+#include "rwl/core.hpp"
 
 /*
  * All Functions defined here are in the order they're declared in the hpp file
