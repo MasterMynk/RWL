@@ -32,7 +32,7 @@ namespace rwl {
 #endif
   }
 
-  void Pen::change() {
+  Pen &Pen::change() {
 #if RWL_PLATFORM == LINUX
     CREATE_PEN_MASK;
 
@@ -40,6 +40,7 @@ namespace rwl {
 
     LOGGING_HELPER("Changed");
 #endif
+    return *this;
   }
 
   /******************************* Constructors *******************************/
@@ -74,40 +75,35 @@ namespace rwl {
   /********************************* Setters *********************************/
   Pen &Pen::setFgColor(const Color &fgColor) {
     this->m_fgColor = fgColor;
-    this->change();
-
-    return *this;
+    return this->change();
   }
 
-  Pen &Pen::setLineWidth(const uint32_t &lineWidth) {
-    this->m_lineWidth = lineWidth;
-    this->change();
-
-    return *this;
-  }
-
-  Pen &Pen::setLineStyle(const LineStyle &lineStyle) {
-    this->m_lineStyle = lineStyle;
-    this->change();
-
-    return *this;
+  Pen &Pen::setBgColor(const Color &bgColor) {
+    this->m_bgColor = bgColor;
+    return this->change();
   }
 
   Pen &Pen::setColors(const Color &fgColor, const Color &bgColor) {
     this->m_fgColor = fgColor;
     this->m_bgColor = bgColor;
-    this->change();
+    return this->change();
+  }
 
-    return *this;
+  Pen &Pen::setLineWidth(const uint32_t &lineWidth) {
+    this->m_lineWidth = lineWidth;
+    return this->change();
+  }
+
+  Pen &Pen::setLineStyle(const LineStyle &lineStyle) {
+    this->m_lineStyle = lineStyle;
+    return this->change();
   }
 
   Pen &Pen::setLineProps(const uint32_t &lineWidth,
                          const LineStyle &lineStyle) {
     this->m_lineWidth = lineWidth;
     this->m_lineStyle = lineStyle;
-    this->change();
-
-    return *this;
+    return this->change();
   }
 
   Pen &Pen::setAllProps(const Color &fgColor, const Color &bgColor,
@@ -116,9 +112,7 @@ namespace rwl {
     this->m_bgColor = bgColor;
     this->m_lineWidth = lineWidth;
     this->m_lineStyle = lineStyle;
-    this->change();
-
-    return *this;
+    return this->change();
   }
 
   Pen::~Pen() {

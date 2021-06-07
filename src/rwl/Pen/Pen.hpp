@@ -8,21 +8,22 @@ namespace rwl {
   public:
     enum class LineStyle : uint32_t {
       Solid = XCB_LINE_STYLE_SOLID,
-      OnOff = XCB_LINE_STYLE_ON_OFF_DASH
+      Dash = XCB_LINE_STYLE_ON_OFF_DASH
     };
 
   private:
 #if RWL_PLATFORM == LINUX
     xcb_gcontext_t m_pen;
     Color m_fgColor, m_bgColor;
-    static uint32_t s_valueMask;
     uint32_t m_lineWidth;
     LineStyle m_lineStyle;
+
+    static uint32_t s_valueMask;
 #endif
 
   private:
     void create();
-    void change();
+    Pen &change();
 
   public:
     /****************************** Constructor *******************************/
@@ -35,8 +36,8 @@ namespace rwl {
     /******************************* Operators ********************************/
     Pen &operator=(const Pen &other);
 
-    inline Pen &operator=(const Color::ColorEnum &fgColor) {
-      return this->setFgColor(fgColor);
+    inline Pen &operator=(const Color::ColorEnum &colors) {
+      return this->setColors(colors);
     }
     inline Pen &operator=(const uint32_t &lineWidth) {
       return this->setLineWidth(lineWidth);
@@ -69,10 +70,18 @@ namespace rwl {
 
     /******************************** Setters *********************************/
     Pen &setFgColor(const Color &fgColor);
+    Pen &setBgColor(const Color &bgColor);
+    inline Pen &setColors(const Color &colors) {
+      return this->setColors(colors, colors);
+    }
+    Pen &setColors(const Color &fgColor, const Color &bgColor);
     Pen &setLineWidth(const uint32_t &lineWidth);
     Pen &setLineStyle(const LineStyle &lineStyle);
-    Pen &setColors(const Color &fgColor, const Color &bgColor);
     Pen &setLineProps(const uint32_t &lineWidth, const LineStyle &lineStyle);
+    inline Pen &setAllProps(const Color &colors, const uint32_t &lineWidth,
+                            const LineStyle &lineStyle) {
+      return this->setAllProps(colors, colors, lineWidth, lineStyle);
+    }
     Pen &setAllProps(const Color &fgColor, const Color &bgColor,
                      const uint32_t &lineWidth, const LineStyle &lineStyle);
 
