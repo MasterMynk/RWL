@@ -49,8 +49,7 @@ namespace rwl {
 
   public:
     /********************* Operator Overloads *********************/
-    template <Fundamental Any0>
-    Vec2 &operator=(const Any0 &other) {
+    Vec2 &operator=(const Fundamental auto &other) {
       this->x = other;
       this->y = other;
 
@@ -64,8 +63,7 @@ namespace rwl {
       return *this;
     }
 
-    template <Fundamental Any0>
-    Vec2 operator+(const Any0 &other) const {
+    Vec2 operator+(const Fundamental auto &other) const {
       return Vec2(this->x + other, this->y + other);
     }
     template <typename Any0>
@@ -73,8 +71,7 @@ namespace rwl {
       return Vec2(this->x + other.x, this->y + other.y);
     }
 
-    template <Fundamental Any0>
-    Vec2 operator-(const Any0 &other) const {
+    Vec2 operator-(const Fundamental auto &other) const {
       return Vec2(this->x - other, this->y - other);
     }
     template <typename Any0>
@@ -82,8 +79,7 @@ namespace rwl {
       return Vec2(this->x - other.x, this->y - other.y);
     }
 
-    template <Fundamental Any0>
-    Vec2 operator*(const Any0 &other) const {
+    Vec2 operator*(const Fundamental auto &other) const {
       return Vec2(this->x * other, this->y * other);
     }
     template <typename Any0>
@@ -91,8 +87,7 @@ namespace rwl {
       return Vec2(this->x * other.x, this->y * other.y);
     }
 
-    template <Fundamental Any0>
-    Vec2 operator/(const Any0 &other) const {
+    Vec2 operator/(const Fundamental auto &other) const {
       return Vec2(this->x / other, this->y / other);
     }
     template <typename Any0>
@@ -100,8 +95,7 @@ namespace rwl {
       return Vec2(this->x / other.x, this->y / other.y);
     }
 
-    template <Fundamental Any0>
-    Vec2 operator%(const Any0 &other) const {
+    Vec2 operator%(const Fundamental auto &other) const {
       return modImpl(other, other);
     }
     template <typename Any0>
@@ -109,8 +103,7 @@ namespace rwl {
       return modImpl(other.x, other.y);
     }
 
-    template <Fundamental Any0>
-    Vec2 &operator+=(const Any0 &other) {
+    Vec2 &operator+=(const Fundamental auto &other) {
       this->x += other;
       this->y += other;
 
@@ -124,8 +117,7 @@ namespace rwl {
       return *this;
     }
 
-    template <Fundamental Any0>
-    Vec2 &operator-=(const Any0 &other) {
+    Vec2 &operator-=(const Fundamental auto &other) {
       this->x -= other;
       this->y -= other;
 
@@ -139,8 +131,7 @@ namespace rwl {
       return *this;
     }
 
-    template <Fundamental Any0>
-    Vec2 &operator*=(const Any0 &other) {
+    Vec2 &operator*=(const Fundamental auto &other) {
       this->x *= other;
       this->y *= other;
 
@@ -154,8 +145,7 @@ namespace rwl {
       return *this;
     }
 
-    template <Fundamental Any0>
-    Vec2 &operator/=(const Any0 &other) {
+    Vec2 &operator/=(const Fundamental auto &other) {
       this->x /= other;
       this->y /= other;
 
@@ -169,8 +159,7 @@ namespace rwl {
       return *this;
     }
 
-    template <Fundamental Any0>
-    Vec2 &operator%=(const Any0 &other) {
+    Vec2 &operator%=(const Fundamental auto &other) {
       return compoundModImpl(other, other);
     }
     template <typename Any0>
