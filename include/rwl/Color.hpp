@@ -1,6 +1,6 @@
 #pragma once
 #include "rwl/Log.hpp"
-#include "rwl/core/core.hpp"
+#include "rwl/core.hpp"
 
 // TODO: Add support for other colors.
 

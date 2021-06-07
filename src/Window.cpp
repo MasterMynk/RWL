@@ -1,5 +1,5 @@
-#include "Window.hpp"
-#include "rwl/core/core.hpp"
+#include "rwl/Window.hpp"
+#include "rwl/core.hpp"
 
 namespace rwl {
   void Window::createWin() const {
