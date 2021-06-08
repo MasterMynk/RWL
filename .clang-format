@@ -2,7 +2,9 @@ Language: Cpp
 BasedOnStyle: LLVM
 IndentCaseLabels: true
 NamespaceIndentation: All
-AlwaysBreakTemplateDeclarations: Yes
+AlwaysBreakAfterReturnType: None
 SpaceBeforeInheritanceColon: false
+AlwaysBreakTemplateDeclarations: Yes
+AllowShortFunctionsOnASingleLine: All
 BreakConstructorInitializers: BeforeColon
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
