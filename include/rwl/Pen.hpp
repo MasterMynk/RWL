@@ -22,7 +22,6 @@ namespace rwl {
 #endif
 
   private:
-    void create();
     Pen &change();
 
   public:

@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <stdio.h>
 
 #define SET_COLOR(x) "\x1b[" #x "m"
 

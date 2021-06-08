@@ -1,6 +1,7 @@
 #pragma once
 #include <cmath>
 #include <iostream>
+#include <type_traits>
 
 namespace rwl {
   template <typename T>
