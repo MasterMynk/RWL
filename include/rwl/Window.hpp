@@ -4,14 +4,6 @@
 #include "rwl/Vec2.hpp"
 #include <xcb/xcb.h>
 
-// TODO: Pos arg of constructor should actually change the pos of the window.
-/* TODO: getDim and getPos should return the actual window dims and pos rather
-         than pre-defined ones. */
-/* TODO: setDim, setPos and setBgColor should actually change the window's pos,
-         dim and bgColor */
-// TODO: fix hide() and hideNoUpdate()
-// TODO: Create Something like a root window
-
 namespace rwl {
   class Window {
   private:
