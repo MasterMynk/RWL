@@ -163,16 +163,46 @@ namespace rwl {
       return compoundModImpl(other, other);
     }
     template <typename Any0>
-    Vec2 &operator%=(const Vec2<Any0> &other) {
+    inline Vec2 &operator%=(const Vec2<Any0> &other) {
       return compoundModImpl(other.x, other.y);
     }
 
-    bool operator==(const Fundamental auto &other) {
+    inline bool operator==(const Fundamental auto &other) {
       return (this->x == other && this->y == other);
     }
     template <typename Any0>
-    bool operator==(const Vec2<Any0> &other) {
+    inline bool operator==(const Vec2<Any0> &other) {
       return (this->x == other.x && this->y == other.y);
+    }
+
+    template <typename Any0>
+    inline bool operator!=(const Any0 &other) {
+      return !(*this == other);
+    }
+
+    inline bool operator<(const Fundamental auto &other) {
+      return (this->x < other || this->y < other);
+    }
+    template <typename Any0>
+    inline bool operator<(const Vec2<Any0> &other) {
+      return (this->x < other.x && this->y < other.y);
+    }
+
+    inline bool operator<=(const Fundamental auto &other) {
+      return (this->x <= other || this->y <= other);
+    }
+    template <typename Any0>
+    inline bool operator<=(const Vec2<Any0> &other) {
+      return (this->x <= other.x && this->y <= other.y);
+    }
+
+    template <typename Any0>
+    inline bool operator>(const Any0 &other) {
+      return !(*this <= other);
+    }
+    template <typename Any0>
+    inline bool operator>=(const Any0 &other) {
+      return !(*this < other);
     }
   };
 
