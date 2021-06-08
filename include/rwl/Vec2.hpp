@@ -63,7 +63,7 @@ namespace rwl {
       return *this;
     }
 
-    Vec2 operator+(const Fundamental auto &other) const {
+    inline Vec2 operator+(const Fundamental auto &other) const {
       return Vec2(this->x + other, this->y + other);
     }
     template <typename Any0>
@@ -71,7 +71,7 @@ namespace rwl {
       return Vec2(this->x + other.x, this->y + other.y);
     }
 
-    Vec2 operator-(const Fundamental auto &other) const {
+    inline Vec2 operator-(const Fundamental auto &other) const {
       return Vec2(this->x - other, this->y - other);
     }
     template <typename Any0>
@@ -79,7 +79,7 @@ namespace rwl {
       return Vec2(this->x - other.x, this->y - other.y);
     }
 
-    Vec2 operator*(const Fundamental auto &other) const {
+    inline Vec2 operator*(const Fundamental auto &other) const {
       return Vec2(this->x * other, this->y * other);
     }
     template <typename Any0>
@@ -87,7 +87,7 @@ namespace rwl {
       return Vec2(this->x * other.x, this->y * other.y);
     }
 
-    Vec2 operator/(const Fundamental auto &other) const {
+    inline Vec2 operator/(const Fundamental auto &other) const {
       return Vec2(this->x / other, this->y / other);
     }
     template <typename Any0>
@@ -95,7 +95,7 @@ namespace rwl {
       return Vec2(this->x / other.x, this->y / other.y);
     }
 
-    Vec2 operator%(const Fundamental auto &other) const {
+    inline Vec2 operator%(const Fundamental auto &other) const {
       return modImpl(other, other);
     }
     template <typename Any0>
@@ -159,12 +159,20 @@ namespace rwl {
       return *this;
     }
 
-    Vec2 &operator%=(const Fundamental auto &other) {
+    inline Vec2 &operator%=(const Fundamental auto &other) {
       return compoundModImpl(other, other);
     }
     template <typename Any0>
     Vec2 &operator%=(const Vec2<Any0> &other) {
       return compoundModImpl(other.x, other.y);
+    }
+
+    bool operator==(const Fundamental auto &other) {
+      return (this->x == other && this->y == other);
+    }
+    template <typename Any0>
+    bool operator==(const Vec2<Any0> &other) {
+      return (this->x == other.x && this->y == other.y);
     }
   };
 
