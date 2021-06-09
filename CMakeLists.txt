@@ -10,15 +10,19 @@ set(SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/")
 set(INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/include/")
 set(RWL "${INCLUDE}rwl/")
 
-set(CPP_FILES
+set(CLASSES
   "Pen"
   "core"
   "Color"
   "Window"
 )
+
+set(CPP_FILES
+)
   
 set(HPP_FILES
   "rwl"
+  "Drawables/Drawable"
 )
 
 set(PCH_FILES
@@ -28,9 +32,14 @@ set(PCH_FILES
 
 set(ALL_FILES)
 
-foreach(file ${CPP_FILES})
+foreach(file ${CLASSES})
   set(ALL_FILES ${ALL_FILES};${RWL}${file}.hpp ${SRC}${file}.cpp)
 endforeach()
+
+foreach(file ${CPP_FILES})
+  set(ALL_FILES ${ALL_FILES};${SRC}${file}.cpp)
+endforeach()
+
 
 foreach(file ${HPP_FILES})
   set(ALL_FILES ${ALL_FILES};${RWL}${file}.hpp)
@@ -42,7 +51,7 @@ foreach(file ${PCH_FILES})
 endforeach()
 
 add_library(rwl
-${ALL_FILES}
+  ${ALL_FILES}
 )
 
 if(WIN32)
@@ -65,10 +74,12 @@ target_include_directories(rwl PUBLIC
 
 target_precompile_headers(rwl PRIVATE
   <cmath>
+  <memory>
   <cstdlib>
   <iostream>
   <xcb/xcb.h>
   <functional>
+  <type_traits>
   ${PCH_EVAL}
 )
 
