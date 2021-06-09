@@ -18,16 +18,14 @@ namespace rwl {
    */
   template <>
   class Drawable<Pen &>: public impl::DrawableBase {
-  private:
+  protected:
     Pen &m_pen;
 
   public:
-    Drawable(Pen &pen) : m_pen(pen) {
-      impl::log("Created Drawable with lvalue.");
-    }
+    Drawable(Pen &pen) : m_pen(pen) {}
 
     Pen &pen() const {
-      impl::log<impl::LogLevel::NoImp>("Returning Pen");
+      impl::log<impl::LogLevel::NoImp>("Drawable: Returning Pen (lvalue)");
       return m_pen;
     }
   };
@@ -38,16 +36,14 @@ namespace rwl {
    */
   template <>
   class Drawable<Pen &&>: public impl::DrawableBase {
-  private:
+  protected:
     Pen m_pen;
 
   public:
-    Drawable(Pen &&pen) : m_pen(std::move(pen)) {
-      impl::log("Created Drawable with rvalue.");
-    }
+    Drawable(Pen &&pen) : m_pen(std::move(pen)) {}
 
     Pen &pen() {
-      impl::log<impl::LogLevel::NoImp>("Returning Pen");
+      impl::log<impl::LogLevel::NoImp>("Drawable: Returning Pen (rvalue)");
       return m_pen;
     }
   };
@@ -59,21 +55,44 @@ namespace rwl {
    */
   template <>
   class Drawable<std::shared_ptr<Pen>>: public impl::DrawableBase {
-  private:
+  protected:
     std::shared_ptr<Pen> m_pen;
 
   public:
-    Drawable(std::shared_ptr<Pen> pen) : m_pen(pen) {
-      impl::log("Created Drawable with std::shared_ptr");
-    }
+    Drawable(std::shared_ptr<Pen> pen) : m_pen(pen) {}
 
     Pen &pen() const {
-      impl::log<impl::LogLevel::NoImp>("Returning Pen");
+      impl::log<impl::LogLevel::NoImp>(
+          "Drawable: Returning Pen (std::shared_ptr)");
+      return *m_pen;
+    }
+  };
+
+  /*
+   * When you want the Pen to be on the heap but you're passing in a temporary
+   * ptr then this speicialization is used.
+   */
+  template <>
+  class Drawable<std::unique_ptr<Pen>>: public impl::DrawableBase {
+  protected:
+    std::unique_ptr<Pen> m_pen;
+
+  public:
+    Drawable(std::shared_ptr<Pen> &&pen)
+        : m_pen(std::make_unique<Pen>(std::move(*pen))) {}
+
+    Drawable(std::unique_ptr<Pen> &&pen) : m_pen(std::move(pen)) {}
+
+    Pen &pen() const {
+      impl::log<impl::LogLevel::NoImp>(
+          "Drawable: Returning Pen (std::unique_ptr)");
       return *m_pen;
     }
   };
 
   Drawable(Pen &)->Drawable<Pen &>;
   Drawable(Pen &&)->Drawable<Pen &&>;
-  Drawable(std::shared_ptr<Pen>)->Drawable<std::shared_ptr<Pen>>;
+  Drawable(std::shared_ptr<Pen> &)->Drawable<std::shared_ptr<Pen>>;
+  Drawable(std::shared_ptr<Pen> &&)->Drawable<std::unique_ptr<Pen>>;
+  Drawable(std::unique_ptr<Pen> &&)->Drawable<std::unique_ptr<Pen>>;
 } // namespace rwl
