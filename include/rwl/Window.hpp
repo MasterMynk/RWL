@@ -17,14 +17,14 @@ namespace rwl {
   private:
 #if RWL_PLATFORM == LINUX
     xcb_window_t m_win;
-    Dim m_dim;
     Pos m_pos;
+    Dim m_dim;
     Color m_bgColor;
 #endif
   public:
     explicit Window(Window &&other);
     explicit Window(const Window &other);
-    Window(const Dim &dim = {640, 480}, const Pos &pos = {0, 0},
+    Window(const Pos &pos = {0, 0}, const Dim &dim = {640, 480},
            const Color &bgColor = Color::White);
 
     Window &operator=(const Window &other);
@@ -35,14 +35,14 @@ namespace rwl {
     Window &hide();
     Window &hideNoUpdate();
 
+    inline const Pos &getPos() const {
+      impl::log<impl::LogLevel::NoImp>("Returning Window Position as ", m_pos);
+      return m_pos;
+    }
     inline const Dim &getDim() const {
       impl::log<impl::LogLevel::NoImp>("Returning Window Dimensions as ",
                                        m_dim);
       return m_dim;
-    }
-    inline const Pos &getPos() const {
-      impl::log<impl::LogLevel::NoImp>("Returning Window Position as ", m_pos);
-      return m_pos;
     }
     inline const Color &getBgColor() const {
       impl::log<impl::LogLevel::NoImp>("Returning Bg Color as ",
@@ -50,15 +50,15 @@ namespace rwl {
       return this->m_bgColor;
     }
 
+    inline Window &setPos(const Pos &other) {
+      this->m_pos = other;
+      impl::log<impl::LogLevel::NoImp>("Set Window Position to ", this->m_pos);
+      return *this;
+    }
     inline Window &setDim(const Dim &other) {
       this->m_dim = other;
       impl::log<impl::LogLevel::NoImp>("Set Window Dimensions to ",
                                        this->m_dim);
-      return *this;
-    }
-    inline Window &setPos(const Pos &other) {
-      this->m_pos = other;
-      impl::log<impl::LogLevel::NoImp>("Set Window Position to ", this->m_pos);
       return *this;
     }
     inline const Window &setBgColor(const Color &bgColor) {

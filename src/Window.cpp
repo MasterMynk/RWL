@@ -10,11 +10,11 @@ namespace rwl {
   }
 
   Window::Window(const Window &other) {
-    Window(other.m_dim, other.m_pos, other.m_bgColor);
+    Window(other.m_pos, other.m_dim, other.m_bgColor);
   }
 
-  Window::Window(const Dim &dim, const Pos &pos, const Color &bgColor)
-      : m_win(xcb_generate_id(impl::core::conn)), m_dim(dim), m_pos(pos),
+  Window::Window(const Pos &pos, const Dim &dim, const Color &bgColor)
+      : m_win(xcb_generate_id(impl::core::conn)), m_pos(pos), m_dim(dim),
         m_bgColor(bgColor) {
 #if RWL_PLATFORM == LINUX
     uint32_t props[2] = {this->m_bgColor.m_color, XCB_EVENT_MASK_EXPOSURE};
