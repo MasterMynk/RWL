@@ -21,17 +21,6 @@ namespace rwl {
                               XCB_GC_GRAPHICS_EXPOSURES;
 
   /*************************** Private Functions ***************************/
-  void Pen::create() {
-#if RWL_PLATFORM == LINUX
-    CREATE_PEN_MASK;
-
-    xcb_create_gc(rwl::impl::core::conn, this->m_pen, impl::core::scr->root,
-                  this->s_valueMask, penMask);
-
-    LOGGING_HELPER("Created");
-#endif
-  }
-
   Pen &Pen::change() {
 #if RWL_PLATFORM == LINUX
     CREATE_PEN_MASK;
@@ -52,18 +41,22 @@ namespace rwl {
     LOGGING_HELPER("Moved");
   }
 
-  Pen::Pen(const Pen &other) // Copy Constructor
-      : m_pen(xcb_generate_id(impl::core::conn)), m_fgColor(other.m_fgColor),
-        m_bgColor(other.m_bgColor), m_lineWidth(other.m_lineWidth),
-        m_lineStyle(other.m_lineStyle) {
-    this->create();
+  Pen::Pen(const Pen &other) {
+    Pen(other.m_fgColor, other.m_bgColor, other.m_lineWidth, other.m_lineStyle);
   }
 
   Pen::Pen(const Color &fgColor, const Color &bgColor,
-           const uint32_t &lineWidth, const LineStyle &lineStyle) // Default
+           const uint32_t &lineWidth, const LineStyle &lineStyle)
       : m_pen(xcb_generate_id(impl::core::conn)), m_fgColor(fgColor),
         m_bgColor(bgColor), m_lineWidth(lineWidth), m_lineStyle(lineStyle) {
-    this->create();
+#if RWL_PLATFORM == LINUX
+    CREATE_PEN_MASK;
+
+    xcb_create_gc(rwl::impl::core::conn, this->m_pen, impl::core::scr->root,
+                  this->s_valueMask, penMask);
+
+    LOGGING_HELPER("Created");
+#endif
   }
 
   /******************************** Operators ********************************/

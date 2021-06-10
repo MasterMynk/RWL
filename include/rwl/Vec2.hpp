@@ -1,6 +1,7 @@
 #pragma once
 #include <cmath>
 #include <iostream>
+#include <type_traits>
 
 namespace rwl {
   template <typename T>
@@ -213,4 +214,6 @@ namespace rwl {
 
   using Pos = Vec2<int16_t>;
   using Dim = Vec2<uint16_t>;
+  using PosRef = Vec2<int16_t &>;
+  using DimRef = Vec2<uint16_t &>;
 } // namespace rwl

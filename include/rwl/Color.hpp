@@ -2,8 +2,6 @@
 #include "rwl/Log.hpp"
 #include "rwl/core.hpp"
 
-// TODO: Add support for other colors.
-
 namespace rwl {
   class Pen;
   class Window;
