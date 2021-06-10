@@ -32,6 +32,14 @@ namespace rwl {
     return *this;
   }
 
+  void Pen::updateVars(const Color &fgColor, const Color &bgColor,
+                       const uint32_t &lineWidth, const LineStyle &lineStyle) {
+    this->m_fgColor = fgColor;
+    this->m_bgColor = bgColor;
+    this->m_lineWidth = lineWidth;
+    this->m_lineStyle = lineStyle;
+  }
+
   /******************************* Constructors *******************************/
   Pen::Pen(Pen &&other) // Move Constructor
       : m_pen(other.m_pen), m_fgColor(other.m_fgColor),
@@ -63,6 +71,18 @@ namespace rwl {
   Pen &Pen::operator=(const Pen &other) {
     return this->setAllProps(other.m_fgColor, other.m_bgColor,
                              other.m_lineWidth, other.m_lineStyle);
+  }
+
+  Pen &Pen::operator=(Pen &&other) {
+    xcb_free_gc(impl::core::conn, this->m_pen);
+
+    updateVars(other.m_fgColor, other.m_bgColor, other.m_lineWidth,
+               other.m_lineStyle);
+
+    this->m_pen = other.m_pen;
+    other.m_pen = 0;
+
+    return *this;
   }
 
   /********************************* Setters *********************************/
@@ -101,10 +121,7 @@ namespace rwl {
 
   Pen &Pen::setAllProps(const Color &fgColor, const Color &bgColor,
                         const uint32_t &lineWidth, const LineStyle &lineStyle) {
-    this->m_fgColor = fgColor;
-    this->m_bgColor = bgColor;
-    this->m_lineWidth = lineWidth;
-    this->m_lineStyle = lineStyle;
+    updateVars(fgColor, bgColor, lineWidth, lineStyle);
     return this->change();
   }
 

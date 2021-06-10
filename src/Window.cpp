@@ -3,7 +3,7 @@
 
 namespace rwl {
   Window::Window(Window &&other)
-      : m_win(other.m_win), m_dim(other.m_dim), m_pos(other.m_pos),
+      : m_win(other.m_win), m_pos(other.m_pos), m_dim(other.m_dim),
         m_bgColor(other.m_bgColor) {
     impl::log("Moved a window with window Id: ", m_win);
     other.m_win = 0;
