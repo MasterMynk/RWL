@@ -14,7 +14,7 @@ namespace rwl {
   namespace impl {
     struct core;
     class WinComm;
-    
+
     template <typename T>
     class RectPtrComm;
 
@@ -22,7 +22,7 @@ namespace rwl {
     class RectRefComm;
 
     const WinComm makeRoot();
-  }
+  } // namespace impl
 
   void end();
   void update();
@@ -45,7 +45,7 @@ namespace rwl {
       friend ::rwl::Pen;
       friend ::rwl::Color;
       friend ::rwl::Window;
-      
+
       friend WinComm;
 
       template <typename T>
