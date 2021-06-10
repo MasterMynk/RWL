@@ -4,7 +4,9 @@
 
 namespace rwl {
   class Pen;
-  class Window;
+  namespace impl {
+    class WinComm;
+  } // namespace impl
 
   class Color {
   private:
@@ -29,6 +31,6 @@ namespace rwl {
 #endif
 
     friend Pen;
-    friend Window;
+    friend impl::WinComm;
   };
 } // namespace rwl

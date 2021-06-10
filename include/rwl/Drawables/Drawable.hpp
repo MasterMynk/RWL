@@ -2,7 +2,7 @@
 #include "rwl/Drawables/DrawableComm.hpp"
 #include "rwl/Log.hpp"
 #include "rwl/Pen.hpp"
-#include "rwl/Window.hpp"
+#include "rwl/Window/Window.hpp"
 
 #include <memory>
 #include <xcb/xcb.h>

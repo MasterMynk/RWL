@@ -13,6 +13,13 @@ namespace rwl {
 
   namespace impl {
     struct core;
+    class WinComm;
+    
+    template <typename T>
+    class RectPtrComm;
+
+    template <typename T>
+    class RectRefComm;
   }
 
   void end();
@@ -23,12 +30,6 @@ namespace rwl {
   uint16_t height(const Measurement &m = Measurement::Pixels);
 
   namespace impl {
-    template <typename T>
-    class RectPtrComm;
-
-    template <typename T>
-    class RectRefComm;
-
     struct core {
     private:
 #if RWL_PLATFORM == LINUX
@@ -41,6 +42,8 @@ namespace rwl {
       friend ::rwl::Pen;
       friend ::rwl::Color;
       friend ::rwl::Window;
+      
+      friend WinComm;
 
       template <typename T>
       friend class RectPtrComm;

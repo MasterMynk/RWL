@@ -14,7 +14,8 @@ set(CLASSES
   "Pen"
   "core"
   "Color"
-  "Window"
+  "Window/WinComm"
+  "Window/Window"
 )
 
 set(CPP_FILES
@@ -41,31 +42,34 @@ set(DRAWABLES
   "DrawableComm"
 )
 
+# Add Rect/ to every file specified in RECT and save it in DRAWABLE
 foreach(file ${RECT})
   set(${DRAWABLES} ${DRAWABLES};Rect/${file})
 endforeach()
 
-
+# Add Drawable/ to every file specified in DRAWABLE and save it in HPP_FILES
 foreach(file ${DRAWABLES})
   set(HPP_FILES ${HPP_FILES};Drawables/${file})
 endforeach()
 
-
 set(ALL_FILES)
 
+# For every file in CLASSES, add the path to it and an extension and save it in ALL_FILES
 foreach(file ${CLASSES})
   set(ALL_FILES ${ALL_FILES};${RWL}${file}.hpp ${SRC}${file}.cpp)
 endforeach()
 
+# For every file in CPP_FILES, add the path to it and .cpp extension and save it to ALL_FILES
 foreach(file ${CPP_FILES})
   set(ALL_FILES ${ALL_FILES};${SRC}${file}.cpp)
 endforeach()
 
-
+# For every file in HPP_FILES, add the path and .hpp extension to it and save it to ALL_FILES
 foreach(file ${HPP_FILES})
   set(ALL_FILES ${ALL_FILES};${RWL}${file}.hpp)
 endforeach()
 
+# For every file in PCH_FILES add the path and .hpp extension to it and save it in PCH_FILES and ALL_FILES
 foreach(file ${PCH_FILES})
   set(PCH_EVAL ${PCH_EVAL};${RWL}${file}.hpp)
   set(ALL_FILES ${ALL_FILES};${RWL}${file}.hpp)

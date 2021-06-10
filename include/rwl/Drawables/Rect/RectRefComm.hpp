@@ -1,6 +1,7 @@
 #pragma once
 
 #include "rwl/Drawables/Rect/RectComm.hpp"
+#include "rwl/Window/Window.hpp"
 #include "rwl/core.hpp"
 
 namespace rwl::impl {

@@ -1,21 +1,10 @@
-#include "rwl/Window.hpp"
+#include "rwl/Window/WinComm.hpp"
 #include "rwl/core.hpp"
 
-namespace rwl {
-  Window::Window(Window &&other)
-      : m_win(other.m_win), m_pos(other.m_pos), m_dim(other.m_dim),
-        m_bgColor(other.m_bgColor) {
-    impl::log("Moved a window with window Id: ", m_win);
-    other.m_win = 0;
-  }
-
-  Window::Window(const Window &other) {
-    Window(other.m_pos, other.m_dim, other.m_bgColor);
-  }
-
-  Window::Window(const Pos &pos, const Dim &dim, const Color &bgColor)
-      : m_win(xcb_generate_id(impl::core::conn)), m_pos(pos), m_dim(dim),
-        m_bgColor(bgColor) {
+namespace rwl::impl {
+  WinComm::WinComm(const xcb_window_t &winId, const Pos &pos, const Dim &dim,
+                   const Color &bgColor)
+      : m_win(winId), m_pos(pos), m_dim(dim), m_bgColor(bgColor) {
 #if RWL_PLATFORM == LINUX
     uint32_t props[2] = {this->m_bgColor.m_color, XCB_EVENT_MASK_EXPOSURE};
 
@@ -29,7 +18,7 @@ namespace rwl {
 #endif
   }
 
-  Window &Window::operator=(const Window &other) {
+  WinComm &WinComm::operator=(const WinComm &other) {
     setDim(other.m_dim);
     setPos(other.m_pos);
 
@@ -38,7 +27,7 @@ namespace rwl {
     return *this;
   }
 
-  Window &Window::show() {
+  WinComm &WinComm::show() {
     showNoUpdate();
     update();
 
@@ -47,7 +36,7 @@ namespace rwl {
     return *this;
   }
 
-  Window &Window::showNoUpdate() {
+  WinComm &WinComm::showNoUpdate() {
     xcb_map_window(impl::core::conn, m_win);
 
     impl::log("Mapped window. Better call update if you haven't already!");
@@ -55,7 +44,7 @@ namespace rwl {
     return *this;
   }
 
-  Window &Window::hide() {
+  WinComm &WinComm::hide() {
     hideNoUpdate();
     update();
 
@@ -64,18 +53,11 @@ namespace rwl {
     return *this;
   }
 
-  Window &Window::hideNoUpdate() {
+  WinComm &WinComm::hideNoUpdate() {
     xcb_unmap_window(impl::core::conn, m_win);
 
-    impl::log("Unmapped Window. Call update if you haven't already.");
+    impl::log("Unmapped WinComm. Call update if you haven't already.");
 
     return *this;
   }
-
-  Window::~Window() {
-#if RWL_PLATFORM == LINUX
-    xcb_destroy_window(impl::core::conn, m_win);
-#endif
-    impl::log("Window Destroyed");
-  }
-} // namespace rwl
+} // namespace rwl::impl
