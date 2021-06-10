@@ -5,16 +5,17 @@
 #include <xcb/xcb.h>
 
 namespace rwl {
+  class Window;
+
   namespace impl {
     template <typename T>
     class RectPtrComm;
 
     template <typename T>
     class RectPtrComm;
-  } // namespace impl
 
-  class Window {
-  private:
+    class WinComm {
+    protected:
 #if RWL_PLATFORM == LINUX
     xcb_window_t m_win;
     Pos m_pos;
@@ -22,18 +23,16 @@ namespace rwl {
     Color m_bgColor;
 #endif
   public:
-    explicit Window(Window &&other);
-    explicit Window(const Window &other);
-    Window(const Pos &pos = {0, 0}, const Dim &dim = {640, 480},
-           const Color &bgColor = Color::White);
+    WinComm(const xcb_window_t &winId, const Pos &pos, const Dim &dim,
+            const Color &bgColor);
 
-    Window &operator=(const Window &other);
+    WinComm &operator=(const WinComm &other);
 
-    Window &show();
-    Window &showNoUpdate();
+    WinComm &show();
+    WinComm &showNoUpdate();
 
-    Window &hide();
-    Window &hideNoUpdate();
+    WinComm &hide();
+    WinComm &hideNoUpdate();
 
     inline const Pos &getPos() const {
       impl::log<impl::LogLevel::NoImp>("Returning Window Position as ", m_pos);
@@ -50,18 +49,18 @@ namespace rwl {
       return this->m_bgColor;
     }
 
-    inline Window &setPos(const Pos &other) {
+    inline WinComm &setPos(const Pos &other) {
       this->m_pos = other;
       impl::log<impl::LogLevel::NoImp>("Set Window Position to ", this->m_pos);
       return *this;
     }
-    inline Window &setDim(const Dim &other) {
+    inline WinComm &setDim(const Dim &other) {
       this->m_dim = other;
       impl::log<impl::LogLevel::NoImp>("Set Window Dimensions to ",
                                        this->m_dim);
       return *this;
     }
-    inline const Window &setBgColor(const Color &bgColor) {
+    inline const WinComm &setBgColor(const Color &bgColor) {
       this->m_bgColor = bgColor;
       impl::log<impl::LogLevel::NoImp>("Set Bg Color to ",
                                        this->m_bgColor.colorToStr());
@@ -75,12 +74,16 @@ namespace rwl {
     }
 #endif
 
-    ~Window();
+    virtual ~WinComm() {}
 
     template <typename T>
     friend class impl::RectPtrComm;
 
     template <typename T>
     friend class impl::RectRefComm;
+
+    friend ::rwl::Window;
   };
+  
+  } // namespace impl
 } // namespace rwl

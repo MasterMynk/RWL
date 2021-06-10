@@ -13,6 +13,15 @@ namespace rwl {
 
   namespace impl {
     struct core;
+    class WinComm;
+    
+    template <typename T>
+    class RectPtrComm;
+
+    template <typename T>
+    class RectRefComm;
+
+    const WinComm makeRoot();
   }
 
   void end();
@@ -21,14 +30,9 @@ namespace rwl {
   void loop(std::function<void(bool &finished)> func);
   uint16_t width(const Measurement &m = Measurement::Pixels);
   uint16_t height(const Measurement &m = Measurement::Pixels);
+  extern const impl::WinComm root;
 
   namespace impl {
-    template <typename T>
-    class RectPtrComm;
-
-    template <typename T>
-    class RectRefComm;
-
     struct core {
     private:
 #if RWL_PLATFORM == LINUX
@@ -41,12 +45,16 @@ namespace rwl {
       friend ::rwl::Pen;
       friend ::rwl::Color;
       friend ::rwl::Window;
+      
+      friend WinComm;
 
       template <typename T>
       friend class RectPtrComm;
 
       template <typename T>
       friend class RectRefComm;
+
+      friend const WinComm makeRoot();
 
       friend void ::rwl::end();
       friend void ::rwl::update();

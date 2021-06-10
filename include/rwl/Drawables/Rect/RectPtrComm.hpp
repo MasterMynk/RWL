@@ -1,6 +1,6 @@
 #pragma once
 #include "rwl/Drawables/Rect/RectComm.hpp"
-#include "rwl/Window.hpp"
+#include "rwl/Window/Window.hpp"
 #include "rwl/core.hpp"
 #include <xcb/xcb.h>
 

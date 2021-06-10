@@ -1,5 +1,5 @@
 #pragma once
-#include "rwl/Window.hpp"
+#include "rwl/Window/Window.hpp"
 
 namespace rwl::impl {
   class DrawableComm { // Comm is for common.
