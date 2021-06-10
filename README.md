@@ -2,7 +2,7 @@
 
 ## What is RWL?
 
-RWL is a wrapper library for XCB. Till now it can connect to the X Server and update the screen.
+RWL is a wrapper library for XCB. Till now it can create Windows and draw Rectangles on the screen
 
 ## How do I include it in my project?
 
