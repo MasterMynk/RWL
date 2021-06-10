@@ -19,16 +19,37 @@ set(CLASSES
 
 set(CPP_FILES
 )
-  
+
 set(HPP_FILES
   "rwl"
-  "Drawables/Drawable"
 )
 
 set(PCH_FILES
   "Log"
   "Vec2"
 )
+
+set(RECT
+  "Rect"
+  "RectComm"
+  "RectPtrComm"
+  "RectRefComm"
+)
+
+set(DRAWABLES
+  "Drawable"
+  "DrawableComm"
+)
+
+foreach(file ${RECT})
+  set(${DRAWABLES} ${DRAWABLES};Rect/${file})
+endforeach()
+
+
+foreach(file ${DRAWABLES})
+  set(HPP_FILES ${HPP_FILES};Drawables/${file})
+endforeach()
+
 
 set(ALL_FILES)
 

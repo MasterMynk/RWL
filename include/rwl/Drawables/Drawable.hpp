@@ -1,5 +1,5 @@
 #pragma once
-#include "rwl/Drawables/DrawableBase.hpp"
+#include "rwl/Drawables/DrawableComm.hpp"
 #include "rwl/Log.hpp"
 #include "rwl/Pen.hpp"
 #include "rwl/Window.hpp"
@@ -17,7 +17,7 @@ namespace rwl {
    * changes to that Pen are also reflected here.
    */
   template <>
-  class Drawable<Pen &>: public impl::DrawableBase {
+  class Drawable<Pen &>: public impl::DrawableComm {
   protected:
     Pen &m_pen;
 
@@ -35,7 +35,7 @@ namespace rwl {
    * store a reference to it, a copy is stored.
    */
   template <>
-  class Drawable<Pen &&>: public impl::DrawableBase {
+  class Drawable<Pen &&>: public impl::DrawableComm {
   protected:
     Pen m_pen;
 
@@ -54,7 +54,7 @@ namespace rwl {
    * with some runtime cost of course.
    */
   template <>
-  class Drawable<std::shared_ptr<Pen>>: public impl::DrawableBase {
+  class Drawable<std::shared_ptr<Pen>>: public impl::DrawableComm {
   protected:
     std::shared_ptr<Pen> m_pen;
 
@@ -73,14 +73,11 @@ namespace rwl {
    * ptr then this speicialization is used.
    */
   template <>
-  class Drawable<std::unique_ptr<Pen>>: public impl::DrawableBase {
+  class Drawable<std::unique_ptr<Pen>>: public impl::DrawableComm {
   protected:
     std::unique_ptr<Pen> m_pen;
 
   public:
-    Drawable(std::shared_ptr<Pen> &&pen)
-        : m_pen(std::make_unique<Pen>(std::move(*pen))) {}
-
     Drawable(std::unique_ptr<Pen> &&pen) : m_pen(std::move(pen)) {}
 
     Pen &pen() const {
@@ -93,6 +90,5 @@ namespace rwl {
   Drawable(Pen &)->Drawable<Pen &>;
   Drawable(Pen &&)->Drawable<Pen &&>;
   Drawable(std::shared_ptr<Pen> &)->Drawable<std::shared_ptr<Pen>>;
-  Drawable(std::shared_ptr<Pen> &&)->Drawable<std::unique_ptr<Pen>>;
   Drawable(std::unique_ptr<Pen> &&)->Drawable<std::unique_ptr<Pen>>;
 } // namespace rwl

@@ -1,12 +1,14 @@
 #pragma once
 #include "rwl/Log.hpp"
 #include <functional>
+#include <memory>
 #include <xcb/xcb.h>
 
 namespace rwl {
   class Pen;
   class Color;
   class Window;
+
   enum class Measurement { Pixels = 0, Mm };
 
   namespace impl {
@@ -21,6 +23,12 @@ namespace rwl {
   uint16_t height(const Measurement &m = Measurement::Pixels);
 
   namespace impl {
+    template <typename T>
+    class RectPtrComm;
+
+    template <typename T>
+    class RectRefComm;
+
     struct core {
     private:
 #if RWL_PLATFORM == LINUX
@@ -30,9 +38,15 @@ namespace rwl {
 
       core() = delete;
 
-      friend Pen;
-      friend Color;
-      friend Window;
+      friend ::rwl::Pen;
+      friend ::rwl::Color;
+      friend ::rwl::Window;
+
+      template <typename T>
+      friend class RectPtrComm;
+
+      template <typename T>
+      friend class RectRefComm;
 
       friend void ::rwl::end();
       friend void ::rwl::update();

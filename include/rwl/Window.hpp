@@ -5,6 +5,14 @@
 #include <xcb/xcb.h>
 
 namespace rwl {
+  namespace impl {
+    template <typename T>
+    class RectPtrComm;
+
+    template <typename T>
+    class RectPtrComm;
+  } // namespace impl
+
   class Window {
   private:
 #if RWL_PLATFORM == LINUX
@@ -68,5 +76,11 @@ namespace rwl {
 #endif
 
     ~Window();
+
+    template <typename T>
+    friend class impl::RectPtrComm;
+
+    template <typename T>
+    friend class impl::RectRefComm;
   };
 } // namespace rwl
