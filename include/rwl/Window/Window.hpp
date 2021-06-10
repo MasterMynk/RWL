@@ -17,6 +17,8 @@ namespace rwl {
     // Window(const Pos &pos, const Dim &dim, const Color &bgColor,
     //        const WinComm &parent);
 
+    inline const WinComm &getParent() const { return m_parent; }
+
     ~Window() override;
   };
 } // namespace rwl
