@@ -4,15 +4,18 @@
 #include "rwl/Vec2.hpp"
 #include <xcb/xcb.h>
 
-namespace rwl::impl {
-  template <typename T>
-  class RectPtrComm;
+namespace rwl {
+  class Window;
 
-  template <typename T>
-  class RectPtrComm;
+  namespace impl {
+    template <typename T>
+    class RectPtrComm;
 
-  class WinComm {
-  protected:
+    template <typename T>
+    class RectPtrComm;
+
+    class WinComm {
+    protected:
 #if RWL_PLATFORM == LINUX
     xcb_window_t m_win;
     Pos m_pos;
@@ -32,11 +35,11 @@ namespace rwl::impl {
     WinComm &hideNoUpdate();
 
     inline const Pos &getPos() const {
-      impl::log<impl::LogLevel::NoImp>("Returning WinComm Position as ", m_pos);
+      impl::log<impl::LogLevel::NoImp>("Returning Window Position as ", m_pos);
       return m_pos;
     }
     inline const Dim &getDim() const {
-      impl::log<impl::LogLevel::NoImp>("Returning WinComm Dimensions as ",
+      impl::log<impl::LogLevel::NoImp>("Returning Window Dimensions as ",
                                        m_dim);
       return m_dim;
     }
@@ -48,12 +51,12 @@ namespace rwl::impl {
 
     inline WinComm &setPos(const Pos &other) {
       this->m_pos = other;
-      impl::log<impl::LogLevel::NoImp>("Set WinComm Position to ", this->m_pos);
+      impl::log<impl::LogLevel::NoImp>("Set Window Position to ", this->m_pos);
       return *this;
     }
     inline WinComm &setDim(const Dim &other) {
       this->m_dim = other;
-      impl::log<impl::LogLevel::NoImp>("Set WinComm Dimensions to ",
+      impl::log<impl::LogLevel::NoImp>("Set Window Dimensions to ",
                                        this->m_dim);
       return *this;
     }
@@ -66,7 +69,7 @@ namespace rwl::impl {
 
 #if RWL_DEBUG == 1
     inline const xcb_window_t &getW() const {
-      impl::log<impl::LogLevel::NoImp>("Returning WinComm id.");
+      impl::log<impl::LogLevel::NoImp>("Returning Window id.");
       return m_win;
     }
 #endif
@@ -78,5 +81,9 @@ namespace rwl::impl {
 
     template <typename T>
     friend class impl::RectRefComm;
+
+    friend ::rwl::Window;
   };
-} // namespace rwl::impl
+  
+  } // namespace impl
+} // namespace rwl
