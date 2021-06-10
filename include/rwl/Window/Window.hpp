@@ -17,6 +17,7 @@ namespace rwl {
            const impl::WinComm &parent = root, const uint16_t &borderWidth = 1);
 
     inline const WinComm &getParent() const { return m_parent; }
+    inline const uint16_t &getBorderWidth() const { return m_borderWidth; }
 
     ~Window() override;
   };
