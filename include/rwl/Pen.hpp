@@ -31,6 +31,8 @@ namespace rwl {
 
   private:
     Pen &change();
+    void updateVars(const Color &fgColor, const Color &bgColor,
+                    const uint32_t &lineWidth, const LineStyle &lineStyle);
 
   public:
     /****************************** Constructor *******************************/
@@ -42,6 +44,7 @@ namespace rwl {
 
     /******************************* Operators ********************************/
     Pen &operator=(const Pen &other);
+    Pen &operator=(Pen &&other);
 
     inline Pen &operator=(const Color::ColorEnum &colors) {
       return this->setColors(colors);
