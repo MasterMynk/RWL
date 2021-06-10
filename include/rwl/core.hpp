@@ -20,6 +20,8 @@ namespace rwl {
 
     template <typename T>
     class RectRefComm;
+
+    const WinComm makeRoot();
   }
 
   void end();
@@ -28,6 +30,7 @@ namespace rwl {
   void loop(std::function<void(bool &finished)> func);
   uint16_t width(const Measurement &m = Measurement::Pixels);
   uint16_t height(const Measurement &m = Measurement::Pixels);
+  extern const impl::WinComm root;
 
   namespace impl {
     struct core {
@@ -50,6 +53,8 @@ namespace rwl {
 
       template <typename T>
       friend class RectRefComm;
+
+      friend const WinComm makeRoot();
 
       friend void ::rwl::end();
       friend void ::rwl::update();

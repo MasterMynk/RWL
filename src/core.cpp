@@ -1,4 +1,5 @@
 #include "rwl/core.hpp"
+#include "rwl/Window/WinComm.hpp"
 #include <cstdlib>
 
 namespace rwl {
@@ -20,6 +21,13 @@ namespace rwl {
     xcb_screen_t *core::scr =
         xcb_setup_roots_iterator(xcb_get_setup(conn)).data;
 #endif
+
+    const impl::WinComm root = makeRoot();
+
+    const WinComm makeRoot() {
+      return WinComm(impl::core::scr->root, {0, 0}, {width(), height()},
+                     rwl::Color::Black);
+    }
   } // namespace impl
 
   void end() {
