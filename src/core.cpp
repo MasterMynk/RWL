@@ -27,7 +27,7 @@ namespace rwl {
                      rwl::Color::Black);
     }
   } // namespace impl
-  
+
   const impl::WinComm root = impl::makeRoot();
 
   void end() {
