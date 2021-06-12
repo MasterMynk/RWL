@@ -8,9 +8,6 @@
 #include <xcb/xcb.h>
 
 namespace rwl::impl {
-  template <typename T>
-  class Rect;
-
   // All code common in all Rects lives below
   template <typename T>
   class RectComm: public Drawable<T> {
@@ -23,8 +20,10 @@ namespace rwl::impl {
           m_rect{pos.x, pos.y, dim.width, dim.height} {}
 
     /******************************* Operators *******************************/
-    RectComm &operator=(const Pen &newPen) {
-      Drawable<T>::operator=(newPen);
+    // IsPen is declared in Drawable.hpp
+    RectComm &operator=(IsPen auto &&newPen) {
+      // decltype is needed otherwise type deduction fails
+      Drawable<T>::operator=(std::forward<decltype(newPen)>(newPen));
       return *this;
     }
 

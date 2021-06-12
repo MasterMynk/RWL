@@ -103,6 +103,7 @@ target_precompile_headers(rwl PRIVATE
   <cmath>
   <memory>
   <cstdlib>
+  <utility>
   <iostream>
   <xcb/xcb.h>
   <functional>

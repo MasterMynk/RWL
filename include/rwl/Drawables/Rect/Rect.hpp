@@ -46,9 +46,8 @@ namespace rwl {
   template <>
   class Rect<std::unique_ptr<Pen>>
       : public impl::RectPtrComm<std::unique_ptr<Pen>> {
-    using impl::RectPtrComm<std::unique_ptr<Pen>>::operator=;
-
   public:
+    using impl::RectPtrComm<std::unique_ptr<Pen>>::operator=;
     Rect(std::shared_ptr<Pen> &&pen, const Pos &pos = {0, 0},
          const Dim &dim = {10, 10})
         : impl::RectPtrComm<std::unique_ptr<Pen>>(
