@@ -6,6 +6,8 @@ if(WIN32)
   message(AUTHOR_WARNING "RWL won't work on Windows yet!!")
 endif()
 
+find_library(xcbLib xcb NAMES xcb1 XCB REQUIRED)
+
 set(SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/")
 set(INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/include/")
 set(RWL "${INCLUDE}rwl/")
