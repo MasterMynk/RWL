@@ -13,6 +13,7 @@ namespace rwl::impl {
   class RectPtrComm: public RectComm<T> {
   public:
     using RectComm<T>::RectComm;
+    using RectComm<T>::operator=;
 
     void drawIn(Window &win) {
       xcb_poly_rectangle(impl::core::conn, win.m_win, this->m_pen->m_pen, 1,
