@@ -38,8 +38,10 @@ namespace rwl {
     /****************************** Constructor *******************************/
     Pen(Pen &&other);
     Pen(const Pen &other);
-    Pen(const Color &fgColor = Color::Black,
-        const Color &bgColor = Color::Black, const uint32_t &lineWidth = 1,
+    Pen(const Color &color = Color::Black, const uint32_t &lineWidth = 1,
+        const LineStyle &lineStyle = LineStyle::Solid);
+    Pen(const Color &fgColor, const Color &bgColor,
+        const uint32_t &lineWidth = 1,
         const LineStyle &lineStyle = LineStyle::Solid);
 
     /******************************* Operators ********************************/
