@@ -20,7 +20,6 @@ namespace rwl::impl {
           m_rect{pos.x, pos.y, dim.width, dim.height} {}
 
     /******************************* Operators *******************************/
-
     void operator=(const Pos &newPos) {
       this->m_rect.x = newPos.x;
       this->m_rect.y = newPos.y;
@@ -31,19 +30,17 @@ namespace rwl::impl {
       this->m_rect.height = newDim.height;
     }
 
-    // If none of the above overloads match you case, try using an overload from
-    // the base class.
-    template <typename T>
-    void operator=(T &&toForward) {
-      Drawable<PenType>::operator=(std::forward<T>(toForward));
+    // This just uses the overload from base class
+    void operator=(IsPen auto &&newPen) {
+      Drawable<PenType>::operator=(std::forward<decltype(newPen)>(newPen));
     }
 
     /******************************** Getters ********************************/
-    inline const PosRef getPos() const {
-      return PosRef(this->m_rect.x, this->m_rect.y);
+    inline const Pos getPos() const {
+      return Pos(this->m_rect.x, this->m_rect.y);
     }
-    inline const DimRef getDim() const {
-      return DimRef(this->m_rect.width, this->m_rect.height);
+    inline const Dim getDim() const {
+      return Dim(this->m_rect.width, this->m_rect.height);
     }
 
     /******************************** Setters ********************************/

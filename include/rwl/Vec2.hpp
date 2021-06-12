@@ -214,6 +214,4 @@ namespace rwl {
 
   using Pos = Vec2<int16_t>;
   using Dim = Vec2<uint16_t>;
-  using PosRef = Vec2<int16_t &>;
-  using DimRef = Vec2<uint16_t &>;
 } // namespace rwl

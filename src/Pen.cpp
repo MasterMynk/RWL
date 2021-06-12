@@ -78,15 +78,17 @@ namespace rwl {
   }
 
   Pen &Pen::operator=(Pen &&other) {
-    xcb_free_gc(impl::core::conn, this->m_pen);
+    if (!(other.m_pen == this->m_pen)) {
+      xcb_free_gc(impl::core::conn, this->m_pen);
 
-    updateVars(other.m_fgColor, other.m_bgColor, other.m_lineWidth,
-               other.m_lineStyle);
+      updateVars(other.m_fgColor, other.m_bgColor, other.m_lineWidth,
+                 other.m_lineStyle);
 
-    this->m_pen = other.m_pen;
-    other.m_pen = 0;
+      this->m_pen = other.m_pen;
+      other.m_pen = 0;
 
-    LOGGING_HELPER("Moved Assigned");
+      LOGGING_HELPER("Moved Assigned");
+    }
 
     return *this;
   }
