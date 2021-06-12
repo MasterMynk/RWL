@@ -34,6 +34,12 @@ namespace rwl::impl {
       return *this;
     }
 
+    RectComm &operator=(const Dim &newDim) {
+      this->m_rect.width = newDim.width;
+      this->m_rect.height = newDim.height;
+      return *this;
+    }
+
     /******************************** Getters ********************************/
     inline const PosRef getPos() const {
       return PosRef(this->m_rect.x, this->m_rect.y);
