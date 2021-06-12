@@ -8,7 +8,7 @@
 #include <utility>
 
 namespace rwl {
-  template <typename T>
+  template <typename PenType>
   class Rect;
 
   // If an existing Pen is passed in use this 1

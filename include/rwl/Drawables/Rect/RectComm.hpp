@@ -9,21 +9,21 @@
 
 namespace rwl::impl {
   // All code common in all Rects lives below
-  template <typename T>
-  class RectComm: public Drawable<T> {
+  template <typename PenType>
+  class RectComm: public Drawable<PenType> {
   protected:
     xcb_rectangle_t m_rect;
 
   public:
-    RectComm(T pen, const Pos &pos, const Dim &dim)
-        : Drawable<T>(std::forward<std::remove_cv_t<T>>(pen)),
+    RectComm(PenType pen, const Pos &pos, const Dim &dim)
+        : Drawable<PenType>(std::forward<std::remove_cv_t<PenType>>(pen)),
           m_rect{pos.x, pos.y, dim.width, dim.height} {}
 
     /******************************* Operators *******************************/
     // IsPen is declared in Drawable.hpp
     RectComm &operator=(IsPen auto &&newPen) {
       // decltype is needed otherwise type deduction fails
-      Drawable<T>::operator=(std::forward<decltype(newPen)>(newPen));
+      Drawable<PenType>::operator=(std::forward<decltype(newPen)>(newPen));
       return *this;
     }
 

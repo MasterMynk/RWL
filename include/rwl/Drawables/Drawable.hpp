@@ -10,10 +10,10 @@
 
 namespace rwl {
   // Checks if the passeed arg is Pen
-  template <typename T>
-  concept IsPen = std::is_same_v<std::remove_cvref_t<T>, Pen>;
+  template <typename Any>
+  concept IsPen = std::is_same_v<std::remove_cvref_t<Any>, Pen>;
 
-  template <typename T> // Only works if 3 types of args are supplied
+  template <typename PenType> // Only works if 3 types of args are supplied
   class Drawable;
 
   /*

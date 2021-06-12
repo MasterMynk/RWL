@@ -10,11 +10,11 @@ namespace rwl::impl {
    * Pen should inherit from this class as this contains all common code for
    * them.
    */
-  template <typename T>
-  class RectRefComm: public RectComm<T> {
+  template <typename PenType>
+  class RectRefComm: public RectComm<PenType> {
   public:
-    using RectComm<T>::RectComm;
-    using RectComm<T>::operator=;
+    using RectComm<PenType>::RectComm;
+    using RectComm<PenType>::operator=;
 
     void drawIn(Window &win) {
       xcb_poly_rectangle(impl::core::conn, win.m_win, this->m_pen.m_pen, 1,

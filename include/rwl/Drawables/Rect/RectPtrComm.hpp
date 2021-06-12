@@ -9,11 +9,11 @@ namespace rwl::impl {
    * All code common between all Rect specializations that have a pointer to a
    * Pen in them lives here
    */
-  template <typename T>
-  class RectPtrComm: public RectComm<T> {
+  template <typename PenType>
+  class RectPtrComm: public RectComm<PenType> {
   public:
-    using RectComm<T>::RectComm;
-    using RectComm<T>::operator=;
+    using RectComm<PenType>::RectComm;
+    using RectComm<PenType>::operator=;
 
     void drawIn(Window &win) {
       xcb_poly_rectangle(impl::core::conn, win.m_win, this->m_pen->m_pen, 1,
