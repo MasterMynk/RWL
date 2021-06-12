@@ -20,23 +20,22 @@ namespace rwl::impl {
           m_rect{pos.x, pos.y, dim.width, dim.height} {}
 
     /******************************* Operators *******************************/
-    // IsPen is declared in Drawable.hpp
-    RectComm &operator=(IsPen auto &&newPen) {
-      // decltype is needed otherwise type deduction fails
-      Drawable<PenType>::operator=(std::forward<decltype(newPen)>(newPen));
-      return *this;
-    }
 
-    RectComm &operator=(const Pos &newPos) {
+    void operator=(const Pos &newPos) {
       this->m_rect.x = newPos.x;
       this->m_rect.y = newPos.y;
-      return *this;
     }
 
-    RectComm &operator=(const Dim &newDim) {
+    void operator=(const Dim &newDim) {
       this->m_rect.width = newDim.width;
       this->m_rect.height = newDim.height;
-      return *this;
+    }
+
+    // If none of the above overloads match you case, try using an overload from
+    // the base class.
+    template <typename T>
+    void operator=(T &&toForward) {
+      Drawable<PenType>::operator=(std::forward<T>(toForward));
     }
 
     /******************************** Getters ********************************/

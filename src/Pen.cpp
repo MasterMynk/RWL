@@ -42,11 +42,11 @@ namespace rwl {
 
   /******************************* Constructors *******************************/
   Pen::Pen(Pen &&other) // Move Constructor
-      : m_pen(other.m_pen), m_fgColor(other.m_fgColor),
-        m_bgColor(other.m_bgColor), m_lineWidth(other.m_lineWidth),
-        m_lineStyle(other.m_lineStyle) {
+      : m_pen(other.m_pen) {
+    updateVars(other.m_fgColor, other.m_bgColor, other.m_lineWidth,
+               other.m_lineStyle);
     other.m_pen = 0;
-    LOGGING_HELPER("Moved");
+    LOGGING_HELPER("Move Constructed");
   }
 
   Pen::Pen(const Pen &other)
@@ -85,6 +85,8 @@ namespace rwl {
 
     this->m_pen = other.m_pen;
     other.m_pen = 0;
+
+    LOGGING_HELPER("Moved Assigned");
 
     return *this;
   }

@@ -10,8 +10,11 @@
 
 namespace rwl {
   // Checks if the passeed arg is Pen
-  template <typename Any>
-  concept IsPen = std::is_same_v<std::remove_cvref_t<Any>, Pen>;
+  template <typename Type, typename T>
+  concept IsType = std::is_same_v<Type, std::remove_cvref_t<T>>;
+
+  template <typename T>
+  concept IsPen = IsType<Pen, T>;
 
   template <typename PenType> // Only works if 3 types of args are supplied
   class Drawable;
@@ -71,7 +74,7 @@ namespace rwl {
     Drawable(std::shared_ptr<Pen> pen) : m_pen(pen) {}
 
     Pen &pen() const { return *m_pen; }
-    
+
     void operator=(IsPen auto &&newPen) {
       impl::log("Drawable: Changed Pen with operator=");
       *(this->m_pen) = std::forward<decltype(newPen)>(newPen);
