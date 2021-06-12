@@ -49,9 +49,13 @@ namespace rwl {
     LOGGING_HELPER("Moved");
   }
 
-  Pen::Pen(const Pen &other) {
-    Pen(other.m_fgColor, other.m_bgColor, other.m_lineWidth, other.m_lineStyle);
-  }
+  Pen::Pen(const Pen &other)
+      : Pen(other.m_fgColor, other.m_bgColor, other.m_lineWidth,
+            other.m_lineStyle) {}
+
+  Pen::Pen(const Color &color, const uint32_t &lineWidth,
+           const LineStyle &lineStyle)
+      : Pen(color, color, lineWidth, lineStyle) {}
 
   Pen::Pen(const Color &fgColor, const Color &bgColor,
            const uint32_t &lineWidth, const LineStyle &lineStyle)
