@@ -17,7 +17,7 @@ namespace rwl::impl {
 
     void drawIn(Window &win) {
       xcb_poly_rectangle(impl::core::conn, win.m_win, this->m_pen->m_pen, 1,
-                         this->m_rect);
+                         &this->m_rect);
     }
 
     virtual ~RectPtrComm() {}

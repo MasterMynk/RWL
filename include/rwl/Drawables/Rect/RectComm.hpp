@@ -15,7 +15,7 @@ namespace rwl::impl {
   template <typename T>
   class RectComm: public Drawable<T> {
   protected:
-    xcb_rectangle_t m_rect[1];
+    xcb_rectangle_t m_rect;
 
   public:
     RectComm(T pen, const Pos &pos, const Dim &dim)
@@ -28,23 +28,31 @@ namespace rwl::impl {
       return *this;
     }
 
-    inline const PosRef getPos() const {
-      return PosRef(this->m_rect->x, this->m_rect->y);
-    }
-    inline const DimRef getDim() const {
-      return DimRef(this->m_rect->width, this->m_rect->height);
+    RectComm &operator=(const Pos &newPos) {
+      this->m_rect.x = newPos.x;
+      this->m_rect.y = newPos.y;
+      return *this;
     }
 
+    /******************************** Getters ********************************/
+    inline const PosRef getPos() const {
+      return PosRef(this->m_rect.x, this->m_rect.y);
+    }
+    inline const DimRef getDim() const {
+      return DimRef(this->m_rect.width, this->m_rect.height);
+    }
+
+    /******************************** Setters ********************************/
     RectComm &setPos(const Pos &newPos) {
-      this->m_rect->x = newPos.x;
-      this->m_rect->y = newPos.y;
+      this->m_rect.x = newPos.x;
+      this->m_rect.y = newPos.y;
 
       return *this;
     }
 
     RectComm &setDim(const Dim &newDim) {
-      this->m_rect->width = newDim.width;
-      this->m_rect->height = newDim.height;
+      this->m_rect.width = newDim.width;
+      this->m_rect.height = newDim.height;
 
       return *this;
     }
