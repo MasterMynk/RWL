@@ -44,10 +44,7 @@ namespace rwl {
   public:
     Drawable(Pen &&pen) : m_pen(std::move(pen)) {}
 
-    Pen &pen() {
-      impl::log<impl::LogLevel::NoImp>("Drawable: Returning Pen (rvalue)");
-      return m_pen;
-    }
+    Pen &pen() { return m_pen; }
 
     void operator=(const Pen &newPen) {
       impl::log("Drawable: Changed Pen with operator=");
@@ -68,11 +65,7 @@ namespace rwl {
   public:
     Drawable(std::shared_ptr<Pen> pen) : m_pen(pen) {}
 
-    Pen &pen() const {
-      impl::log<impl::LogLevel::NoImp>(
-          "Drawable: Returning Pen (std::shared_ptr)");
-      return *m_pen;
-    }
+    Pen &pen() const { return *m_pen; }
 
     void operator=(const Pen &newPen) {
       impl::log("Drawable: Changed Pen with operator=");
@@ -92,11 +85,7 @@ namespace rwl {
   public:
     Drawable(std::unique_ptr<Pen> &&pen) : m_pen(std::move(pen)) {}
 
-    Pen &pen() const {
-      impl::log<impl::LogLevel::NoImp>(
-          "Drawable: Returning Pen (std::unique_ptr)");
-      return *m_pen;
-    }
+    Pen &pen() const { return *m_pen; }
 
     void operator=(const Pen &newPen) {
       impl::log("Drawable: Changed Pen with operator=");
