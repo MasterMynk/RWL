@@ -58,6 +58,8 @@ namespace rwl {
       return this->setLineStyle(lineStyle);
     }
 
+    bool operator==(const Pen &other);
+
     /******************************** Getters *********************************/
     inline const Color &getFgColor() const {
       impl::log<impl::LogLevel::NoImp>("Returning fg color as ",

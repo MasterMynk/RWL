@@ -26,6 +26,7 @@ namespace rwl::impl {
     virtual ~RectPtrComm() {}
 
     /******************************* Operators *******************************/
+    /******************************* Operator= *******************************/
     template <typename T>
     RectPtrComm &operator=(const RectRefComm<T> &other) {
       this->m_rect = other.m_rect;

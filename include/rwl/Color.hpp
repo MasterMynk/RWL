@@ -24,6 +24,10 @@ namespace rwl {
   public:
     Color(const ColorEnum &color = Black);
 
+    inline bool operator==(const Color &other) {
+      return (this->m_color == other.m_color);
+    }
+
 #if RWL_DEBUG == 1
     inline const uint32_t &getCol() const {
       impl::log<impl::LogLevel::NoImp>("Returning color as ", m_color);

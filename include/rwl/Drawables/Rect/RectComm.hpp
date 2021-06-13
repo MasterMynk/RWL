@@ -20,6 +20,7 @@ namespace rwl::impl {
           m_rect{pos.x, pos.y, dim.width, dim.height} {}
 
     /******************************* Operators *******************************/
+    /******************************* Operator= *******************************/
     void operator=(const Pos &newPos) {
       this->m_rect.x = newPos.x;
       this->m_rect.y = newPos.y;

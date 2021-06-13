@@ -38,6 +38,12 @@ namespace rwl {
       impl::log("Drawable: Changed Pen with operator=");
       this->m_pen = std::forward<decltype(newPen)>(newPen);
     }
+
+    bool operator==(const Pen &otherPen) {
+      impl::log<impl::LogLevel::NoImp>(
+          "Drawable: Checking if my Pen is equal to another");
+      return (this->m_pen == otherPen);
+    }
   };
 
   /*
@@ -57,6 +63,12 @@ namespace rwl {
     void operator=(IsPen auto &&newPen) {
       impl::log("Drawable: Changed Pen with operator=");
       this->m_pen = std::forward<decltype(newPen)>(newPen);
+    }
+
+    bool operator==(const Pen &otherPen) {
+      impl::log<impl::LogLevel::NoImp>(
+          "Drawable: Checking if my Pen is equal to another");
+      return (this->m_pen == otherPen);
     }
   };
 
@@ -79,6 +91,12 @@ namespace rwl {
       impl::log("Drawable: Changed Pen with operator=");
       *(this->m_pen) = std::forward<decltype(newPen)>(newPen);
     }
+
+    bool operator==(const Pen &otherPen) {
+      impl::log<impl::LogLevel::NoImp>(
+          "Drawable: Checking if my Pen is equal to another");
+      return (*(this->m_pen) == otherPen);
+    }
   };
 
   /*
@@ -98,6 +116,12 @@ namespace rwl {
     void operator=(IsPen auto &&newPen) {
       impl::log("Drawable: Changed Pen with operator=");
       *(this->m_pen) = std::forward<decltype(newPen)>(newPen);
+    }
+
+    bool operator==(const Pen &otherPen) {
+      impl::log<impl::LogLevel::NoImp>(
+          "Drawable: Checking if my Pen is equal to another");
+      return (*(this->m_pen) == otherPen);
     }
   };
 

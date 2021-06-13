@@ -93,6 +93,13 @@ namespace rwl {
     return *this;
   }
 
+  bool Pen::operator==(const Pen &other) {
+    return (this->m_fgColor == other.m_fgColor &&
+            this->m_bgColor == other.m_bgColor &&
+            this->m_lineWidth == other.m_lineWidth &&
+            this->m_lineStyle == other.m_lineStyle);
+  }
+
   /********************************* Setters *********************************/
   Pen &Pen::setFgColor(const Color &fgColor) {
     this->m_fgColor = fgColor;
