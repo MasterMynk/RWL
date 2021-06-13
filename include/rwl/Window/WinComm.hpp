@@ -28,7 +28,7 @@ namespace rwl {
               const Color &bgColor);
 
       /****************************** Operators ******************************/
-      /****************************** Operator= ******************************/
+      /***************************** Operator= *****************************/
       WinComm &operator=(const WinComm &other);
 
       inline WinComm &operator=(const Pos &other) {
@@ -41,7 +41,7 @@ namespace rwl {
         return this->setBgColor(bgColor);
       }
 
-      /****************************** Operator== ******************************/
+      /***************************** Operator== *****************************/
       inline bool operator==(const Pos &other) { return this->m_pos == other; }
       inline bool operator==(const Dim &other) { return this->m_dim == other; }
       inline bool operator==(const Color &other) {
@@ -51,6 +51,57 @@ namespace rwl {
       inline bool operator==(const WinComm &other) {
         return (*this == other.m_pos && *this == other.m_dim &&
                 *this == other.m_bgColor);
+      }
+
+      /************************* Compound Operators *************************/
+      /**************************** Operator+= ****************************/
+      inline WinComm &operator+=(const Pos &other) {
+        this->setPos(this->m_pos + other);
+        return *this;
+      }
+      inline WinComm &operator+=(const Dim &other) {
+        this->setDim(this->m_dim + other);
+        return *this;
+      }
+
+      /**************************** Operator-= ****************************/
+      inline WinComm &operator-=(const Pos &other) {
+        this->setPos(this->m_pos - other);
+        return *this;
+      }
+      inline WinComm &operator-=(const Dim &other) {
+        this->setDim(this->m_dim - other);
+        return *this;
+      }
+
+      /**************************** Operator*= ****************************/
+      inline WinComm &operator*=(const Pos &other) {
+        this->setPos(this->m_pos * other);
+        return *this;
+      }
+      inline WinComm &operator*=(const Dim &other) {
+        this->setDim(this->m_dim * other);
+        return *this;
+      }
+
+      /**************************** Operator/= ****************************/
+      inline WinComm &operator/=(const Pos &other) {
+        this->setPos(this->m_pos / other);
+        return *this;
+      }
+      inline WinComm &operator/=(const Dim &other) {
+        this->setDim(this->m_dim / other);
+        return *this;
+      }
+
+      /**************************** Operator%= ****************************/
+      inline WinComm &operator%=(const Pos &other) {
+        this->setPos(this->m_pos % other);
+        return *this;
+      }
+      inline WinComm &operator%=(const Dim &other) {
+        this->setDim(this->m_dim % other);
+        return *this;
       }
 
       /****************************** Functions ******************************/
