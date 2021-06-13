@@ -23,17 +23,28 @@ namespace rwl {
       Color m_bgColor;
 #endif
     public:
+      /***************************** Constructors *****************************/
       WinComm(const xcb_window_t &winId, const Pos &pos, const Dim &dim,
               const Color &bgColor);
 
+      /****************************** Operators ******************************/
       WinComm &operator=(const WinComm &other);
 
+      inline WinComm &operator=(const Pos &other) {
+        return this->setPos(other);
+      }
+      inline WinComm &operator=(const Dim &other) {
+        return this->setDim(other);
+      }
+
+      /****************************** Functions ******************************/
       WinComm &show();
       WinComm &showNoUpdate();
 
       WinComm &hide();
       WinComm &hideNoUpdate();
 
+      /******************************* Getters *******************************/
       inline const Pos &getPos() const {
         impl::log<impl::LogLevel::NoImp>("Returning Window Position as ",
                                          m_pos);
@@ -50,6 +61,7 @@ namespace rwl {
         return this->m_bgColor;
       }
 
+      /******************************* Setters *******************************/
       inline WinComm &setPos(const Pos &other) {
         this->m_pos = other;
         impl::log<impl::LogLevel::NoImp>("Set Window Position to ",
