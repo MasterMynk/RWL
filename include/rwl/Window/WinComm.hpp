@@ -104,6 +104,27 @@ namespace rwl {
         return *this;
       }
 
+      /*********************** Aritchmatic Operators ***********************/
+      /**************************** Operator+ ****************************/
+      inline Pos operator+(const Pos &other) { return this->m_pos + other; }
+      inline Dim operator+(const Dim &other) { return this->m_dim + other; }
+
+      /**************************** Operator- ****************************/
+      inline Pos operator-(const Pos &other) { return this->m_pos - other; }
+      inline Dim operator-(const Dim &other) { return this->m_dim - other; }
+
+      /**************************** Operator* ****************************/
+      inline Pos operator*(const Pos &other) { return this->m_pos * other; }
+      inline Dim operator*(const Dim &other) { return this->m_dim * other; }
+
+      /**************************** Operator/ ****************************/
+      inline Pos operator/(const Pos &other) { return this->m_pos / other; }
+      inline Dim operator/(const Dim &other) { return this->m_dim / other; }
+
+      /**************************** Operator% ****************************/
+      inline Pos operator%(const Pos &other) { return this->m_pos % other; }
+      inline Dim operator%(const Dim &other) { return this->m_dim % other; }
+
       /****************************** Functions ******************************/
       WinComm &show();
       WinComm &showNoUpdate();
