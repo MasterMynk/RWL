@@ -61,21 +61,15 @@ namespace rwl {
       WinComm &hideNoUpdate();
 
       /******************************* Getters *******************************/
-      inline const Pos &getPos() const {
-        impl::log<impl::LogLevel::NoImp>("Returning Window Position as ",
-                                         m_pos);
-        return m_pos;
-      }
-      inline const Dim &getDim() const {
-        impl::log<impl::LogLevel::NoImp>("Returning Window Dimensions as ",
-                                         m_dim);
-        return m_dim;
-      }
-      inline const Color &getBgColor() const {
-        impl::log<impl::LogLevel::NoImp>("Returning Bg Color as ",
-                                         this->m_bgColor.colorToStr());
-        return this->m_bgColor;
-      }
+      inline const Pos &getPos() const { return m_pos; }
+      inline const int16_t &getX() const { return m_pos.x; }
+      inline const int16_t &getY() const { return m_pos.y; }
+
+      inline const Dim &getDim() const { return m_dim; }
+      inline const uint16_t &getWidth() const { return m_dim.width; }
+      inline const uint16_t &getHeight() const { return m_dim.height; }
+
+      inline const Color &getBgColor() const { return this->m_bgColor; }
 
       /******************************* Setters *******************************/
       inline WinComm &setPos(const Pos &other) {
@@ -84,12 +78,26 @@ namespace rwl {
                                          this->m_pos);
         return *this;
       }
+      inline WinComm &setX(const int16_t &x) {
+        return this->setPos({x, this->m_pos.y});
+      }
+      inline WinComm &setY(const int16_t &y) {
+        return this->setPos({this->m_pos.x, y});
+      }
+
       inline WinComm &setDim(const Dim &other) {
         this->m_dim = other;
         impl::log<impl::LogLevel::NoImp>("Set Window Dimensions to ",
                                          this->m_dim);
         return *this;
       }
+      inline WinComm &setWidth(const uint16_t &width) {
+        return this->setDim({width, this->m_dim.height});
+      }
+      inline WinComm &setHeight(const uint16_t &height) {
+        return this->setDim({this->m_dim.height, height});
+      }
+
       inline WinComm &setBgColor(const Color &bgColor) {
         this->m_bgColor = bgColor;
         impl::log<impl::LogLevel::NoImp>("Set Bg Color to ",
@@ -98,10 +106,7 @@ namespace rwl {
       }
 
 #if RWL_DEBUG == 1
-      inline const xcb_window_t &getW() const {
-        impl::log<impl::LogLevel::NoImp>("Returning Window id.");
-        return m_win;
-      }
+      inline const xcb_window_t &getW() const { return m_win; }
 #endif
 
       virtual ~WinComm() {}
