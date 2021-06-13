@@ -8,6 +8,9 @@
 #include <xcb/xcb.h>
 
 namespace rwl::impl {
+  template <typename T>
+  class Rect;
+
   // All code common in all Rects lives below
   template <typename PenType>
   class RectComm: public Drawable<PenType> {
@@ -41,6 +44,57 @@ namespace rwl::impl {
     // This just uses the overload from base class
     inline void operator=(IsPen auto &&newPen) {
       Drawable<PenType>::operator=(std::forward<decltype(newPen)>(newPen));
+    }
+
+    /********************** Regular arithmatic operators **********************/
+    /******************************* Operator+ *******************************/
+    Pos operator+(const Pos &otherPos) {
+      return Pos(this->m_rect.x + otherPos.x, this->m_rect.y + otherPos.y);
+    }
+
+    Dim operator+(const Dim &otherDim) {
+      return Dim(this->m_rect.width + otherDim.width,
+                 this->m_rect.height + otherDim.height);
+    }
+
+    /******************************* Operator- *******************************/
+    Pos operator-(const Pos &otherPos) {
+      return Pos(this->m_rect.x - otherPos.x, this->m_rect.y - otherPos.y);
+    }
+
+    Dim operator-(const Dim &otherDim) {
+      return Dim(this->m_rect.width - otherDim.width,
+                 this->m_rect.height - otherDim.height);
+    }
+
+    /******************************* Operator* *******************************/
+    Pos operator*(const Pos &otherPos) {
+      return Pos(this->m_rect.x * otherPos.x, this->m_rect.y * otherPos.y);
+    }
+
+    Dim operator*(const Dim &otherDim) {
+      return Dim(this->m_rect.width * otherDim.width,
+                 this->m_rect.height * otherDim.height);
+    }
+
+    /******************************* Operator/ *******************************/
+    Pos operator/(const Pos &otherPos) {
+      return Pos(this->m_rect.x / otherPos.x, this->m_rect.y / otherPos.y);
+    }
+
+    Dim operator/(const Dim &otherDim) {
+      return Dim(this->m_rect.width / otherDim.width,
+                 this->m_rect.height / otherDim.height);
+    }
+
+    /******************************* Operator% *******************************/
+    Pos operator%(const Pos &otherPos) {
+      return Pos(this->m_rect.x % otherPos.x, this->m_rect.y % otherPos.y);
+    }
+
+    Dim operator%(const Dim &otherDim) {
+      return Dim(this->m_rect.width % otherDim.width,
+                 this->m_rect.height % otherDim.height);
     }
 
     /*************************** Compound Operators ***************************/
