@@ -6,6 +6,5 @@ namespace rwl::impl {
     // All common code between all Drawable specializations lives here
   public:
     virtual void drawIn(Window &win) = 0;
-    virtual ~DrawableComm() {}
   };
 } // namespace rwl::impl
