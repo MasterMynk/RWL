@@ -30,7 +30,7 @@ namespace rwl::impl {
           m_rect{pos.x, pos.y, dim.width, dim.height} {}
 
     /******************************* Operators *******************************/
-    /******************************* Operator= *******************************/
+    /****************************** Operator= ******************************/
     void operator=(const Pos &newPos) {
       this->m_rect.x = newPos.x;
       this->m_rect.y = newPos.y;
@@ -46,8 +46,8 @@ namespace rwl::impl {
       Drawable<PenType>::operator=(std::forward<decltype(newPen)>(newPen));
     }
 
-    /********************** Regular arithmatic operators **********************/
-    /******************************* Operator+ *******************************/
+    /********************* Regular arithmatic operators *********************/
+    /***************************** Operator+ *****************************/
     Pos operator+(const Pos &otherPos) {
       return Pos(this->m_rect.x + otherPos.x, this->m_rect.y + otherPos.y);
     }
@@ -57,7 +57,7 @@ namespace rwl::impl {
                  this->m_rect.height + otherDim.height);
     }
 
-    /******************************* Operator- *******************************/
+    /***************************** Operator- *****************************/
     Pos operator-(const Pos &otherPos) {
       return Pos(this->m_rect.x - otherPos.x, this->m_rect.y - otherPos.y);
     }
@@ -67,7 +67,7 @@ namespace rwl::impl {
                  this->m_rect.height - otherDim.height);
     }
 
-    /******************************* Operator* *******************************/
+    /***************************** Operator* *****************************/
     Pos operator*(const Pos &otherPos) {
       return Pos(this->m_rect.x * otherPos.x, this->m_rect.y * otherPos.y);
     }
@@ -77,7 +77,7 @@ namespace rwl::impl {
                  this->m_rect.height * otherDim.height);
     }
 
-    /******************************* Operator/ *******************************/
+    /***************************** Operator/ *****************************/
     Pos operator/(const Pos &otherPos) {
       return Pos(this->m_rect.x / otherPos.x, this->m_rect.y / otherPos.y);
     }
@@ -87,7 +87,7 @@ namespace rwl::impl {
                  this->m_rect.height / otherDim.height);
     }
 
-    /******************************* Operator% *******************************/
+    /***************************** Operator% *****************************/
     Pos operator%(const Pos &otherPos) {
       return Pos(this->m_rect.x % otherPos.x, this->m_rect.y % otherPos.y);
     }
@@ -97,8 +97,8 @@ namespace rwl::impl {
                  this->m_rect.height % otherDim.height);
     }
 
-    /*************************** Compound Operators ***************************/
-    /******************************* Operator+= *******************************/
+    /************************** Compound Operators **************************/
+    /***************************** Operator+= *****************************/
     RectComm &operator+=(const Pos &otherPos) {
       this->m_rect.x += otherPos.x;
       this->m_rect.y += otherPos.y;
@@ -120,7 +120,7 @@ namespace rwl::impl {
       return *this;
     }
 
-    /******************************* Operator-= *******************************/
+    /***************************** Operator-= *****************************/
     RectComm &operator-=(const Pos &otherPos) {
       this->m_rect.x -= otherPos.x;
       this->m_rect.y -= otherPos.y;
@@ -142,7 +142,7 @@ namespace rwl::impl {
       return *this;
     }
 
-    /******************************* Operator*= *******************************/
+    /***************************** Operator*= *****************************/
     RectComm &operator*=(const Pos &otherPos) {
       this->m_rect.x *= otherPos.x;
       this->m_rect.y *= otherPos.y;
@@ -163,7 +163,7 @@ namespace rwl::impl {
       return *this;
     }
 
-    /******************************* Operator/= *******************************/
+    /***************************** Operator/= *****************************/
     RectComm &operator/=(const Pos &otherPos) {
       this->m_rect.x /= otherPos.x;
       this->m_rect.y /= otherPos.y;
@@ -184,7 +184,7 @@ namespace rwl::impl {
       return *this;
     }
 
-    /******************************* Operator%= *******************************/
+    /***************************** Operator%= *****************************/
     RectComm &operator%=(const Pos &otherPos) {
       this->m_rect.x %= otherPos.x;
       this->m_rect.y %= otherPos.y;
@@ -205,7 +205,7 @@ namespace rwl::impl {
       return *this;
     }
 
-    /************************* Comparision Operators *************************/
+    /************************ Comparision Operators ************************/
     bool operator==(const Pos &otherPos) {
       return (this->m_rect.x == otherPos.x && this->m_rect.y == otherPos.y);
     }
@@ -225,22 +225,43 @@ namespace rwl::impl {
     inline const Pos getPos() const {
       return Pos(this->m_rect.x, this->m_rect.y);
     }
+    inline const int16_t &getX() const { return this->m_rect.x; }
+    inline const int16_t &getY() const { return this->m_rect.y; }
+
     inline const Dim getDim() const {
       return Dim(this->m_rect.width, this->m_rect.height);
     }
+    inline const uint16_t &getWidth() const { return this->m_rect.width; }
+    inline const uint16_t &getHeight() const { return this->m_rect.height; }
 
     /******************************** Setters ********************************/
-    RectComm &setPos(const Pos &newPos) {
-      this->m_rect.x = newPos.x;
-      this->m_rect.y = newPos.y;
+    RectComm &setPos(const Pos &pos) {
+      this->m_rect.x = pos.x;
+      this->m_rect.y = pos.y;
 
       return *this;
     }
+    RectComm &setX(const int16_t &x) {
+      this->m_rect.x = x;
+      return *this;
+    }
+    RectComm &setY(const int16_t &y) {
+      this->m_rect.y = y;
+      return *this;
+    }
 
-    RectComm &setDim(const Dim &newDim) {
-      this->m_rect.width = newDim.width;
-      this->m_rect.height = newDim.height;
+    RectComm &setDim(const Dim &dim) {
+      this->m_rect.width = dim.width;
+      this->m_rect.height = dim.height;
 
+      return *this;
+    }
+    RectComm &setWidth(const uint16_t &width) {
+      this->m_rect.width = width;
+      return *this;
+    }
+    RectComm &setHeight(const uint16_t &height) {
+      this->m_rect.height = height;
       return *this;
     }
 
