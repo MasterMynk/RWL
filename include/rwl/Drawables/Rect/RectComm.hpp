@@ -41,6 +41,17 @@ namespace rwl::impl {
       return (this->m_rect.x == otherPos.x && this->m_rect.y == otherPos.y);
     }
 
+    bool operator==(const Dim &otherPos) {
+      return (this->m_rect.width == otherPos.width &&
+              this->m_rect.height == otherPos.height);
+    }
+
+    // As the above override the base class's operator==, we have to declare it
+    // again and tell it to use the Drawable's operator==.
+    bool operator==(const Pen &otherPen) {
+      return Drawable<PenType>::operator==(otherPen);
+    }
+
     /******************************** Getters ********************************/
     inline const Pos getPos() const {
       return Pos(this->m_rect.x, this->m_rect.y);
