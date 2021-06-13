@@ -28,6 +28,7 @@ namespace rwl {
               const Color &bgColor);
 
       /****************************** Operators ******************************/
+      /****************************** Operator= ******************************/
       WinComm &operator=(const WinComm &other);
 
       inline WinComm &operator=(const Pos &other) {
@@ -35,6 +36,21 @@ namespace rwl {
       }
       inline WinComm &operator=(const Dim &other) {
         return this->setDim(other);
+      }
+      inline WinComm &operator=(const Color &bgColor) {
+        return this->setBgColor(bgColor);
+      }
+
+      /****************************** Operator== ******************************/
+      inline bool operator==(const Pos &other) { return this->m_pos == other; }
+      inline bool operator==(const Dim &other) { return this->m_dim == other; }
+      inline bool operator==(const Color &other) {
+        return this->m_bgColor == other;
+      }
+
+      inline bool operator==(const WinComm &other) {
+        return (*this == other.m_pos && *this == other.m_dim &&
+                *this == other.m_bgColor);
       }
 
       /****************************** Functions ******************************/
@@ -74,7 +90,7 @@ namespace rwl {
                                          this->m_dim);
         return *this;
       }
-      inline const WinComm &setBgColor(const Color &bgColor) {
+      inline WinComm &setBgColor(const Color &bgColor) {
         this->m_bgColor = bgColor;
         impl::log<impl::LogLevel::NoImp>("Set Bg Color to ",
                                          this->m_bgColor.colorToStr());
