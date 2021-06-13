@@ -53,6 +53,12 @@ namespace rwl {
       : Pen(other.m_fgColor, other.m_bgColor, other.m_lineWidth,
             other.m_lineStyle) {}
 
+  Pen::Pen(const LineStyle &lineStyle)
+      : Pen(Color::Black, Color::Black, 1, lineStyle) {}
+
+  Pen::Pen(const uint32_t &lineWidth, const LineStyle &lineStyle)
+      : Pen(Color::Black, Color::Black, lineWidth, lineStyle) {}
+
   Pen::Pen(const Color &color, const uint32_t &lineWidth,
            const LineStyle &lineStyle)
       : Pen(color, color, lineWidth, lineStyle) {}
