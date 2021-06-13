@@ -36,6 +36,11 @@ namespace rwl::impl {
       Drawable<PenType>::operator=(std::forward<decltype(newPen)>(newPen));
     }
 
+    /************************* Comparision Operators *************************/
+    bool operator==(const Pos &otherPos) {
+      return (this->m_rect.x == otherPos.x && this->m_rect.y == otherPos.y);
+    }
+
     /******************************** Getters ********************************/
     inline const Pos getPos() const {
       return Pos(this->m_rect.x, this->m_rect.y);
