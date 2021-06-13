@@ -8,13 +8,15 @@
 #include <utility>
 
 namespace rwl {
-  template <typename T>
+  template <typename PenType>
   class Rect;
 
   // If an existing Pen is passed in use this 1
   template <>
   class Rect<Pen &>: public impl::RectRefComm<Pen &> {
   public:
+    using impl::RectRefComm<Pen &>::operator=;
+
     Rect(Pen &pen, const Pos &pos = {0, 0}, const Dim &dim = {10, 10})
         : impl::RectRefComm<Pen &>(pen, pos, dim) {}
   };
@@ -23,6 +25,8 @@ namespace rwl {
   template <>
   class Rect<Pen &&>: public impl::RectRefComm<Pen &&> {
   public:
+    using impl::RectRefComm<Pen &&>::operator=;
+
     Rect(Pen &&pen = Pen(), const Pos &pos = {0, 0}, const Dim &dim = {10, 10})
         : impl::RectRefComm<Pen &&>(std::move(pen), pos, dim) {}
   };
@@ -32,6 +36,8 @@ namespace rwl {
   class Rect<std::shared_ptr<Pen>>
       : public impl::RectPtrComm<std::shared_ptr<Pen>> {
   public:
+    using impl::RectPtrComm<std::shared_ptr<Pen>>::operator=;
+
     Rect(std::shared_ptr<Pen> pen, const Pos &pos = {0, 0},
          const Dim &dim = {10, 10})
         : impl::RectPtrComm<std::shared_ptr<Pen>>(pen, pos, dim) {}
@@ -41,6 +47,7 @@ namespace rwl {
   class Rect<std::unique_ptr<Pen>>
       : public impl::RectPtrComm<std::unique_ptr<Pen>> {
   public:
+    using impl::RectPtrComm<std::unique_ptr<Pen>>::operator=;
     Rect(std::shared_ptr<Pen> &&pen, const Pos &pos = {0, 0},
          const Dim &dim = {10, 10})
         : impl::RectPtrComm<std::unique_ptr<Pen>>(

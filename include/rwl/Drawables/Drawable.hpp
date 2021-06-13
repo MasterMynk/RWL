@@ -5,10 +5,18 @@
 #include "rwl/Window/Window.hpp"
 
 #include <memory>
+#include <utility>
 #include <xcb/xcb.h>
 
 namespace rwl {
-  template <typename T> // Only works if 3 types of args are supplied
+  // Checks if the passeed arg is Pen
+  template <typename Type, typename T>
+  concept IsType = std::is_same_v<Type, std::remove_cvref_t<T>>;
+
+  template <typename T>
+  concept IsPen = IsType<Pen, T>;
+
+  template <typename PenType> // Only works if 3 types of args are supplied
   class Drawable;
 
   /*
@@ -24,9 +32,17 @@ namespace rwl {
   public:
     Drawable(Pen &pen) : m_pen(pen) {}
 
-    Pen &pen() const {
-      impl::log<impl::LogLevel::NoImp>("Drawable: Returning Pen (lvalue)");
-      return m_pen;
+    Pen &pen() const { return m_pen; }
+
+    void operator=(IsPen auto &&newPen) {
+      impl::log("Drawable: Changed Pen with operator=");
+      this->m_pen = std::forward<decltype(newPen)>(newPen);
+    }
+
+    bool operator==(const Pen &otherPen) {
+      impl::log<impl::LogLevel::NoImp>(
+          "Drawable: Checking if my Pen is equal to another");
+      return (this->m_pen == otherPen);
     }
   };
 
@@ -42,9 +58,17 @@ namespace rwl {
   public:
     Drawable(Pen &&pen) : m_pen(std::move(pen)) {}
 
-    Pen &pen() {
-      impl::log<impl::LogLevel::NoImp>("Drawable: Returning Pen (rvalue)");
-      return m_pen;
+    Pen &pen() { return m_pen; }
+
+    void operator=(IsPen auto &&newPen) {
+      impl::log("Drawable: Changed Pen with operator=");
+      this->m_pen = std::forward<decltype(newPen)>(newPen);
+    }
+
+    bool operator==(const Pen &otherPen) {
+      impl::log<impl::LogLevel::NoImp>(
+          "Drawable: Checking if my Pen is equal to another");
+      return (this->m_pen == otherPen);
     }
   };
 
@@ -61,10 +85,17 @@ namespace rwl {
   public:
     Drawable(std::shared_ptr<Pen> pen) : m_pen(pen) {}
 
-    Pen &pen() const {
+    Pen &pen() const { return *m_pen; }
+
+    void operator=(IsPen auto &&newPen) {
+      impl::log("Drawable: Changed Pen with operator=");
+      *(this->m_pen) = std::forward<decltype(newPen)>(newPen);
+    }
+
+    bool operator==(const Pen &otherPen) {
       impl::log<impl::LogLevel::NoImp>(
-          "Drawable: Returning Pen (std::shared_ptr)");
-      return *m_pen;
+          "Drawable: Checking if my Pen is equal to another");
+      return (*(this->m_pen) == otherPen);
     }
   };
 
@@ -80,10 +111,17 @@ namespace rwl {
   public:
     Drawable(std::unique_ptr<Pen> &&pen) : m_pen(std::move(pen)) {}
 
-    Pen &pen() const {
+    Pen &pen() const { return *m_pen; }
+
+    void operator=(IsPen auto &&newPen) {
+      impl::log("Drawable: Changed Pen with operator=");
+      *(this->m_pen) = std::forward<decltype(newPen)>(newPen);
+    }
+
+    bool operator==(const Pen &otherPen) {
       impl::log<impl::LogLevel::NoImp>(
-          "Drawable: Returning Pen (std::unique_ptr)");
-      return *m_pen;
+          "Drawable: Checking if my Pen is equal to another");
+      return (*(this->m_pen) == otherPen);
     }
   };
 

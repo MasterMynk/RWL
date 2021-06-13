@@ -26,6 +26,9 @@ namespace rwl {
     Vec2(const Any &p_x, const Any &p_y) : x(p_x), y(p_y) {}
     Vec2(const Any &other = Any()) : x(other), y(other) {}
 
+    template <typename T>
+    Vec2(const Vec2<T> &other) : x(other.x), y(other.y) {}
+
   private:
     template <typename Any0>
     Vec2<Any> modImpl(const Any0 &first, const Any0 &sec) const {
@@ -214,6 +217,4 @@ namespace rwl {
 
   using Pos = Vec2<int16_t>;
   using Dim = Vec2<uint16_t>;
-  using PosRef = Vec2<int16_t &>;
-  using DimRef = Vec2<uint16_t &>;
 } // namespace rwl
