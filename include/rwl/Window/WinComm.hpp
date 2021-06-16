@@ -7,13 +7,10 @@
 namespace rwl {
   class Window;
 
+  template <size_t Size>
+  class Rect;
+
   namespace impl {
-    template <typename T>
-    class RectPtrComm;
-
-    template <typename T>
-    class RectPtrComm;
-
     class WinComm {
     protected:
 #if RWL_PLATFORM == LINUX
@@ -183,11 +180,8 @@ namespace rwl {
 
       virtual ~WinComm() {}
 
-      template <typename T>
-      friend class impl::RectPtrComm;
-
-      template <typename T>
-      friend class impl::RectRefComm;
+      template <size_t Size>
+      friend class ::rwl::Rect;
 
       friend ::rwl::Window;
     };

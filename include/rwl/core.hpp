@@ -1,5 +1,7 @@
 #pragma once
 #include "rwl/Log.hpp"
+#include "rwl/PosDim.hpp"
+#include "rwl/Vec2.hpp"
 #include <functional>
 #include <memory>
 #include <xcb/xcb.h>
@@ -9,17 +11,14 @@ namespace rwl {
   class Color;
   class Window;
 
+  template <size_t Size>
+  class Rect;
+
   enum class Measurement { Pixels = 0, Mm };
 
   namespace impl {
     struct core;
     class WinComm;
-
-    template <typename T>
-    class RectPtrComm;
-
-    template <typename T>
-    class RectRefComm;
 
     const WinComm makeRoot();
   } // namespace impl
@@ -48,11 +47,8 @@ namespace rwl {
 
       friend WinComm;
 
-      template <typename T>
-      friend class RectPtrComm;
-
-      template <typename T>
-      friend class RectRefComm;
+      template <size_t Size>
+      friend class ::rwl::Rect;
 
       friend const WinComm makeRoot();
 

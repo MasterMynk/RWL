@@ -139,6 +139,6 @@ namespace rwl {
   };
 
   inline std::ostream &operator<<(std::ostream &cout, const PosDim &toPrint) {
-    return (cout << toPrint.pos << "\n" << toPrint.dim);
+    return (cout << "{ " << toPrint.pos << ", " << toPrint.dim << " }");
   }
 } // namespace rwl

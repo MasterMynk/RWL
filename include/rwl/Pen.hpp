@@ -4,6 +4,9 @@
 #include <xcb/xcb.h>
 
 namespace rwl {
+  template <size_t Size>
+  class Rect;
+
   class Pen {
   public:
     enum class LineStyle : uint32_t {
@@ -105,10 +108,7 @@ namespace rwl {
 
     ~Pen();
 
-    template <typename T>
-    friend class impl::RectPtrComm;
-
-    template <typename T>
-    friend class impl::RectRefComm;
+    template <size_t Size>
+    friend class Rect;
   };
 } // namespace rwl
