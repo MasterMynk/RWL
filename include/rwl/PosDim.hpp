@@ -11,10 +11,10 @@ namespace rwl {
     Dim dim;
 
   public:
-    PosDim(const Pos &p_pos = {0, 0}, const Dim &p_dim = {10, 10});
+    PosDim(const Pos &p_pos = {0, 0}, const Dim &p_dim = {0, 0});
 
     /******************************* Operators *******************************/
-    /****************************** Operator= ******************************/
+    /********************************** = **********************************/
     inline PosDim &operator=(const Pos &pos) {
       this->pos = pos;
       return *this;
@@ -25,64 +25,62 @@ namespace rwl {
     }
     PosDim &operator=(const PosDim &other);
 
-    /********************* Normal Arithmatic Operators *********************/
-    /***************************** Operator+ *****************************/
-    inline PosDim operator+(const Pos &pos) {
+    /********************************** + **********************************/
+    inline PosDim operator+(const Pos &pos) const {
       return PosDim(this->pos + pos, this->dim);
     }
-    inline PosDim operator+(const Dim &dim) {
+    inline PosDim operator+(const Dim &dim) const {
       return PosDim(this->pos, this->dim + dim);
     }
-    inline PosDim operator+(const PosDim &other) {
-      return PosDim(this->pos + other.dim, this->dim + other.dim);
+    inline PosDim operator+(const PosDim &other) const {
+      return PosDim(this->pos + other.pos, this->dim + other.dim);
     }
 
-    /***************************** Operator- *****************************/
-    inline PosDim operator-(const Pos &pos) {
+    /********************************** - **********************************/
+    inline PosDim operator-(const Pos &pos) const {
       return PosDim(this->pos - pos, this->dim);
     }
-    inline PosDim operator-(const Dim &dim) {
+    inline PosDim operator-(const Dim &dim) const {
       return PosDim(this->pos, this->dim - dim);
     }
-    inline PosDim operator-(const PosDim &other) {
-      return PosDim(this->pos - other.dim, this->dim - other.dim);
+    inline PosDim operator-(const PosDim &other) const {
+      return PosDim(this->pos - other.pos, this->dim - other.dim);
     }
 
-    /***************************** Operator* *****************************/
-    inline PosDim operator*(const Pos &pos) {
+    /********************************** * **********************************/
+    inline PosDim operator*(const Pos &pos) const {
       return PosDim(this->pos * pos, this->dim);
     }
-    inline PosDim operator*(const Dim &dim) {
+    inline PosDim operator*(const Dim &dim) const {
       return PosDim(this->pos, this->dim * dim);
     }
-    inline PosDim operator*(const PosDim &other) {
-      return PosDim(this->pos * other.dim, this->dim * other.dim);
+    inline PosDim operator*(const PosDim &other) const {
+      return PosDim(this->pos * other.pos, this->dim * other.dim);
     }
 
-    /***************************** Operator/ *****************************/
-    inline PosDim operator/(const Pos &pos) {
+    /********************************** / **********************************/
+    inline PosDim operator/(const Pos &pos) const {
       return PosDim(this->pos / pos, this->dim);
     }
-    inline PosDim operator/(const Dim &dim) {
+    inline PosDim operator/(const Dim &dim) const {
       return PosDim(this->pos, this->dim / dim);
     }
-    inline PosDim operator/(const PosDim &other) {
-      return PosDim(this->pos / other.dim, this->dim / other.dim);
+    inline PosDim operator/(const PosDim &other) const {
+      return PosDim(this->pos / other.pos, this->dim / other.dim);
     }
 
-    /***************************** Operator% *****************************/
-    inline PosDim operator%(const Pos &pos) {
+    /********************************** % **********************************/
+    inline PosDim operator%(const Pos &pos) const {
       return PosDim(this->pos % pos, this->dim);
     }
-    inline PosDim operator%(const Dim &dim) {
+    inline PosDim operator%(const Dim &dim) const {
       return PosDim(this->pos, this->dim % dim);
     }
-    inline PosDim operator%(const PosDim &other) {
-      return PosDim(this->pos % other.dim, this->dim % other.dim);
+    inline PosDim operator%(const PosDim &other) const {
+      return PosDim(this->pos % other.pos, this->dim % other.dim);
     }
 
-    /************************** Compound Operators **************************/
-    /***************************** Operator+= *****************************/
+    /********************************** += **********************************/
     inline PosDim &operator+=(const Pos &pos) {
       this->pos += pos;
       return *this;
@@ -93,7 +91,7 @@ namespace rwl {
     }
     PosDim &operator+=(const PosDim &other);
 
-    /***************************** Operator-= *****************************/
+    /********************************** -= **********************************/
     inline PosDim &operator-=(const Pos &pos) {
       this->pos -= pos;
       return *this;
@@ -104,7 +102,7 @@ namespace rwl {
     }
     PosDim &operator-=(const PosDim &other);
 
-    /***************************** Operator*= *****************************/
+    /********************************** *= **********************************/
     inline PosDim &operator*=(const Pos &pos) {
       this->pos *= pos;
       return *this;
@@ -115,7 +113,7 @@ namespace rwl {
     }
     PosDim &operator*=(const PosDim &other);
 
-    /***************************** Operator/= *****************************/
+    /********************************** /= **********************************/
     inline PosDim &operator/=(const Pos &pos) {
       this->pos /= pos;
       return *this;
@@ -126,7 +124,7 @@ namespace rwl {
     }
     PosDim &operator/=(const PosDim &other);
 
-    /***************************** Operator%= *****************************/
+    /********************************** %= **********************************/
     inline PosDim &operator%=(const Pos &pos) {
       this->pos %= pos;
       return *this;

@@ -6,10 +6,18 @@
 
 #include <algorithm>
 #include <array>
+#include <concepts>
 #include <initializer_list>
 #include <xcb/xcb.h>
 
 namespace rwl {
+  template <typename Arr>
+  concept ItArr = requires(const Arr &arr) {
+    arr.begin();
+    arr.end();
+    { arr.size() } -> std::same_as<size_t>;
+  };
+
   template <size_t Size = 1>
   class Rect: public Drawable {
   public:
@@ -23,12 +31,77 @@ namespace rwl {
   private:
     value_type m_rects;
 
-  public:
-    Rect() : m_rects{} {}
-
-    Rect(const std::initializer_list<PosDim> &rects) {
-      std::copy(rects.begin(), rects.end(), m_rects.begin());
+  private:
+    /******************************** Helpers ********************************/
+    Rect &eqImpl(const ItArr auto &rects) {
+      std::copy_n(rects.begin(), std::min(this->size(), rects.size()),
+                  this->begin());
+      return *this;
     }
+
+    inline Rect &plusEqImpl(const ItArr auto &rects) {
+      std::transform(
+          rects.begin(),
+          rects.end() -
+              (rects.size() > this->size() ? (rects.size() - this->size()) : 0),
+          this->begin(), this->begin(),
+          [](const PosDim &fir, const PosDim &sec) { return sec + fir; });
+
+      return *this;
+    }
+
+    inline Rect &minEqImpl(const ItArr auto &rects) {
+      std::transform(
+          rects.begin(),
+          rects.end() -
+              (rects.size() > this->size() ? (rects.size() - this->size()) : 0),
+          this->begin(), this->begin(),
+          [](const PosDim &fir, const PosDim &sec) { return sec - fir; });
+
+      return *this;
+    }
+
+    inline Rect &mulEqImpl(const ItArr auto &rects) {
+      std::transform(
+          rects.begin(),
+          rects.end() -
+              (rects.size() > this->size() ? (rects.size() - this->size()) : 0),
+          this->begin(), this->begin(),
+          [](const PosDim &fir, const PosDim &sec) { return sec * fir; });
+
+      return *this;
+    }
+
+    inline Rect &divEqImpl(const ItArr auto &rects) {
+      std::transform(
+          rects.begin(),
+          rects.end() -
+              (rects.size() > this->size() ? (rects.size() - this->size()) : 0),
+          this->begin(), this->begin(),
+          [](const PosDim &fir, const PosDim &sec) { return sec / fir; });
+
+      return *this;
+    }
+
+    inline Rect &modEqImpl(const ItArr auto &rects) {
+      std::transform(
+          rects.begin(),
+          rects.end() -
+              (rects.size() > this->size() ? (rects.size() - this->size()) : 0),
+          this->begin(), this->begin(),
+          [](const PosDim &fir, const PosDim &sec) { return sec % fir; });
+
+      return *this;
+    }
+
+  public:
+    /********************************* Ctors *********************************/
+    Rect(const PosDim &rect = PosDim()) : m_rects{rect} {}
+    Rect(const Rect &other) : m_rects(other.m_rects) {}
+    Rect(const std::initializer_list<PosDim> &rects) { *this = rects; }
+
+    template <size_t OSize>
+    Rect(const std::array<PosDim, OSize> &rects) : m_rects(rects) {}
 
     /******************************* Functions *******************************/
     void draw(Window &win, const Pen &pen = Pen()) override {
@@ -37,15 +110,25 @@ namespace rwl {
     }
 
     /******************************* Iterators *******************************/
-    auto begin() { return this->m_rects.begin(); }
-    const auto begin() const { return this->m_rects.cbegin(); }
-    auto rbegin() { return this->m_rects.rbegin(); }
-    auto crbegin() { return this->m_rects.crbegin(); }
+    inline iterator begin() { return this->m_rects.begin(); }
+    inline reverse_iterator rbegin() { return this->m_rects.rbegin(); }
+    inline const const_iterator cbegin() const { return m_rects.cbegin(); }
+    inline const const_iterator begin() const { return this->m_rects.cbegin(); }
+    inline const const_iterator rbegin() const {
+      return this->m_rects.crbegin();
+    }
+    inline const const_reverse_iterator crbegin() {
+      return this->m_rects.crbegin();
+    }
 
-    auto end() { return this->m_rects.end(); }
-    const auto end() const { return this->m_rects.cend(); }
-    auto rend() { return this->m_rects.rend(); }
-    auto crend() { return this->m_rects.crend(); }
+    inline iterator end() { return this->m_rects.end(); }
+    inline reverse_iterator rend() { return this->m_rects.rend(); }
+    inline const const_iterator cend() const { return m_rects.cend(); }
+    inline const const_iterator end() const { return this->m_rects.cend(); }
+    inline const const_iterator rend() const { return this->m_rects.crend(); }
+    inline const const_reverse_iterator crend() {
+      return this->m_rects.crend();
+    }
 
     /******************************* Operators *******************************/
     /********************************** [] **********************************/
@@ -56,16 +139,165 @@ namespace rwl {
     }
 
     /********************************** = **********************************/
-    Rect &operator=(const std::array<PosDim, Size> &rects) {
-      this->m_rects = rects;
-      return *this;
-    }
-    Rect &operator=(const std::initializer_list<PosDim> &rects) {
-      std::copy(rects.begin(), rects.end(), this->m_rects.begin());
+    Rect &operator=(const PosDim &rect) { // When a single value is provided
+      // Assign it to everything
+      this->m_rects.fill(rect);
       return *this;
     }
 
+    inline Rect &operator=(const ItArr auto &rects) {
+      return this->eqImpl(rects);
+    }
+
+    /*
+     * This is explicit otherwise you wouldn't be able to something like:
+     * rect = {rwl::Pos()};
+     * It wouldn't be able to deduce that you want the things in the {} to be a
+     * std::initializer_list
+     */
+    inline Rect &operator=(const std::initializer_list<PosDim> &rects) {
+      return this->eqImpl(rects);
+    }
+
+    /*********************************** + ***********************************/
+    inline Rect operator+(const PosDim &rect) const {
+      return Rect(*this) += rect;
+    }
+    inline Rect operator+(const ItArr auto &rects) const {
+      return Rect(*this) += rects;
+    }
+    inline Rect operator+(const std::initializer_list<PosDim> &rects) const {
+      return Rect(*this) += rects;
+    }
+
+    /*********************************** - ***********************************/
+    inline Rect operator-(const PosDim &rect) const {
+      return Rect(*this) -= rect;
+    }
+    inline Rect operator-(const ItArr auto &rects) const {
+      return Rect(*this) -= rects;
+    }
+    inline Rect operator-(const std::initializer_list<PosDim> &rects) const {
+      return Rect(*this) -= rects;
+    }
+
+    /*********************************** * ***********************************/
+    inline Rect operator*(const PosDim &rect) const {
+      return Rect(*this) *= rect;
+    }
+    inline Rect operator*(const ItArr auto &rects) const {
+      return Rect(*this) *= rects;
+    }
+    inline Rect operator*(const std::initializer_list<PosDim> &rects) const {
+      return Rect(*this) *= rects;
+    }
+
+    /*********************************** / ***********************************/
+    inline Rect operator/(const PosDim &rect) const {
+      return Rect(*this) /= rect;
+    }
+    inline Rect operator/(const ItArr auto &rects) const {
+      return Rect(*this) /= rects;
+    }
+    inline Rect operator/(const std::initializer_list<PosDim> &rects) const {
+      return Rect(*this) /= rects;
+    }
+
+    /*********************************** % ***********************************/
+    inline Rect operator%(const PosDim &rect) const {
+      return Rect(*this) %= rect;
+    }
+    inline Rect operator%(const ItArr auto &rects) const {
+      return Rect(*this) %= rects;
+    }
+    inline Rect operator%(const std::initializer_list<PosDim> &rects) const {
+      return Rect(*this) %= rects;
+    }
+
+    /********************************** += **********************************/
+    Rect &operator+=(const PosDim &rect) {
+      for (auto &i : this->m_rects)
+        i += rect;
+
+      return *this;
+    }
+
+    inline Rect &operator+=(const ItArr auto &rects) {
+      return this->plusEqImpl(rects);
+    }
+    inline Rect &operator+=(const std::initializer_list<PosDim> &rects) {
+      return this->plusEqImpl(rects);
+    }
+
+    /********************************** -= **********************************/
+    Rect &operator-=(const PosDim &rect) {
+      for (auto &i : this->m_rects)
+        i -= rect;
+
+      return *this;
+    }
+
+    inline Rect &operator-=(const ItArr auto &rects) {
+      return this->minEqImpl(rects);
+    }
+
+    inline Rect &operator-=(const std::initializer_list<PosDim> &rects) {
+      return this->minEqImpl(rects);
+    }
+
+    /********************************** *= **********************************/
+    Rect &operator*=(const PosDim &rect) {
+      for (auto &i : this->m_rects)
+        i *= rect;
+
+      return *this;
+    }
+
+    inline Rect &operator*=(const ItArr auto &rects) {
+      return this->mulEqImpl(rects);
+    }
+
+    inline Rect &operator*=(const std::initializer_list<PosDim> &rects) {
+      return this->mulEqImpl(rects);
+    }
+
+    /********************************** /= **********************************/
+    Rect &operator/=(const PosDim &rect) {
+      for (auto &i : this->m_rects)
+        i /= rect;
+
+      return *this;
+    }
+
+    inline Rect &operator/=(const ItArr auto &rects) {
+      return this->divEqImpl(rects);
+    }
+
+    inline Rect &operator/=(const std::initializer_list<PosDim> &rects) {
+      return this->divEqImpl(rects);
+    }
+
+    /********************************** %= **********************************/
+    Rect &operator%=(const PosDim &rect) {
+      for (auto &i : this->m_rects)
+        i %= rect;
+
+      return *this;
+    }
+
+    inline Rect &operator%=(const ItArr auto &rects) {
+      return this->modEqImpl(rects);
+    }
+
+    inline Rect &operator%=(const std::initializer_list<PosDim> &rects) {
+      return this->modEqImpl(rects);
+    }
+
     /******************************** Getters ********************************/
-    constexpr size_t size() { return Size; }
+    constexpr size_t size() const { return Size; }
+
+    /******************************** Friends ********************************/
+    template <size_t OSize>
+    friend class Rect;
   };
 } // namespace rwl
