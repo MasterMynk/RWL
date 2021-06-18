@@ -11,8 +11,8 @@ namespace rwl::impl {
     this->setDim(other.m_posDim.dim);
     this->setPos(other.m_posDim.pos);
 
-    impl::log("Set window dim and pos to ", this->m_posDim.dim,
-              this->m_posDim.pos);
+    impl::log("Window", "Dim = ", this->m_posDim.dim,
+              "Pos = ", this->m_posDim.pos);
 
     return *this;
   }
@@ -22,7 +22,7 @@ namespace rwl::impl {
     this->showNoUpdate();
     update();
 
-    impl::log("Don't worry I called update.");
+    impl::log("Window", "Shown");
 
     return *this;
   }
@@ -30,7 +30,7 @@ namespace rwl::impl {
   WinComm &WinComm::showNoUpdate() {
     xcb_map_window(impl::core::conn, m_win);
 
-    impl::log("Mapped window. Better call update if you haven't already!");
+    impl::log("Window", "Shown without updating.");
 
     return *this;
   }
@@ -39,7 +39,7 @@ namespace rwl::impl {
     this->hideNoUpdate();
     update();
 
-    impl::log("Don't worry I called update.");
+    impl::log("Window", "Hidden");
 
     return *this;
   }
@@ -47,7 +47,7 @@ namespace rwl::impl {
   WinComm &WinComm::hideNoUpdate() {
     xcb_unmap_window(impl::core::conn, m_win);
 
-    impl::log("Unmapped WinComm. Call update if you haven't already.");
+    impl::log("Window", "Hidden wihtout updating");
 
     return *this;
   }

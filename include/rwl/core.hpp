@@ -65,14 +65,8 @@ namespace rwl {
     };
 
 #if RWL_PLATFORM == LINUX && RWL_DEBUG == 1
-    inline xcb_screen_t *&getS() {
-      impl::log<impl::LogLevel::NoImp>("Returning scr.");
-      return core::scr;
-    }
-    inline xcb_connection_t *&getC() {
-      impl::log<impl::LogLevel::NoImp>("Returning the connection.");
-      return core::conn;
-    }
+    inline xcb_screen_t *&getS() { return core::scr; }
+    inline xcb_connection_t *&getC() { return core::conn; }
 #endif
   } // namespace impl
 } // namespace rwl

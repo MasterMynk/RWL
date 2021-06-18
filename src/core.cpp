@@ -10,11 +10,11 @@ namespace rwl {
 
       if (int err = xcb_connection_has_error(conn)) {
         impl::log<impl::LogLevel::Error>(
-            "Failed to connect to X Server. Error code ", err);
+            "Core", "Failed to connect to X Server. Error code ", err);
         exit(EXIT_FAILURE);
       }
 
-      impl::log("Connected to X Server.");
+      impl::log("Core", "Connected to X Server.");
 
       return conn;
     })();
@@ -33,7 +33,7 @@ namespace rwl {
   void end() {
 #if RWL_PLATFORM == LINUX
     xcb_disconnect(impl::core::conn);
-    impl::log("Disconnected from X server.");
+    impl::log("Core", "Disconnected from X server.");
 #endif
   }
 
@@ -45,34 +45,22 @@ namespace rwl {
 
   inline uint8_t depth() {
 #if RWL_PLATFORM == LINUX
-    impl::log<impl::LogLevel::NoImp>("Returning screen depth as ",
-                                     impl::core::scr->root_depth);
     return impl::core::scr->root_depth;
 #endif
   }
 
   uint16_t width(const Measurement &m) {
-    if (m == Measurement::Pixels) {
+    if (m == Measurement::Pixels)
 #if RWL_PLATFORM == LINUX
-      impl::log<impl::LogLevel::NoImp>("Returning screen width in pixels as ",
-                                       impl::core::scr->width_in_pixels);
       return impl::core::scr->width_in_pixels;
-    }
-    impl::log<impl::LogLevel::NoImp>("Returning screen width in mm as ",
-                                     impl::core::scr->width_in_millimeters);
     return impl::core::scr->width_in_millimeters;
 #endif
   }
 
   uint16_t height(const Measurement &m) {
-    if (m == Measurement::Pixels) {
+    if (m == Measurement::Pixels)
 #if RWL_PLATFORM == LINUX
-      impl::log<impl::LogLevel::NoImp>("Returning screen height in pixels as ",
-                                       impl::core::scr->height_in_pixels);
       return impl::core::scr->height_in_pixels;
-    }
-    impl::log<impl::LogLevel::NoImp>("Returning screen height in mm as ",
-                                     impl::core::scr->height_in_millimeters);
     return impl::core::scr->height_in_millimeters;
 #endif
   }
@@ -80,14 +68,14 @@ namespace rwl {
   void loop(std::function<void(bool &finished)> func) {
     bool finished = false;
 
-    impl::log("Entered loop.");
+    impl::log("Core", "Entered loop.");
 
     while (!finished) {
       func(finished);
       update();
     }
 
-    impl::log("Exiting loop.");
+    impl::log("Core", "Exiting loop.");
 
     end();
   }
