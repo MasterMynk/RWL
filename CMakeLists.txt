@@ -16,6 +16,7 @@ set(CLASSES
   "Pen"
   "core"
   "Color"
+  "PosDim"
   "Window/WinComm"
   "Window/Window"
 )
@@ -32,24 +33,13 @@ set(PCH_FILES
   "Vec2"
 )
 
-set(RECT
-  "Rect"
-  "RectComm"
-  "RectPtrComm"
-  "RectRefComm"
-)
-
 set(DRAWABLES
+  "Rect/Rect"
+  "Rect/RectBase"
   "Drawable"
-  "DrawableComm"
 )
 
-# Add Rect/ to every file specified in RECT and save it in DRAWABLE
-foreach(file ${RECT})
-  set(${DRAWABLES} ${DRAWABLES};Rect/${file})
-endforeach()
-
-# Add Drawable/ to every file specified in DRAWABLE and save it in HPP_FILES
+# Add Drawable/ to every file specified in DRAWABLES and save it in HPP_FILES
 foreach(file ${DRAWABLES})
   set(HPP_FILES ${HPP_FILES};Drawables/${file})
 endforeach()
@@ -101,13 +91,16 @@ target_include_directories(rwl PUBLIC
 
 target_precompile_headers(rwl PRIVATE
   <cmath>
+  <array>
   <memory>
   <cstdlib>
   <utility>
   <iostream>
+  <algorithm>
   <xcb/xcb.h>
   <functional>
   <type_traits>
+  <initializer_list>
   ${PCH_EVAL}
 )
 

@@ -212,7 +212,7 @@ namespace rwl {
 
   template <typename Any>
   std::ostream &operator<<(std::ostream &cout, const Vec2<Any> &toPrint) {
-    return (cout << toPrint.x << ", " << toPrint.y);
+    return (cout << "{ " << toPrint.x << ", " << toPrint.y << " }");
   }
 
   using Pos = Vec2<int16_t>;
