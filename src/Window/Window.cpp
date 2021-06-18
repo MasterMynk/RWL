@@ -9,9 +9,9 @@ namespace rwl {
 
     xcb_create_window(
         impl::core::conn, impl::core::scr->root_depth, m_win, m_parent.m_win,
-        this->m_pos.x, this->m_pos.y, this->m_dim.width, this->m_dim.height,
-        this->m_borderWidth, XCB_WINDOW_CLASS_INPUT_OUTPUT,
-        impl::core::scr->root_visual,
+        this->m_posDim.pos.x, this->m_posDim.pos.y, this->m_posDim.dim.width,
+        this->m_posDim.dim.height, this->m_borderWidth,
+        XCB_WINDOW_CLASS_INPUT_OUTPUT, impl::core::scr->root_visual,
         XCB_CW_BACK_PIXEL | XCB_CW_BORDER_PIXEL | XCB_CW_EVENT_MASK, &props);
     impl::log("Created a window with window Id: ", m_win);
 #endif
@@ -19,7 +19,7 @@ namespace rwl {
 
   /******************************* Constructors *******************************/
   Window::Window(Window &&other)
-      : WinComm(other.m_win, other.m_pos, other.m_dim, other.m_bgColor),
+      : WinComm(other.m_win, other.m_posDim, other.m_bgColor),
         m_parent(other.m_parent), m_borderWidth(other.m_borderWidth),
         m_borderColor(other.m_borderColor) {
     impl::log("Moved a window with window Id: ", m_win);
@@ -27,13 +27,13 @@ namespace rwl {
   }
 
   Window::Window(const Window &other)
-      : Window(other.m_pos, other.m_dim, other.m_bgColor, other.m_parent,
+      : Window(other.m_posDim, other.m_bgColor, other.m_parent,
                other.m_borderWidth, other.m_borderColor) {}
 
-  Window::Window(const Pos &pos, const Dim &dim, const Color &bgColor,
+  Window::Window(const PosDim &posDim, const Color &bgColor,
                  const WinComm &parent, const uint16_t &borderWidth,
                  const Color &borderColor)
-      : WinComm(xcb_generate_id(impl::core::conn), pos, dim, bgColor),
+      : WinComm(xcb_generate_id(impl::core::conn), posDim, bgColor),
         m_parent(parent), m_borderWidth(borderWidth),
         m_borderColor(borderColor) {
     create();

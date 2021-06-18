@@ -1,18 +1,18 @@
 #include "rwl/Window/WinComm.hpp"
-#include "rwl/core.hpp"
 
 namespace rwl::impl {
   /******************************* Constructors *******************************/
-  WinComm::WinComm(const xcb_window_t &winId, const Pos &pos, const Dim &dim,
+  WinComm::WinComm(const xcb_window_t &winId, const PosDim &posDim,
                    const Color &bgColor)
-      : m_win(winId), m_pos(pos), m_dim(dim), m_bgColor(bgColor) {}
+      : m_win(winId), m_posDim(posDim), m_bgColor(bgColor) {}
 
   /******************************** Operators ********************************/
   WinComm &WinComm::operator=(const WinComm &other) {
-    this->setDim(other.m_dim);
-    this->setPos(other.m_pos);
+    this->setDim(other.m_posDim.dim);
+    this->setPos(other.m_posDim.pos);
 
-    impl::log("Set window dim and pos to ", this->m_dim, this->m_pos);
+    impl::log("Set window dim and pos to ", this->m_posDim.dim,
+              this->m_posDim.pos);
 
     return *this;
   }
