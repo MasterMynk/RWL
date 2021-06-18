@@ -61,26 +61,10 @@ namespace rwl {
     bool operator==(const Pen &other);
 
     /******************************** Getters *********************************/
-    inline const Color &getFgColor() const {
-      impl::log<impl::LogLevel::NoImp>("Returning fg color as ",
-                                       this->m_fgColor.colorToStr());
-      return this->m_fgColor;
-    }
-    inline const Color &getBgColor() const {
-      impl::log<impl::LogLevel::NoImp>("Returning bg color as ",
-                                       this->m_bgColor.colorToStr());
-      return this->m_bgColor;
-    }
-    inline const uint32_t &getLineWidth() const {
-      impl::log<impl::LogLevel::NoImp>("Returning line width as ",
-                                       this->m_lineWidth);
-      return this->m_lineWidth;
-    }
-    inline const LineStyle &getLineStyle() const {
-      impl::log<impl::LogLevel::NoImp>(
-          "Returning line style as ", static_cast<uint32_t>(this->m_lineStyle));
-      return this->m_lineStyle;
-    }
+    inline const Color &getFgColor() const { return this->m_fgColor; }
+    inline const Color &getBgColor() const { return this->m_bgColor; }
+    inline const uint32_t &getLineWidth() const { return this->m_lineWidth; }
+    inline const LineStyle &getLineStyle() const { return this->m_lineStyle; }
 
     /******************************** Setters *********************************/
     Pen &setFgColor(const Color &fgColor);
@@ -100,10 +84,7 @@ namespace rwl {
                      const uint32_t &lineWidth, const LineStyle &lineStyle);
 
 #if RWL_PLATFORM == LINUX && RWL_DEBUG == 1
-    inline const xcb_gcontext_t getP() const {
-      impl::log<impl::LogLevel::NoImp>("Returning pen with id: ", m_pen);
-      return this->m_pen;
-    }
+    inline const xcb_gcontext_t getP() const { return this->m_pen; }
 #endif
 
     ~Pen();

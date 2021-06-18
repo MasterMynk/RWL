@@ -13,7 +13,7 @@ namespace rwl {
         this->m_posDim.dim.height, this->m_borderWidth,
         XCB_WINDOW_CLASS_INPUT_OUTPUT, impl::core::scr->root_visual,
         XCB_CW_BACK_PIXEL | XCB_CW_BORDER_PIXEL | XCB_CW_EVENT_MASK, &props);
-    impl::log("Created a window with window Id: ", m_win);
+    impl::log("Window", "Created with Id: ", m_win);
 #endif
   }
 
@@ -22,7 +22,7 @@ namespace rwl {
       : WinComm(other.m_win, other.m_posDim, other.m_bgColor),
         m_parent(other.m_parent), m_borderWidth(other.m_borderWidth),
         m_borderColor(other.m_borderColor) {
-    impl::log("Moved a window with window Id: ", m_win);
+    impl::log("Window", "Moved.");
     other.m_win = 0;
   }
 
@@ -43,6 +43,6 @@ namespace rwl {
 #if RWL_PLATFORM == LINUX
     xcb_destroy_window(impl::core::conn, m_win);
 #endif
-    impl::log("Window Destroyed");
+    impl::log("Window", "Destroyed");
   }
 } // namespace rwl

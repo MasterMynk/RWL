@@ -165,8 +165,8 @@ namespace rwl {
       /******************************* Setters *******************************/
       inline WinComm &setPos(const Pos &other) {
         this->m_posDim.pos = other;
-        impl::log<impl::LogLevel::NoImp>("Set Window Position to ",
-                                         this->m_posDim.pos);
+        impl::log<impl::LogLevel::NoImp>("Window",
+                                         "Position = ", this->m_posDim.pos);
         return *this;
       }
       inline WinComm &setX(const int16_t &x) {
@@ -178,8 +178,8 @@ namespace rwl {
 
       inline WinComm &setDim(const Dim &other) {
         this->m_posDim.dim = other;
-        impl::log<impl::LogLevel::NoImp>("Set Window Dimensions to ",
-                                         this->m_posDim.dim);
+        impl::log<impl::LogLevel::NoImp>("Window",
+                                         "Dimensions = ", this->m_posDim.dim);
         return *this;
       }
       inline WinComm &setWidth(const uint16_t &width) {
@@ -191,8 +191,8 @@ namespace rwl {
 
       inline WinComm &setBgColor(const Color &bgColor) {
         this->m_bgColor = bgColor;
-        impl::log<impl::LogLevel::NoImp>("Set Bg Color to ",
-                                         this->m_bgColor.colorToStr());
+        impl::log<impl::LogLevel::NoImp>(
+            "Window", "Bg Color = ", this->m_bgColor.colorToStr());
         return *this;
       }
 

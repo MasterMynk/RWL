@@ -29,10 +29,7 @@ namespace rwl {
     }
 
 #if RWL_DEBUG == 1
-    inline const uint32_t &getCol() const {
-      impl::log<impl::LogLevel::NoImp>("Returning color as ", m_color);
-      return m_color;
-    }
+    inline const uint32_t &getCol() const { return m_color; }
 #endif
 
     friend Pen;

@@ -17,16 +17,18 @@ namespace rwl::impl {
   enum class LogLevel { Error = 1, Warning, Status, NoImp };
 
   template <LogLevel Level = LogLevel::Status, typename... Printables>
-  void log(const Printables &...printables) {
-    if (Level == LogLevel::Error) {
-      puts(RED "[ERROR]: " RESET);
+  constexpr void log(const char *const &callerName = "Unknown",
+                     const Printables &...printables) {
+    if constexpr (Level == LogLevel::Error) {
+      printf(RED "[%s]: " RESET, callerName);
       (std::cout << ... << printables) << '\n';
     } else {
 #if RWL_DEBUG == 1
-      std::cout << (Level == LogLevel::Warning  ? YELLOW "[WARNING]: "
-                    : Level == LogLevel::Status ? GREEN "[STATUS]: "
-                                                : FAINT "[NOT IMP]: ");
-      std::cout << RESET;
+      printf("%s[%s]: " RESET,
+             (Level == LogLevel::Warning  ? YELLOW
+              : Level == LogLevel::Status ? GREEN
+                                          : FAINT),
+             callerName);
       (std::cout << ... << printables) << std::endl;
 #endif
     }

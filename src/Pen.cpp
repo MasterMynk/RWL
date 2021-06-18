@@ -9,11 +9,6 @@
   uint32_t penMask[] = {this->m_fgColor.m_color, this->m_bgColor.m_color,      \
                         this->m_lineWidth,                                     \
                         static_cast<uint32_t>(this->m_lineStyle), 0}
-#define LOGGING_HELPER(x)                                                      \
-  impl::log("Pen ", (x), ": fg color --> ", this->m_fgColor.colorToStr(),      \
-            ", bg color --> ", this->m_bgColor.colorToStr(),                   \
-            ", line width --> ", this->m_lineWidth, " and line style --> ",    \
-            static_cast<uint32_t>(this->m_lineStyle))
 
 namespace rwl {
   uint32_t Pen::s_valueMask = XCB_GC_FOREGROUND | XCB_GC_BACKGROUND |
@@ -27,7 +22,10 @@ namespace rwl {
 
     xcb_change_gc(impl::core::conn, this->m_pen, this->s_valueMask, penMask);
 
-    LOGGING_HELPER("Changed");
+    impl::log("Pen", "Changed fg color --> ", this->m_fgColor.colorToStr(),
+              ", bg color --> ", this->m_bgColor.colorToStr(),
+              ", line width --> ", this->m_lineWidth, " and line style --> ",
+              static_cast<uint32_t>(this->m_lineStyle));
 #endif
     return *this;
   }
@@ -46,7 +44,8 @@ namespace rwl {
     updateVars(other.m_fgColor, other.m_bgColor, other.m_lineWidth,
                other.m_lineStyle);
     other.m_pen = 0;
-    LOGGING_HELPER("Move Constructed");
+    impl::log("Pen", "Move Constructed");
+    ;
   }
 
   Pen::Pen(const Pen &other)
@@ -73,7 +72,8 @@ namespace rwl {
     xcb_create_gc(rwl::impl::core::conn, this->m_pen, impl::core::scr->root,
                   this->s_valueMask, penMask);
 
-    LOGGING_HELPER("Created");
+    impl::log("Pen", "Created");
+    ;
 #endif
   }
 
@@ -93,7 +93,8 @@ namespace rwl {
       this->m_pen = other.m_pen;
       other.m_pen = 0;
 
-      LOGGING_HELPER("Moved Assigned");
+      impl::log("Pen", "Moved Assigned");
+      ;
     }
 
     return *this;
@@ -150,6 +151,6 @@ namespace rwl {
 #if RWL_PLATFORM == LINUX
     xcb_free_gc(impl::core::conn, m_pen);
 #endif
-    impl::log("Pen Destroyed.");
+    impl::log("Pen", "Destroyed.");
   }
 } // namespace rwl
