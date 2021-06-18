@@ -99,6 +99,9 @@ namespace rwl {
 
   public:
     /********************************* Ctors *********************************/
+    // If m_rects is a vector, then only this ctor is enabled
+    Rect(const size_t &length) requires
+        std::is_same_v<std::vector<PosDim>, value_type>: m_rects(length) {}
     Rect(const Rect &other) : m_rects(other.m_rects) {}
     Rect(const PosDim &rect = PosDim()) : m_rects{rect} {}
     Rect(Rect &&other) : m_rects(std::move(other.m_rects)) {}
