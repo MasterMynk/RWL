@@ -9,6 +9,7 @@
 #include <array>
 #include <concepts>
 #include <initializer_list>
+#include <type_traits>
 #include <xcb/xcb.h>
 
 namespace rwl {
@@ -30,6 +31,19 @@ namespace rwl {
 
   private:
     value_type m_rects;
+
+  public:
+    /********************************* Ctors *********************************/
+    // If m_rects is a vector, then only this ctor is enabled
+    Rect(const size_t &length) requires
+        std::is_same_v<std::vector<PosDim>, value_type>: m_rects(length) {}
+    Rect(const Rect &other) : m_rects(other.m_rects) {}
+    Rect(const PosDim &rect = PosDim()) : m_rects{rect} {}
+    Rect(Rect &&other) : m_rects(std::move(other.m_rects)) {}
+    Rect(const std::initializer_list<PosDim> &rects) { *this = rects; }
+
+    template <size_t OSize>
+    Rect(const std::array<PosDim, OSize> &rects) : m_rects(rects) {}
 
   private:
     /******************************** Helpers ********************************/
@@ -98,22 +112,25 @@ namespace rwl {
     }
 
   public:
-    /********************************* Ctors *********************************/
-    // If m_rects is a vector, then only this ctor is enabled
-    Rect(const size_t &length) requires
-        std::is_same_v<std::vector<PosDim>, value_type>: m_rects(length) {}
-    Rect(const Rect &other) : m_rects(other.m_rects) {}
-    Rect(const PosDim &rect = PosDim()) : m_rects{rect} {}
-    Rect(Rect &&other) : m_rects(std::move(other.m_rects)) {}
-    Rect(const std::initializer_list<PosDim> &rects) { *this = rects; }
-
-    template <size_t OSize>
-    Rect(const std::array<PosDim, OSize> &rects) : m_rects(rects) {}
-
     /******************************* Functions *******************************/
-    void draw(Window &win, const Pen &pen = Pen()) override {
+    inline void draw(Window &win, const Pen &pen = Pen()) override {
       xcb_poly_rectangle(impl::core::conn, win.m_win, pen.m_pen, this->size(),
                          reinterpret_cast<xcb_rectangle_t *>(m_rects.data()));
+    }
+
+    constexpr inline void reserve(const size_t &newCap) requires
+        std::is_same_v<std::vector<PosDim>, value_type> {
+      this->m_rects.reserve(newCap);
+    }
+
+    constexpr inline void
+    shrink_to_fit() requires std::is_same_v<std::vector<PosDim>, value_type> {
+      this->m_rects.shrink_to_fit();
+    }
+
+    constexpr void
+    clear() const requires std::is_same_v<std::vector<PosDim>, value_type> {
+      this->m_rects.clear();
     }
 
     /******************************* Iterators *******************************/
@@ -148,7 +165,10 @@ namespace rwl {
     /********************************** = **********************************/
     Rect &operator=(const PosDim &rect) { // When a single value is provided
       // Assign it to everything
-      this->m_rects.fill(rect);
+      if constexpr (std::is_same_v<std::vector<PosDim>, value_type>)
+        std::fill(this->begin(), this->end(), rect);
+      else
+        this->m_rects.fill(rect);
       return *this;
     }
 
@@ -312,9 +332,19 @@ namespace rwl {
     }
 
     /******************************** Getters ********************************/
-    constexpr inline size_t size() const { return this->m_rects.size(); }
-    inline PosDim *&data() { return this->m_rects.data(); }
     inline value_type &arr() { return this->m_rects; }
+    inline PosDim *&data() { return this->m_rects.data(); }
+    constexpr inline bool empty() const { return this->m_rects.empty(); }
+    constexpr inline size_t size() const { return this->m_rects.size(); }
+
+    constexpr inline size_t max_size() const {
+      return this->m_rects.max_size();
+    }
+
+    constexpr inline size_t
+    capacity() const requires std::is_same_v<std::vector<PosDim>, value_type> {
+      return this->m_rects.capacity();
+    }
 
     /******************************** Friends ********************************/
     template <size_t OSize>
