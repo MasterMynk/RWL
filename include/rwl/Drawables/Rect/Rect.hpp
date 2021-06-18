@@ -336,6 +336,13 @@ namespace rwl {
     inline PosDim *&data() { return this->m_rects.data(); }
     constexpr inline bool empty() const { return this->m_rects.empty(); }
     constexpr inline size_t size() const { return this->m_rects.size(); }
+    constexpr inline PosDim &front() { return this->m_rects.front(); }
+    constexpr inline PosDim &back() { return this->m_rects.back(); }
+    constexpr inline const PosDim &back() const { return this->m_rects.back(); }
+
+    constexpr inline const PosDim &front() const {
+      return this->m_rects.front();
+    }
 
     constexpr inline size_t max_size() const {
       return this->m_rects.max_size();
