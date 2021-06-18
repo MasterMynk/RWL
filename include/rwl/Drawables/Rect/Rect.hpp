@@ -1,5 +1,6 @@
 #pragma once
 #include "rwl/Drawables/Drawable.hpp"
+#include "rwl/Drawables/Rect/RectBase.hpp"
 #include "rwl/Pen.hpp"
 #include "rwl/Window/Window.hpp"
 #include "rwl/core.hpp"
@@ -18,11 +19,10 @@ namespace rwl {
     { arr.size() } -> std::same_as<size_t>;
   };
 
-  template <size_t Size = 1>
-  class Rect: public Drawable {
+  template <size_t Size = 0>
+  class Rect: public impl::RectBase<Size> {
   public:
-    using value_type = std::array<PosDim, Size>;
-
+    using value_type = impl::RectBase<Size>::value_type;
     using iterator = value_type::iterator;
     using const_iterator = value_type::const_iterator;
     using reverse_iterator = value_type::reverse_iterator;
@@ -33,9 +33,12 @@ namespace rwl {
 
   private:
     /******************************** Helpers ********************************/
-    Rect &eqImpl(const ItArr auto &rects) {
-      std::copy_n(rects.begin(), std::min(this->size(), rects.size()),
-                  this->begin());
+    Rect &eqImpl(ItArr auto &&rects) {
+      if constexpr (std::is_same_v<std::vector<PosDim>, value_type>)
+        this->m_rects = std::move(rects);
+      else
+        std::copy_n(rects.begin(), std::min(this->size(), rects.size()),
+                    this->begin());
       return *this;
     }
 
@@ -96,8 +99,9 @@ namespace rwl {
 
   public:
     /********************************* Ctors *********************************/
-    Rect(const PosDim &rect = PosDim()) : m_rects{rect} {}
     Rect(const Rect &other) : m_rects(other.m_rects) {}
+    Rect(const PosDim &rect = PosDim()) : m_rects{rect} {}
+    Rect(Rect &&other) : m_rects(std::move(other.m_rects)) {}
     Rect(const std::initializer_list<PosDim> &rects) { *this = rects; }
 
     template <size_t OSize>
@@ -105,7 +109,7 @@ namespace rwl {
 
     /******************************* Functions *******************************/
     void draw(Window &win, const Pen &pen = Pen()) override {
-      xcb_poly_rectangle(impl::core::conn, win.m_win, pen.m_pen, Size,
+      xcb_poly_rectangle(impl::core::conn, win.m_win, pen.m_pen, this->size(),
                          reinterpret_cast<xcb_rectangle_t *>(m_rects.data()));
     }
 
@@ -149,12 +153,23 @@ namespace rwl {
       return this->eqImpl(rects);
     }
 
-    /*
-     * This is explicit otherwise you wouldn't be able to something like:
-     * rect = {rwl::Pos()};
-     * It wouldn't be able to deduce that you want the things in the {} to be a
-     * std::initializer_list
-     */
+    inline Rect &operator=(const Rect<Size> &other) { // Copy assignment
+      return this->eqImpl(other);
+    }
+
+    inline Rect &operator=(Rect<Size> &&other) {
+      return this->eqImpl(std::move(other));
+    }
+
+    Rect &operator=(std::vector<PosDim> &&rects) {
+      if constexpr (std::is_same_v<std::vector<PosDim>, value_type>)
+        this->m_rects = std::move(rects);
+      else
+        return this->eqImpl(rects);
+
+      return *this;
+    }
+
     inline Rect &operator=(const std::initializer_list<PosDim> &rects) {
       return this->eqImpl(rects);
     }
@@ -294,7 +309,9 @@ namespace rwl {
     }
 
     /******************************** Getters ********************************/
-    constexpr size_t size() const { return Size; }
+    constexpr inline size_t size() const { return this->m_rects.size(); }
+    inline PosDim *&data() { return this->m_rects.data(); }
+    inline value_type &arr() { return this->m_rects; }
 
     /******************************** Friends ********************************/
     template <size_t OSize>

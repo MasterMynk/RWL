@@ -34,7 +34,8 @@ set(PCH_FILES
 )
 
 set(DRAWABLES
-  "Rect"
+  "Rect/Rect"
+  "Rect/RectBase"
   "Drawable"
 )
 
