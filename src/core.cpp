@@ -23,7 +23,7 @@ namespace rwl {
 #endif
 
     const WinComm makeRoot() {
-      return WinComm(impl::core::scr->root, {0, 0}, {width(), height()},
+      return WinComm(impl::core::scr->root, {0, rwl::Dim(width(), height())},
                      rwl::Color::Black);
     }
   } // namespace impl

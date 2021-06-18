@@ -13,7 +13,7 @@ namespace rwl {
   public:
     explicit Window(Window &&other);
     explicit Window(const Window &other);
-    Window(const Pos &pos = {0, 0}, const Dim &dim = {640, 480},
+    Window(const PosDim &posDim = {0, {640, 480}},
            const Color &bgColor = Color::White,
            const impl::WinComm &parent = root, const uint16_t &borderWidth = 1,
            const Color &borderColor = rwl::Color::Black);
