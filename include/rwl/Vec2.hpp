@@ -171,43 +171,49 @@ namespace rwl {
       return compoundModImpl(other.x, other.y);
     }
 
-    inline bool operator==(const Fundamental auto &other) {
+    inline bool operator==(const Fundamental auto &other) const {
       return (this->x == other && this->y == other);
     }
     template <typename Any0>
-    inline bool operator==(const Vec2<Any0> &other) {
+    inline bool operator==(const Vec2<Any0> &other) const {
       return (this->x == other.x && this->y == other.y);
     }
 
     template <typename Any0>
-    inline bool operator!=(const Any0 &other) {
+    inline bool operator!=(const Any0 &other) const {
       return !(*this == other);
     }
 
-    inline bool operator<(const Fundamental auto &other) {
+    inline bool operator<(const Fundamental auto &other) const {
       return (this->x < other || this->y < other);
     }
     template <typename Any0>
-    inline bool operator<(const Vec2<Any0> &other) {
+    inline bool operator<(const Vec2<Any0> &other) const {
       return (this->x < other.x && this->y < other.y);
     }
 
-    inline bool operator<=(const Fundamental auto &other) {
+    inline bool operator<=(const Fundamental auto &other) const {
       return (this->x <= other || this->y <= other);
     }
     template <typename Any0>
-    inline bool operator<=(const Vec2<Any0> &other) {
+    inline bool operator<=(const Vec2<Any0> &other) const {
       return (this->x <= other.x && this->y <= other.y);
     }
 
     template <typename Any0>
-    inline bool operator>(const Any0 &other) {
+    inline bool operator>(const Any0 &other) const {
       return !(*this <= other);
     }
     template <typename Any0>
-    inline bool operator>=(const Any0 &other) {
+    inline bool operator>=(const Any0 &other) const {
       return !(*this < other);
     }
+
+    inline Vec2<Any> addSelf() const { return *this + *this; }
+    inline Vec2<Any> subSelf() const { return *this - *this; }
+    inline Vec2<Any> mulSelf() const { return *this * *this; }
+    inline Vec2<Any> divSelf() const { return *this / *this; }
+    inline Vec2<Any> modSelf() const { return *this % *this; }
   };
 
   template <typename Any>
