@@ -134,9 +134,16 @@ namespace rwl {
       return *this;
     }
     PosDim &operator%=(const PosDim &other);
+
+    inline PosDim addSelf() const { return *this + *this; }
+    inline PosDim subSelf() const { return *this - *this; }
+    inline PosDim mulSelf() const { return *this * *this; }
+    inline PosDim divSelf() const { return *this / *this; }
+    inline PosDim modSelf() const { return *this % *this; }
   };
 
   inline std::ostream &operator<<(std::ostream &cout, const PosDim &toPrint) {
     return (cout << "{ " << toPrint.pos << ", " << toPrint.dim << " }");
   }
+
 } // namespace rwl
