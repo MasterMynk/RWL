@@ -12,6 +12,7 @@ namespace rwl {
 
   template <typename Any>
   struct Vec2 {
+    /******************************* Variables ********************************/
   public:
     union {
       struct {
@@ -22,7 +23,7 @@ namespace rwl {
       };
     };
 
-    /*********** Constructors ***********/
+    /****************************** Constructors ******************************/
     Vec2(const Any &p_x, const Any &p_y) : x(p_x), y(p_y) {}
     Vec2(const Any &other = Any()) : x(other), y(other) {}
 
@@ -30,6 +31,7 @@ namespace rwl {
     Vec2(const Vec2<T> &other) : x(other.x), y(other.y) {}
 
   private:
+    /******************************** Helpers ********************************/
     template <typename Any0>
     Vec2<Any> modImpl(const Any0 &first, const Any0 &sec) const {
       if constexpr (isFloat<Any, Any0>)
@@ -52,7 +54,14 @@ namespace rwl {
     }
 
   public:
-    /********************* Operator Overloads *********************/
+    /******************************* Functions *******************************/
+    inline Vec2 addSelf() const { return *this + *this; }
+    inline Vec2 subSelf() const { return *this - *this; }
+    inline Vec2 mulSelf() const { return *this * *this; }
+    inline Vec2 divSelf() const { return *this / *this; }
+    inline Vec2 modSelf() const { return *this % *this; }
+
+    /********************************* = **************************************/
     Vec2 &operator=(const Fundamental auto &other) {
       this->x = other;
       this->y = other;
@@ -67,6 +76,7 @@ namespace rwl {
       return *this;
     }
 
+    /*********************************** + ***********************************/
     inline Vec2 operator+(const Fundamental auto &other) const {
       return Vec2(this->x + other, this->y + other);
     }
@@ -75,6 +85,7 @@ namespace rwl {
       return Vec2(this->x + other.x, this->y + other.y);
     }
 
+    /*********************************** - ***********************************/
     inline Vec2 operator-(const Fundamental auto &other) const {
       return Vec2(this->x - other, this->y - other);
     }
@@ -83,6 +94,7 @@ namespace rwl {
       return Vec2(this->x - other.x, this->y - other.y);
     }
 
+    /*********************************** * ***********************************/
     inline Vec2 operator*(const Fundamental auto &other) const {
       return Vec2(this->x * other, this->y * other);
     }
@@ -91,6 +103,7 @@ namespace rwl {
       return Vec2(this->x * other.x, this->y * other.y);
     }
 
+    /*********************************** / ***********************************/
     inline Vec2 operator/(const Fundamental auto &other) const {
       return Vec2(this->x / other, this->y / other);
     }
@@ -99,6 +112,7 @@ namespace rwl {
       return Vec2(this->x / other.x, this->y / other.y);
     }
 
+    /*********************************** % ***********************************/
     inline Vec2 operator%(const Fundamental auto &other) const {
       return modImpl(other, other);
     }
@@ -107,6 +121,7 @@ namespace rwl {
       return modImpl(other.x, other.y);
     }
 
+    /*********************************** += ***********************************/
     Vec2 &operator+=(const Fundamental auto &other) {
       this->x += other;
       this->y += other;
@@ -121,6 +136,7 @@ namespace rwl {
       return *this;
     }
 
+    /*********************************** -= ***********************************/
     Vec2 &operator-=(const Fundamental auto &other) {
       this->x -= other;
       this->y -= other;
@@ -135,6 +151,7 @@ namespace rwl {
       return *this;
     }
 
+    /*********************************** *= ***********************************/
     Vec2 &operator*=(const Fundamental auto &other) {
       this->x *= other;
       this->y *= other;
@@ -149,6 +166,7 @@ namespace rwl {
       return *this;
     }
 
+    /*********************************** /= ***********************************/
     Vec2 &operator/=(const Fundamental auto &other) {
       this->x /= other;
       this->y /= other;
@@ -163,6 +181,7 @@ namespace rwl {
       return *this;
     }
 
+    /*********************************** %= ***********************************/
     inline Vec2 &operator%=(const Fundamental auto &other) {
       return compoundModImpl(other, other);
     }
@@ -171,42 +190,73 @@ namespace rwl {
       return compoundModImpl(other.x, other.y);
     }
 
-    inline bool operator==(const Fundamental auto &other) {
+    /*********************************** == ***********************************/
+    inline bool operator==(const Fundamental auto &other) const {
       return (this->x == other && this->y == other);
     }
     template <typename Any0>
-    inline bool operator==(const Vec2<Any0> &other) {
+    inline bool operator==(const Vec2<Any0> &other) const {
       return (this->x == other.x && this->y == other.y);
     }
 
+    /*********************************** != ***********************************/
     template <typename Any0>
-    inline bool operator!=(const Any0 &other) {
+    inline bool operator!=(const Any0 &other) const {
       return !(*this == other);
     }
 
-    inline bool operator<(const Fundamental auto &other) {
+    /*********************************** < ***********************************/
+    inline bool operator<(const Fundamental auto &other) const {
       return (this->x < other || this->y < other);
     }
     template <typename Any0>
-    inline bool operator<(const Vec2<Any0> &other) {
+    inline bool operator<(const Vec2<Any0> &other) const {
       return (this->x < other.x && this->y < other.y);
     }
 
-    inline bool operator<=(const Fundamental auto &other) {
+    /*********************************** <= ***********************************/
+    inline bool operator<=(const Fundamental auto &other) const {
       return (this->x <= other || this->y <= other);
     }
     template <typename Any0>
-    inline bool operator<=(const Vec2<Any0> &other) {
+    inline bool operator<=(const Vec2<Any0> &other) const {
       return (this->x <= other.x && this->y <= other.y);
     }
 
+    /*********************************** > ***********************************/
     template <typename Any0>
-    inline bool operator>(const Any0 &other) {
+    inline bool operator>(const Any0 &other) const {
       return !(*this <= other);
     }
+
+    /*********************************** >= ***********************************/
     template <typename Any0>
-    inline bool operator>=(const Any0 &other) {
+    inline bool operator>=(const Any0 &other) const {
       return !(*this < other);
+    }
+
+    /*********************************** ++ ***********************************/
+    inline Vec2 operator++() { // Prefix: ++x
+      ++this->x;
+      ++this->y;
+      return *this;
+    }
+    inline Vec2 operator++(int) { // Postfix: x++
+      auto other = *this;
+      ++(*this);
+      return other;
+    }
+
+    /*********************************** -- ***********************************/
+    inline Vec2 operator--() { // Prefix: --x
+      --this->x;
+      --this->y;
+      return *this;
+    }
+    inline Vec2 operator--(int) { // Postfix: x--
+      auto other = *this;
+      --(*this);
+      return other;
     }
   };
 
