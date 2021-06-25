@@ -10,7 +10,13 @@ namespace rwl {
     const Color m_borderColor;
 
   private:
-    /******************************** Helpers ********************************/
+    /****************************** Helper Ctors ******************************/
+    Window(const xcb_window_t &win, const PosDim &pd, const Color &bg,
+           const impl::WinBase &parent, const uint16_t &borderWidth,
+           const Color &borderColor);
+
+    /******************************** Helpers
+     ********************************/
     void create();
 
   public:
