@@ -1,13 +1,13 @@
-#include "rwl/Window/WinComm.hpp"
+#include "rwl/Window/WinBase.hpp"
 
 namespace rwl::impl {
   /******************************* Constructors *******************************/
-  WinComm::WinComm(const xcb_window_t &winId, const PosDim &posDim,
+  WinBase::WinBase(const xcb_window_t &winId, const PosDim &posDim,
                    const Color &bgColor)
       : m_win(winId), m_posDim(posDim), m_bgColor(bgColor) {}
 
   /******************************** Operators ********************************/
-  WinComm &WinComm::operator=(const WinComm &other) {
+  WinBase &WinBase::operator=(const WinBase &other) {
     this->setDim(other.m_posDim.dim);
     this->setPos(other.m_posDim.pos);
 
@@ -18,7 +18,7 @@ namespace rwl::impl {
   }
 
   /******************************** Functions ********************************/
-  WinComm &WinComm::show() {
+  WinBase &WinBase::show() {
     this->showNoUpdate();
     update();
 
@@ -27,7 +27,7 @@ namespace rwl::impl {
     return *this;
   }
 
-  WinComm &WinComm::showNoUpdate() {
+  WinBase &WinBase::showNoUpdate() {
     xcb_map_window(impl::core::conn, m_win);
 
     impl::log("Window", "Shown without updating.");
@@ -35,7 +35,7 @@ namespace rwl::impl {
     return *this;
   }
 
-  WinComm &WinComm::hide() {
+  WinBase &WinBase::hide() {
     this->hideNoUpdate();
     update();
 
@@ -44,7 +44,7 @@ namespace rwl::impl {
     return *this;
   }
 
-  WinComm &WinComm::hideNoUpdate() {
+  WinBase &WinBase::hideNoUpdate() {
     xcb_unmap_window(impl::core::conn, m_win);
 
     impl::log("Window", "Hidden wihtout updating");

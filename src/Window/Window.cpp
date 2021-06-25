@@ -19,7 +19,7 @@ namespace rwl {
 
   /******************************* Constructors *******************************/
   Window::Window(Window &&other)
-      : WinComm(other.m_win, other.m_posDim, other.m_bgColor),
+      : WinBase(other.m_win, other.m_posDim, other.m_bgColor),
         m_parent(other.m_parent), m_borderWidth(other.m_borderWidth),
         m_borderColor(other.m_borderColor) {
     impl::log("Window", "Moved.");
@@ -31,9 +31,9 @@ namespace rwl {
                other.m_borderWidth, other.m_borderColor) {}
 
   Window::Window(const PosDim &posDim, const Color &bgColor,
-                 const WinComm &parent, const uint16_t &borderWidth,
+                 const WinBase &parent, const uint16_t &borderWidth,
                  const Color &borderColor)
-      : WinComm(xcb_generate_id(impl::core::conn), posDim, bgColor),
+      : WinBase(xcb_generate_id(impl::core::conn), posDim, bgColor),
         m_parent(parent), m_borderWidth(borderWidth),
         m_borderColor(borderColor) {
     create();

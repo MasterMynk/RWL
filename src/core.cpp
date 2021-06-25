@@ -1,5 +1,5 @@
 #include "rwl/core.hpp"
-#include "rwl/Window/WinComm.hpp"
+#include "rwl/Window/WinBase.hpp"
 #include <cstdlib>
 
 namespace rwl {
@@ -22,13 +22,13 @@ namespace rwl {
         xcb_setup_roots_iterator(xcb_get_setup(conn)).data;
 #endif
 
-    const WinComm makeRoot() {
-      return WinComm(impl::core::scr->root, {0, rwl::Dim(width(), height())},
+    const WinBase makeRoot() {
+      return WinBase(impl::core::scr->root, {0, rwl::Dim(width(), height())},
                      rwl::Color::Black);
     }
   } // namespace impl
 
-  const impl::WinComm root = impl::makeRoot();
+  const impl::WinBase root = impl::makeRoot();
 
   void end() {
 #if RWL_PLATFORM == LINUX

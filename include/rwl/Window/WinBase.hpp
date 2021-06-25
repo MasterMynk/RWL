@@ -7,7 +7,7 @@ namespace rwl {
   class Window;
 
   namespace impl {
-    class WinComm {
+    class WinBase {
     protected:
 #if RWL_PLATFORM == LINUX
       xcb_window_t m_win;
@@ -16,20 +16,20 @@ namespace rwl {
 #endif
     public:
       /***************************** Constructors *****************************/
-      WinComm(const xcb_window_t &winId, const PosDim &posDim,
+      WinBase(const xcb_window_t &winId, const PosDim &posDim,
               const Color &bgColor);
 
       /****************************** Operators ******************************/
       /***************************** Operator= *****************************/
-      WinComm &operator=(const WinComm &other);
+      WinBase &operator=(const WinBase &other);
 
-      inline WinComm &operator=(const Pos &other) {
+      inline WinBase &operator=(const Pos &other) {
         return this->setPos(other);
       }
-      inline WinComm &operator=(const Dim &other) {
+      inline WinBase &operator=(const Dim &other) {
         return this->setDim(other);
       }
-      inline WinComm &operator=(const Color &bgColor) {
+      inline WinBase &operator=(const Color &bgColor) {
         return this->setBgColor(bgColor);
       }
 
@@ -44,58 +44,58 @@ namespace rwl {
         return this->m_bgColor == other;
       }
 
-      inline bool operator==(const WinComm &other) {
+      inline bool operator==(const WinBase &other) {
         return (*this == other.m_posDim.pos && *this == other.m_posDim.dim &&
                 *this == other.m_bgColor);
       }
 
       /************************* Compound Operators *************************/
       /**************************** Operator+= ****************************/
-      inline WinComm &operator+=(const Pos &other) {
+      inline WinBase &operator+=(const Pos &other) {
         this->setPos(this->m_posDim.pos + other);
         return *this;
       }
-      inline WinComm &operator+=(const Dim &other) {
+      inline WinBase &operator+=(const Dim &other) {
         this->setDim(this->m_posDim.dim + other);
         return *this;
       }
 
       /**************************** Operator-= ****************************/
-      inline WinComm &operator-=(const Pos &other) {
+      inline WinBase &operator-=(const Pos &other) {
         this->setPos(this->m_posDim.pos - other);
         return *this;
       }
-      inline WinComm &operator-=(const Dim &other) {
+      inline WinBase &operator-=(const Dim &other) {
         this->setDim(this->m_posDim.dim - other);
         return *this;
       }
 
       /**************************** Operator*= ****************************/
-      inline WinComm &operator*=(const Pos &other) {
+      inline WinBase &operator*=(const Pos &other) {
         this->setPos(this->m_posDim.pos * other);
         return *this;
       }
-      inline WinComm &operator*=(const Dim &other) {
+      inline WinBase &operator*=(const Dim &other) {
         this->setDim(this->m_posDim.dim * other);
         return *this;
       }
 
       /**************************** Operator/= ****************************/
-      inline WinComm &operator/=(const Pos &other) {
+      inline WinBase &operator/=(const Pos &other) {
         this->setPos(this->m_posDim.pos / other);
         return *this;
       }
-      inline WinComm &operator/=(const Dim &other) {
+      inline WinBase &operator/=(const Dim &other) {
         this->setDim(this->m_posDim.dim / other);
         return *this;
       }
 
       /**************************** Operator%= ****************************/
-      inline WinComm &operator%=(const Pos &other) {
+      inline WinBase &operator%=(const Pos &other) {
         this->setPos(this->m_posDim.pos % other);
         return *this;
       }
-      inline WinComm &operator%=(const Dim &other) {
+      inline WinBase &operator%=(const Dim &other) {
         this->setDim(this->m_posDim.dim % other);
         return *this;
       }
@@ -142,11 +142,11 @@ namespace rwl {
       }
 
       /****************************** Functions ******************************/
-      WinComm &show();
-      WinComm &showNoUpdate();
+      WinBase &show();
+      WinBase &showNoUpdate();
 
-      WinComm &hide();
-      WinComm &hideNoUpdate();
+      WinBase &hide();
+      WinBase &hideNoUpdate();
 
       /******************************* Getters *******************************/
       inline const Pos &getPos() const { return m_posDim.pos; }
@@ -160,33 +160,33 @@ namespace rwl {
       inline const Color &getBgColor() const { return this->m_bgColor; }
 
       /******************************* Setters *******************************/
-      inline WinComm &setPos(const Pos &other) {
+      inline WinBase &setPos(const Pos &other) {
         this->m_posDim.pos = other;
         impl::log<impl::LogLevel::NoImp>("Window",
                                          "Position = ", this->m_posDim.pos);
         return *this;
       }
-      inline WinComm &setX(const int16_t &x) {
+      inline WinBase &setX(const int16_t &x) {
         return this->setPos({x, this->m_posDim.pos.y});
       }
-      inline WinComm &setY(const int16_t &y) {
+      inline WinBase &setY(const int16_t &y) {
         return this->setPos({this->m_posDim.pos.x, y});
       }
 
-      inline WinComm &setDim(const Dim &other) {
+      inline WinBase &setDim(const Dim &other) {
         this->m_posDim.dim = other;
         impl::log<impl::LogLevel::NoImp>("Window",
                                          "Dimensions = ", this->m_posDim.dim);
         return *this;
       }
-      inline WinComm &setWidth(const uint16_t &width) {
+      inline WinBase &setWidth(const uint16_t &width) {
         return this->setDim({width, this->m_posDim.dim.height});
       }
-      inline WinComm &setHeight(const uint16_t &height) {
+      inline WinBase &setHeight(const uint16_t &height) {
         return this->setDim({this->m_posDim.dim.height, height});
       }
 
-      inline WinComm &setBgColor(const Color &bgColor) {
+      inline WinBase &setBgColor(const Color &bgColor) {
         this->m_bgColor = bgColor;
         impl::log<impl::LogLevel::NoImp>(
             "Window", "Bg Color = ", this->m_bgColor.colorToStr());
@@ -197,7 +197,7 @@ namespace rwl {
       inline const xcb_window_t &getW() const { return m_win; }
 #endif
 
-      virtual ~WinComm() {}
+      virtual ~WinBase() {}
 
       template <size_t Size>
       friend class ::rwl::Rect;
