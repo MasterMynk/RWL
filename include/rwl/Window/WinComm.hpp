@@ -6,9 +6,6 @@
 namespace rwl {
   class Window;
 
-  template <size_t Size>
-  class Rect;
-
   namespace impl {
     class WinComm {
     protected:

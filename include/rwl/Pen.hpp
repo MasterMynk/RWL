@@ -1,12 +1,9 @@
 #pragma once
 #include "rwl/Color.hpp"
-#include "rwl/Log.hpp"
+#include "rwl/core.hpp"
 #include <xcb/xcb.h>
 
 namespace rwl {
-  template <size_t Size>
-  class Rect;
-
   class Pen {
   public:
     enum class LineStyle : uint32_t {

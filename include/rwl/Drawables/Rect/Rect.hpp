@@ -13,46 +13,24 @@
 #include <xcb/xcb.h>
 
 namespace rwl {
-  template <typename Arr>
-  concept ItArr = requires(const Arr &arr) {
-    arr.begin();
-    arr.end();
-    { arr.size() } -> std::same_as<size_t>;
-  };
-
   template <size_t Size = 0>
   class Rect: public impl::RectBase<Size> {
-  public:
-    using value_type = impl::RectBase<Size>::value_type;
-    using iterator = value_type::iterator;
-    using const_iterator = value_type::const_iterator;
-    using reverse_iterator = value_type::reverse_iterator;
-    using const_reverse_iterator = value_type::const_reverse_iterator;
-
   private:
-    value_type m_rects;
-
-  public:
-    /********************************* Ctors *********************************/
-    // If m_rects is a vector, then only this ctor is enabled
-    Rect(const size_t &length) requires
-        std::is_same_v<std::vector<PosDim>, value_type>: m_rects(length) {}
-    Rect(const Rect &other) : m_rects(other.m_rects) {}
-    Rect(const PosDim &rect = PosDim()) : m_rects{rect} {}
-    Rect(Rect &&other) : m_rects(std::move(other.m_rects)) {}
-    Rect(const std::initializer_list<PosDim> &rects) { *this = rects; }
-
+    using parentClass = impl::RectBase<Size>;
     template <size_t OSize>
-    Rect(const std::array<PosDim, OSize> &rects) : m_rects(rects) {}
+    using valueTypeNoSize = typename parentClass::valueTypeNoSize<OSize>;
+
+  public:
+    using value_type = typename parentClass::value_type;
+
+  public:
+    using parentClass::RectBase; // Ctors from base class
 
   private:
-    /******************************** Helpers ********************************/
-    Rect &eqImpl(ItArr auto &&rects) {
-      if constexpr (std::is_same_v<std::vector<PosDim>, value_type>)
-        this->m_rects = std::move(rects);
-      else
-        std::copy_n(rects.begin(), std::min(this->size(), rects.size()),
-                    this->begin());
+    /******************************* Helpers *******************************/
+    inline Rect &eqImpl(ItArr auto &&rects) {
+      std::copy_n(rects.begin(), std::min(this->size(), rects.size()),
+                  this->begin());
       return *this;
     }
 
@@ -112,63 +90,15 @@ namespace rwl {
     }
 
   public:
-    /******************************* Functions *******************************/
+    /****************************** Functions ******************************/
     inline void draw(Window &win, const Pen &pen = Pen()) override {
       xcb_poly_rectangle(impl::core::conn, win.m_win, pen.m_pen, this->size(),
-                         reinterpret_cast<xcb_rectangle_t *>(m_rects.data()));
-    }
-
-    constexpr inline void reserve(const size_t &newCap) requires
-        std::is_same_v<std::vector<PosDim>, value_type> {
-      this->m_rects.reserve(newCap);
-    }
-
-    constexpr inline void
-    shrink_to_fit() requires std::is_same_v<std::vector<PosDim>, value_type> {
-      this->m_rects.shrink_to_fit();
-    }
-
-    constexpr void
-    clear() const requires std::is_same_v<std::vector<PosDim>, value_type> {
-      this->m_rects.clear();
-    }
-
-    /******************************* Iterators *******************************/
-    inline iterator begin() { return this->m_rects.begin(); }
-    inline reverse_iterator rbegin() { return this->m_rects.rbegin(); }
-    inline const const_iterator cbegin() const { return m_rects.cbegin(); }
-    inline const const_iterator begin() const { return this->m_rects.cbegin(); }
-    inline const const_iterator rbegin() const {
-      return this->m_rects.crbegin();
-    }
-    inline const const_reverse_iterator crbegin() {
-      return this->m_rects.crbegin();
-    }
-
-    inline iterator end() { return this->m_rects.end(); }
-    inline reverse_iterator rend() { return this->m_rects.rend(); }
-    inline const const_iterator cend() const { return m_rects.cend(); }
-    inline const const_iterator end() const { return this->m_rects.cend(); }
-    inline const const_iterator rend() const { return this->m_rects.crend(); }
-    inline const const_reverse_iterator crend() {
-      return this->m_rects.crend();
-    }
-
-    /******************************* Operators *******************************/
-    /********************************** [] **********************************/
-    PosDim &operator[](const size_t &ind) { return this->m_rects[ind]; }
-
-    const PosDim &operator[](const size_t &ind) const {
-      return this->m_rects[ind];
+                         reinterpret_cast<xcb_rectangle_t *>(this->data()));
     }
 
     /********************************** = **********************************/
-    Rect &operator=(const PosDim &rect) { // When a single value is provided
-      // Assign it to everything
-      if constexpr (std::is_same_v<std::vector<PosDim>, value_type>)
-        std::fill(this->begin(), this->end(), rect);
-      else
-        this->m_rects.fill(rect);
+    inline Rect &operator=(const PosDim &rect) {
+      parentClass::operator=(rect);
       return *this;
     }
 
@@ -178,19 +108,6 @@ namespace rwl {
 
     inline Rect &operator=(const Rect<Size> &other) { // Copy assignment
       return this->eqImpl(other);
-    }
-
-    inline Rect &operator=(Rect<Size> &&other) {
-      return this->eqImpl(std::move(other));
-    }
-
-    Rect &operator=(std::vector<PosDim> &&rects) {
-      if constexpr (std::is_same_v<std::vector<PosDim>, value_type>)
-        this->m_rects = std::move(rects);
-      else
-        return this->eqImpl(rects);
-
-      return *this;
     }
 
     inline Rect &operator=(const std::initializer_list<PosDim> &rects) {
@@ -331,30 +248,10 @@ namespace rwl {
       return this->modEqImpl(rects);
     }
 
-    /******************************** Getters ********************************/
-    inline value_type &arr() { return this->m_rects; }
-    inline PosDim *&data() { return this->m_rects.data(); }
-    constexpr inline bool empty() const { return this->m_rects.empty(); }
-    constexpr inline size_t size() const { return this->m_rects.size(); }
-    constexpr inline PosDim &front() { return this->m_rects.front(); }
-    constexpr inline PosDim &back() { return this->m_rects.back(); }
-    constexpr inline const PosDim &back() const { return this->m_rects.back(); }
-
-    constexpr inline const PosDim &front() const {
-      return this->m_rects.front();
-    }
-
-    constexpr inline size_t max_size() const {
-      return this->m_rects.max_size();
-    }
-
-    constexpr inline size_t
-    capacity() const requires std::is_same_v<std::vector<PosDim>, value_type> {
-      return this->m_rects.capacity();
-    }
-
     /******************************** Friends ********************************/
     template <size_t OSize>
     friend class Rect;
   };
+
+  Rect(size_t)->Rect<0>;
 } // namespace rwl
