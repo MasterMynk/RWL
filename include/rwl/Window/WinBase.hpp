@@ -149,13 +149,17 @@ namespace rwl {
       WinBase &hideNoUpdate();
 
       /******************************* Getters *******************************/
-      inline const Pos &getPos() const { return m_posDim.pos; }
-      inline const int16_t &getX() const { return m_posDim.pos.x; }
-      inline const int16_t &getY() const { return m_posDim.pos.y; }
+      inline const Pos &getPos() const { return this->m_posDim.pos; }
+      inline const int16_t &getX() const { return this->m_posDim.pos.x; }
+      inline const int16_t &getY() const { return this->m_posDim.pos.y; }
 
-      inline const Dim &getDim() const { return m_posDim.dim; }
-      inline const uint16_t &getWidth() const { return m_posDim.dim.width; }
-      inline const uint16_t &getHeight() const { return m_posDim.dim.height; }
+      inline const Dim &getDim() const { return this->m_posDim.dim; }
+      inline const uint16_t &getWidth() const {
+        return this->m_posDim.dim.width;
+      }
+      inline const uint16_t &getHeight() const {
+        return this->m_posDim.dim.height;
+      }
 
       inline const Color &getBgColor() const { return this->m_bgColor; }
 
@@ -196,8 +200,6 @@ namespace rwl {
 #if RWL_DEBUG == 1
       inline const xcb_window_t &getW() const { return m_win; }
 #endif
-
-      virtual ~WinBase() {}
 
       template <size_t Size>
       friend class ::rwl::Rect;

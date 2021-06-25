@@ -1,7 +1,7 @@
 #include "rwl/Window/Window.hpp"
 
 namespace rwl {
-  /************************* Private Member Functions *************************/
+  /********************************* Helpers *********************************/
   void Window::create() {
 #if RWL_PLATFORM == LINUX
     uint32_t props[] = {this->m_bgColor.m_color, this->m_borderColor.m_color,
@@ -17,7 +17,7 @@ namespace rwl {
 #endif
   }
 
-  /******************************* Constructors *******************************/
+  /********************************** Ctors **********************************/
   Window::Window(Window &&other)
       : WinBase(other.m_win, other.m_posDim, other.m_bgColor),
         m_parent(other.m_parent), m_borderWidth(other.m_borderWidth),
@@ -36,7 +36,8 @@ namespace rwl {
       : WinBase(xcb_generate_id(impl::core::conn), posDim, bgColor),
         m_parent(parent), m_borderWidth(borderWidth),
         m_borderColor(borderColor) {
-    create();
+    this->create();
+    this->show();
   }
 
   Window::~Window() {
