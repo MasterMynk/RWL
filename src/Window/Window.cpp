@@ -1,7 +1,14 @@
 #include "rwl/Window/Window.hpp"
 
 namespace rwl {
-  /************************* Private Member Functions *************************/
+  /******************************* Helper Ctors *******************************/
+  Window::Window(const xcb_window_t &win, const PosDim &pd, const Color &bg,
+                 const impl::WinBase &parent, const uint16_t &borderWidth,
+                 const Color &borderColor)
+      : WinBase(win, pd, bg), m_parent(parent), m_borderWidth(borderWidth),
+        m_borderColor(borderColor) {}
+
+  /********************************* Helpers *********************************/
   void Window::create() {
 #if RWL_PLATFORM == LINUX
     uint32_t props[] = {this->m_bgColor.m_color, this->m_borderColor.m_color,
@@ -17,11 +24,10 @@ namespace rwl {
 #endif
   }
 
-  /******************************* Constructors *******************************/
+  /********************************** Ctors **********************************/
   Window::Window(Window &&other)
-      : WinComm(other.m_win, other.m_posDim, other.m_bgColor),
-        m_parent(other.m_parent), m_borderWidth(other.m_borderWidth),
-        m_borderColor(other.m_borderColor) {
+      : Window(other.m_win, other.m_posDim, other.m_bgColor, other.m_parent,
+               other.m_borderWidth, other.m_borderColor) {
     impl::log("Window", "Moved.");
     other.m_win = 0;
   }
@@ -29,15 +35,6 @@ namespace rwl {
   Window::Window(const Window &other)
       : Window(other.m_posDim, other.m_bgColor, other.m_parent,
                other.m_borderWidth, other.m_borderColor) {}
-
-  Window::Window(const PosDim &posDim, const Color &bgColor,
-                 const WinComm &parent, const uint16_t &borderWidth,
-                 const Color &borderColor)
-      : WinComm(xcb_generate_id(impl::core::conn), posDim, bgColor),
-        m_parent(parent), m_borderWidth(borderWidth),
-        m_borderColor(borderColor) {
-    create();
-  }
 
   Window::~Window() {
 #if RWL_PLATFORM == LINUX

@@ -17,7 +17,7 @@ set(CLASSES
   "core"
   "Color"
   "PosDim"
-  "Window/WinComm"
+  "Window/WinBase"
   "Window/Window"
 )
 

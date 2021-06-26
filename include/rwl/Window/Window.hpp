@@ -1,27 +1,49 @@
 #pragma once
-#include "rwl/Window/WinComm.hpp"
+#include "rwl/Window/WinBase.hpp"
 #include "rwl/core.hpp"
 
 namespace rwl {
-  class Window: public impl::WinComm {
+  class Window: public impl::WinBase {
   private:
-    void create();
-    const WinComm &m_parent;
+    const WinBase &m_parent;
     const uint16_t m_borderWidth;
     const Color m_borderColor;
 
+  private:
+    /****************************** Helper Ctors ******************************/
+    Window(const xcb_window_t &win, const PosDim &pd, const Color &bg,
+           const impl::WinBase &parent, const uint16_t &borderWidth,
+           const Color &borderColor);
+
+    /******************************** Helpers ********************************/
+    void create();
+
   public:
+    enum class Visibility { Show, Hide };
+
+  public:
+    /********************************* Ctors *********************************/
     explicit Window(Window &&other);
     explicit Window(const Window &other);
+
+    template <Visibility v = Visibility::Show>
     Window(const PosDim &posDim = {0, {640, 480}},
            const Color &bgColor = Color::White,
-           const impl::WinComm &parent = root, const uint16_t &borderWidth = 1,
-           const Color &borderColor = rwl::Color::Black);
+           const impl::WinBase &parent = root, const uint16_t &borderWidth = 1,
+           const Color &borderColor = rwl::Color::Black)
+        : Window(xcb_generate_id(impl::core::conn), posDim, bgColor, parent,
+                 borderWidth, borderColor) {
+      this->create();
 
-    inline const WinComm &getParent() const { return m_parent; }
+      if constexpr (v == Visibility::Show)
+        this->show();
+    }
+
+    /******************************** Getters ********************************/
+    inline const WinBase &getParent() const { return m_parent; }
     inline const uint16_t &getBorderWidth() const { return m_borderWidth; }
     inline const Color &getBorderColor() const { return m_borderColor; }
 
-    ~Window() override;
+    ~Window();
   };
 } // namespace rwl

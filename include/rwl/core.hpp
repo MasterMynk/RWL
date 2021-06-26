@@ -18,9 +18,9 @@ namespace rwl {
 
   namespace impl {
     struct core;
-    class WinComm;
+    class WinBase;
 
-    const WinComm makeRoot();
+    const WinBase makeRoot();
   } // namespace impl
 
   void end();
@@ -29,7 +29,7 @@ namespace rwl {
   void loop(std::function<void(bool &finished)> func);
   uint16_t width(const Measurement &m = Measurement::Pixels);
   uint16_t height(const Measurement &m = Measurement::Pixels);
-  extern const impl::WinComm root;
+  extern const impl::WinBase root;
 
   namespace impl {
     struct core {
@@ -45,12 +45,12 @@ namespace rwl {
       friend ::rwl::Color;
       friend ::rwl::Window;
 
-      friend WinComm;
+      friend WinBase;
 
       template <size_t Size>
       friend class ::rwl::Rect;
 
-      friend const WinComm makeRoot();
+      friend const WinBase makeRoot();
 
       friend void ::rwl::end();
       friend void ::rwl::update();
