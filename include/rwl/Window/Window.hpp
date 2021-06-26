@@ -15,18 +15,29 @@ namespace rwl {
            const impl::WinBase &parent, const uint16_t &borderWidth,
            const Color &borderColor);
 
-    /******************************** Helpers
-     ********************************/
+    /******************************** Helpers ********************************/
     void create();
+
+  public:
+    enum class Visibility { Show, Hide };
 
   public:
     /********************************* Ctors *********************************/
     explicit Window(Window &&other);
     explicit Window(const Window &other);
+
+    template <Visibility v = Visibility::Show>
     Window(const PosDim &posDim = {0, {640, 480}},
            const Color &bgColor = Color::White,
            const impl::WinBase &parent = root, const uint16_t &borderWidth = 1,
-           const Color &borderColor = rwl::Color::Black);
+           const Color &borderColor = rwl::Color::Black)
+        : Window(xcb_generate_id(impl::core::conn), posDim, bgColor, parent,
+                 borderWidth, borderColor) {
+      this->create();
+
+      if constexpr (v == Visibility::Show)
+        this->show();
+    }
 
     /******************************** Getters ********************************/
     inline const WinBase &getParent() const { return m_parent; }

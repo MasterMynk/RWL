@@ -36,15 +36,6 @@ namespace rwl {
       : Window(other.m_posDim, other.m_bgColor, other.m_parent,
                other.m_borderWidth, other.m_borderColor) {}
 
-  Window::Window(const PosDim &posDim, const Color &bgColor,
-                 const WinBase &parent, const uint16_t &borderWidth,
-                 const Color &borderColor)
-      : Window(xcb_generate_id(impl::core::conn), posDim, bgColor, parent,
-               borderWidth, borderColor) {
-    this->create();
-    this->show();
-  }
-
   Window::~Window() {
 #if RWL_PLATFORM == LINUX
     xcb_destroy_window(impl::core::conn, m_win);
